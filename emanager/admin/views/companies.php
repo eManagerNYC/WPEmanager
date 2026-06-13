@@ -15,9 +15,9 @@ delete_transient( 'em_companies_cache' ); // Always show fresh data on this scre
 $em_editing = null;
 if ( isset( $_GET['edit'] ) ) {
 	$em_edit_id = sanitize_text_field( wp_unslash( $_GET['edit'] ) );
-	foreach ( $em_companies as $c ) {
-		if ( $em_edit_id === (string) $c['id'] ) {
-			$em_editing = $c;
+	foreach ( $em_companies as $em_co ) {
+		if ( $em_edit_id === (string) $em_co['id'] ) {
+			$em_editing = $em_co;
 			break;
 		}
 	}
@@ -88,15 +88,15 @@ if ( isset( $_GET['edit'] ) ) {
 				<?php if ( empty( $em_companies ) ) : ?>
 					<tr><td colspan="4"><?php esc_html_e( 'No companies yet — add one on the left.', 'emanager' ); ?></td></tr>
 				<?php endif; ?>
-				<?php foreach ( $em_companies as $company ) : ?>
+				<?php foreach ( $em_companies as $em_co ) : ?>
 					<tr>
-						<td><strong><?php echo esc_html( $company['name'] ); ?></strong></td>
-						<td><?php echo esc_html( $company['type'] ?? '' ); ?></td>
-						<td><?php echo esc_html( $company['email'] ?? '' ); ?></td>
+						<td><strong><?php echo esc_html( $em_co['name'] ); ?></strong></td>
+						<td><?php echo esc_html( $em_co['type'] ?? '' ); ?></td>
+						<td><?php echo esc_html( $em_co['email'] ?? '' ); ?></td>
 						<td>
-							<a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=emanager-companies&edit=' . $company['id'] ) ); ?>"><?php esc_html_e( 'Edit', 'emanager' ); ?></a>
+							<a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=emanager-companies&edit=' . $em_co['id'] ) ); ?>"><?php esc_html_e( 'Edit', 'emanager' ); ?></a>
 							<a class="button button-small em-confirm" data-confirm="<?php esc_attr_e( 'Delete this company?', 'emanager' ); ?>"
-								href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=em_delete_company&company_id=' . $company['id'] ), 'em_company_delete' ) ); ?>">
+								href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=em_delete_company&company_id=' . $em_co['id'] ), 'em_company_delete' ) ); ?>">
 								<?php esc_html_e( 'Delete', 'emanager' ); ?>
 							</a>
 						</td>

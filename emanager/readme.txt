@@ -2,7 +2,7 @@
 Contributors: emanager
 Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 8.0
 Stable tag: 3.2.1
 License: GPLv2 or later

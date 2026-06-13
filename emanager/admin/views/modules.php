@@ -48,15 +48,15 @@ $em_all      = EM_Modules::instance()->all();
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach ( $em_registry as $section ) : ?>
-			<?php foreach ( $section['modules'] as $module ) : ?>
-				<?php $is_custom = isset( $em_all[ $module['id'] ] ) && strpos( $em_all[ $module['id'] ]['path'], EM_CUSTOM_MODULES_DIR ) === 0; ?>
+		<?php foreach ( $em_registry as $em_section ) : ?>
+			<?php foreach ( $em_section['modules'] as $em_mod ) : ?>
+				<?php $em_is_custom = isset( $em_all[ $em_mod['id'] ] ) && strpos( $em_all[ $em_mod['id'] ]['path'], EM_CUSTOM_MODULES_DIR ) === 0; ?>
 				<tr>
-					<td><strong><?php echo esc_html( $module['name'] ); ?></strong> <code><?php echo esc_html( $module['id'] ); ?></code></td>
-					<td><?php echo esc_html( $section['name'] ); ?></td>
-					<td><code><?php echo esc_html( $module['table'] ); ?></code></td>
-					<td><?php echo esc_html( implode( ', ', $module['statuses'] ?? array() ) ); ?></td>
-					<td><?php echo $is_custom ? esc_html__( 'Custom (uploads)', 'emanager' ) : esc_html__( 'Built-in', 'emanager' ); ?></td>
+					<td><strong><?php echo esc_html( $em_mod['name'] ); ?></strong> <code><?php echo esc_html( $em_mod['id'] ); ?></code></td>
+					<td><?php echo esc_html( $em_section['name'] ); ?></td>
+					<td><code><?php echo esc_html( $em_mod['table'] ); ?></code></td>
+					<td><?php echo esc_html( implode( ', ', $em_mod['statuses'] ?? array() ) ); ?></td>
+					<td><?php echo $em_is_custom ? esc_html__( 'Custom (uploads)', 'emanager' ) : esc_html__( 'Built-in', 'emanager' ); ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endforeach; ?>

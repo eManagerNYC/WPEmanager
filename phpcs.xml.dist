@@ -2,7 +2,7 @@
 <ruleset name="eManager">
 	<description>WordPress Coding Standards configuration for the eManager plugin.</description>
 
-	<file>.</file>
+	<file>emanager</file>
 	<exclude-pattern>*/index\.php$</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>

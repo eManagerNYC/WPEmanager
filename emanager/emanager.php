@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       eManager — Construction Management Dashboard
- * Plugin URI:        https://example.com/emanager
+ * Plugin URI:        https://github.com/emanager-app/emanager
  * Description:       A general-contracting portal for mega projects: a lightweight, modular WordPress dashboard with a role-gated change-order workflow (PCO → NOC → Directive → Proposal → COR → eTicket) and config-driven CRUD modules stored in native WordPress database tables. Modules are installable via ZIP.
  * Version:           3.2.1
  * Requires at least: 6.4
@@ -66,7 +66,7 @@ register_deactivation_hook( __FILE__, 'em_deactivate' );
  * Boot the plugin.
  */
 function em_init() {
-	load_plugin_textdomain( 'emanager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	// Translations for wp.org-hosted plugins are loaded automatically since WP 4.6.
 
 	EM_Modules::instance();   // Module registry (built-in + custom).
 	EM_Auth::instance();      // Login / registration / access control.

@@ -11,6 +11,44 @@ WordPress database** (created automatically). One shared engine renders every mo
 list / view / form pages and drives a **role-gated workflow state machine**, so adding a
 module requires **no PHP and no build step**.
 
+## How eManager runs a jobsite
+
+```
+   PRECONSTRUCTION        DESIGN / ENGINEERING            FIELD
+   ┌───────────────┐      ┌───────────────────┐    ┌──────────────────────┐
+   │ Prequalify     │     │ RFIs · Submittals  │    │ Daily reports + weather│
+   │ Invite to bid  │ ──▶ │ Drawings · Specs   │──▶ │ Manpower/delivery logs │
+   │ Level bids     │     │ Procurement (JIT)  │    │ Gantt + Line-of-Balance│
+   │ Lock budget    │     │ Design reviews     │    │ Timesheets · Punch list│
+   └───────┬───────┘      └─────────┬─────────┘     └───────────┬──────────┘
+           │                        │                           │
+           ▼                        ▼                           ▼
+   ┌─────────────────────────────────────────────────────────────────────┐
+   │  CHANGE MANAGEMENT (role-gated workflow, audit-logged)                │
+   │  PCO Request ─▶ NOC ─▶ Directive ─▶ Proposal ─▶ COR/AL ─▶ eTicket     │
+   │     field        owner    GC          sub         owner      T&M       │
+   └───────────────────────────────┬─────────────────────────────────────┘
+           ┌───────────────────────┼───────────────────────┐
+           ▼                       ▼                        ▼
+   ┌───────────────┐      ┌──────────────────┐     ┌──────────────────────┐
+   │ QUALITY/SAFETY │     │ COST / FINANCIALS │     │ CLOSEOUT / HANDOVER   │
+   │ Inspections    │     │ Budget · Commit.  │     │ Commissioning         │
+   │ NCRs · Incidents│    │ Change events     │     │ As-builts · Training  │
+   │ Toolbox talks  │     │ G702/G703 pay apps│     │ Completion certs      │
+   │                │     │ Cost roll-up      │     │ Asset register        │
+   └───────────────┘      └──────────────────┘      └──────────────────────┘
+```
+
+**A day on the project, in eManager:** the superintendent files the morning daily report
+(site weather auto-fills) and logs manpower and deliveries from a phone; a foreman spots a
+conflict and raises a **PCO request** with a photo — it routes to the owner as a
+**Notification of Change**, comes back "Proceed & Pricing," becomes a **directive** to the
+drywall sub, who prices it as a **proposal** that the GC reconciles into a **change-order
+request** for the owner to approve, then bills the work on signed **eTickets**. Meanwhile QC
+logs an **inspection** and an **NCR**, the PM answers two **RFIs**, accounting runs the
+monthly **G702/G703 pay application**, and the **cost summary** shows budget vs. committed
+vs. actual vs. forecast — every step stamped to an activity timeline.
+
 Implements the system described in provisional patent 514712205 ("PHP application built on
 top of WordPress using a theme and set of plugins"), modernised as a standalone plugin.
 
