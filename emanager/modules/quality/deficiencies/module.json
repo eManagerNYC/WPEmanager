@@ -1,0 +1,74 @@
+{
+	"id": "deficiencies",
+	"name": "Deficiencies / Defects",
+	"section": "quality",
+	"icon": "bi-tools",
+	"table": "em_deficiencies",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"In Progress",
+		"Ready for Review",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "defect_no",
+			"label": "Defect #",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "severity",
+			"label": "Severity",
+			"type": "select",
+			"options": [
+				"Minor",
+				"Major",
+				"Critical"
+			],
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "due_date",
+			"label": "Due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "photo_url",
+			"label": "Photo link",
+			"type": "url"
+		}
+	]
+}

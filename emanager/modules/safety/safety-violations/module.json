@@ -1,0 +1,76 @@
+{
+	"id": "safety-violations",
+	"name": "Safety Violations",
+	"section": "safety",
+	"icon": "bi-cone",
+	"table": "em_safety_violations",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Corrected",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "violation_no",
+			"label": "Violation #",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "violation_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"PPE",
+				"Fall Protection",
+				"Housekeeping",
+				"Electrical",
+				"Hot Work",
+				"Excavation",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "severity",
+			"label": "Severity",
+			"type": "select",
+			"options": [
+				"Minor",
+				"Serious",
+				"Imminent Danger"
+			],
+			"list": true
+		},
+		{
+			"name": "observed_date",
+			"label": "Observed",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "corrective_action",
+			"label": "Corrective action",
+			"type": "textarea"
+		},
+		{
+			"name": "fine",
+			"label": "Fine / back-charge",
+			"type": "currency"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+/* eManager — login & registration pages */
+
+.em-auth-wrap {
+	min-height: 70vh;
+	padding: 2rem 1rem;
+}
+
+.em-auth-card {
+	width: 100%;
+	max-width: 420px;
+	border: 0;
+}

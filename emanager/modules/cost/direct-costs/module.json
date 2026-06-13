@@ -1,0 +1,69 @@
+{
+	"id": "direct-costs",
+	"name": "Direct Costs",
+	"section": "cost",
+	"icon": "bi-cash-stack",
+	"table": "em_direct_costs",
+	"version": "1.0.0",
+	"statuses": [
+		"Pending",
+		"Approved",
+		"Paid",
+		"Disputed"
+	],
+	"fields": [
+		{
+			"name": "cost_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Invoice",
+				"Certified Payroll",
+				"Expense"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "vendor",
+			"label": "Vendor / employee",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "reference_no",
+			"label": "Invoice / reference number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			}
+		},
+		{
+			"name": "cost_date",
+			"label": "Date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

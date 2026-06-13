@@ -1,0 +1,71 @@
+{
+	"id": "prime-contract",
+	"name": "Prime Contract",
+	"section": "contracts",
+	"icon": "bi-award",
+	"table": "em_prime_contract",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Out for Signature",
+		"Executed",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "contract_no",
+			"label": "Contract number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "contract_type",
+			"label": "Delivery type",
+			"type": "select",
+			"options": [
+				"GMP",
+				"Cost Plus",
+				"Lump Sum",
+				"CMAR"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "owner",
+			"label": "Owner",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "original_value",
+			"label": "Original value",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "executed_date",
+			"label": "Executed",
+			"type": "date"
+		},
+		{
+			"name": "retainage_pct",
+			"label": "Retainage %",
+			"type": "number",
+			"step": "0.1"
+		},
+		{
+			"name": "scope",
+			"label": "Scope summary",
+			"type": "textarea"
+		}
+	]
+}

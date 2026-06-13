@@ -1,0 +1,12 @@
+{
+	"id": "user-management",
+	"name": "User Management",
+	"section": "settings",
+	"icon": "bi-people",
+	"table": "em_comments",
+	"version": "1.0.0",
+	"virtual": true,
+	"statuses": [],
+	"fields": [],
+	"description": "Virtual module — users and roles are managed in WordPress Admin; this page explains the role matrix and links there."
+}

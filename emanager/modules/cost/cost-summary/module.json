@@ -1,0 +1,12 @@
+{
+	"id": "cost-summary",
+	"name": "Cost Summary",
+	"section": "cost",
+	"icon": "bi-cash-coin",
+	"table": "em_comments",
+	"version": "1.0.0",
+	"virtual": true,
+	"statuses": [],
+	"fields": [],
+	"description": "Virtual module — financial roll-up rendered by module.js from /reports/cost-summary (budget vs committed vs actual vs forecast)."
+}

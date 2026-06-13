@@ -1,0 +1,33 @@
+.widgets {
+	@extend .cf;
+	.widget {
+		@extend .cf;
+		display: inline;
+		float: left;
+		margin: 0;
+		width: auto;
+	}
+}
+
+.widgets-before-content {
+	margin-bottom: $gutter;
+	.widget {
+		h3 {
+			margin: 0;
+		}
+	}
+	.Eman_Connect_Button {
+		float: right;
+	}
+}
+
+.widgets-after-content {
+	margin: $gutter 0;
+	.Eman_Help_Button {
+		float: right;
+	}
+}
+
+.widgets-footer {
+	
+}

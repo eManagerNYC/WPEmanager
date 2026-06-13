@@ -1,0 +1,29 @@
+/* eManager — WP-Admin styles */
+
+.em-admin .em-admin-columns {
+	display: grid;
+	grid-template-columns: minmax(320px, 480px) 1fr;
+	gap: 2rem;
+	align-items: start;
+}
+
+@media (max-width: 960px) {
+	.em-admin .em-admin-columns {
+		grid-template-columns: 1fr;
+	}
+}
+
+.em-admin .em-badge {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 1px 7px;
+	border-radius: 9px;
+	background: #2271b1;
+	color: #fff;
+	font-size: 11px;
+	vertical-align: middle;
+}
+
+.em-users-table select {
+	max-width: 260px;
+}

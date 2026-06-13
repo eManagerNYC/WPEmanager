@@ -1,0 +1,76 @@
+{
+	"id": "site-logistics",
+	"name": "Site Logistics",
+	"section": "field",
+	"icon": "bi-cone-striped",
+	"table": "em_site_logistics",
+	"version": "1.0.0",
+	"statuses": [
+		"Requested",
+		"Booked",
+		"In Use",
+		"Completed",
+		"Cancelled",
+		"Conflict"
+	],
+	"fields": [
+		{
+			"name": "logistics_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "resource",
+			"label": "Resource",
+			"type": "select",
+			"options": [
+				"Tower Crane",
+				"Material Hoist",
+				"Personnel Hoist",
+				"Loading Dock / Gate",
+				"Laydown Area",
+				"Road / Lane Closure",
+				"Concrete Pump"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "activity",
+			"label": "Activity / purpose",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "time_window",
+			"label": "Time window",
+			"type": "text",
+			"list": true,
+			"help": "e.g. 07:00–09:00"
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

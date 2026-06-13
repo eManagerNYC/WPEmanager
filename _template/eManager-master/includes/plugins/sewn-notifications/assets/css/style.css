@@ -1,0 +1,26 @@
+.sewn_notifications {
+	z-index: 9999;
+}
+
+.sewn_notifications.show {
+	display: block;
+}
+
+.sewn_notifications p {
+	background: #f9edbe;
+	border-bottom: 1px solid #f0c36d;
+	margin: 0;
+	padding: .5em .5em .2em .5em;
+	text-align: center;
+}
+
+.sewn_notifications-dismiss {
+	float: right;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+p.sewn_notifications-error {
+	background: #ffebe8;
+	border-bottom: 1px solid #c00;
+}

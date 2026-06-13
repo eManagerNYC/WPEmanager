@@ -1,0 +1,68 @@
+{
+	"id": "deliveries",
+	"name": "Deliveries",
+	"section": "field",
+	"icon": "bi-box-arrow-in-down",
+	"table": "em_deliveries",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Received",
+		"Partial",
+		"Rejected",
+		"Returned"
+	],
+	"fields": [
+		{
+			"name": "delivery_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "supplier",
+			"label": "Supplier",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "material",
+			"label": "Material",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "po_number",
+			"label": "PO #",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "quantity",
+			"label": "Quantity",
+			"type": "text"
+		},
+		{
+			"name": "received_by",
+			"label": "Received by",
+			"type": "text"
+		},
+		{
+			"name": "item_condition",
+			"label": "Condition",
+			"type": "select",
+			"options": [
+				"OK",
+				"Damaged",
+				"Partial"
+			]
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,74 @@
+{
+	"id": "coordination-issues",
+	"name": "Coordination Issues",
+	"section": "bim",
+	"icon": "bi-exclamation-diamond",
+	"table": "em_coordination_issues",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Assigned",
+		"Resolved",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "issue_no",
+			"label": "Issue number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trades_involved",
+			"label": "Trades involved",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "priority",
+			"label": "Priority",
+			"type": "select",
+			"options": [
+				"Low",
+				"Medium",
+				"High",
+				"Critical"
+			],
+			"list": true
+		},
+		{
+			"name": "due_date",
+			"label": "Due",
+			"type": "date"
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "resolution",
+			"label": "Resolution",
+			"type": "textarea"
+		}
+	]
+}

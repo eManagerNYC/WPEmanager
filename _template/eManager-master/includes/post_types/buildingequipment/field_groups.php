@@ -1,0 +1,118 @@
+<?php
+
+if ( function_exists("register_field_group") )
+{
+	register_field_group(array (
+		'id' => 'acf_building-systems-equipment',
+		'title' => 'Building Systems Equipment',
+		'fields' => array (
+			array (
+				'key' => 'field_53a44a570f5b3',
+				'label' => 'Building System',
+				'name' => 'building_system',
+				'type' => 'taxonomy',
+				'required' => 1,
+				'taxonomy' => 'em_buildingsystem',
+				'field_type' => 'checkbox',
+				'allow_null' => 0,
+				'load_save_terms' => 0,
+				'return_format' => 'id',
+				'multiple' => 0,
+			),
+			array (
+				'key' => 'field_53a44adc0f5b4',
+				'label' => 'Equipment Type',
+				'name' => 'equipment_type',
+				'type' => 'taxonomy',
+				'required' => 1,
+				'taxonomy' => 'em_buildingequipmenttype',
+				'field_type' => 'checkbox',
+				'allow_null' => 0,
+				'load_save_terms' => 0,
+				'return_format' => 'id',
+				'multiple' => 0,
+			),
+			array (
+				'key' => 'field_53a44b1d0f5b5',
+				'label' => 'Equipment ID',
+				'name' => 'equipment_id',
+				'type' => 'number',
+				'required' => 1,
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'min' => '',
+				'max' => '',
+				'step' => '',
+			),
+			array (
+				'key' => 'field_53a44b410f5b6',
+				'label' => 'Location',
+				'name' => 'location',
+				'type' => 'post_object',
+				'post_type' => array (
+					0 => 'em_locations',
+				),
+				'taxonomy' => array (
+					0 => 'all',
+				),
+				'allow_null' => 0,
+				'multiple' => 0,
+			),
+			array (
+				'key' => 'field_53a44b5e0f5b7',
+				'label' => 'Areas Served',
+				'name' => 'areas_served',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_53a44b770f5b8',
+				'label' => 'Drawing',
+				'name' => 'drawing',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_53a44b9f0f5b9',
+				'label' => 'Notes',
+				'name' => 'notes',
+				'type' => 'textarea',
+				'default_value' => '',
+				'placeholder' => '',
+				'maxlength' => '',
+				'rows' => '',
+				'formatting' => 'br',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'em_buildingequipment',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'normal',
+			'layout' => 'no_box',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+}

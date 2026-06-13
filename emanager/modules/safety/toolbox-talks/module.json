@@ -1,0 +1,61 @@
+{
+	"id": "toolbox-talks",
+	"name": "Toolbox Talks",
+	"section": "safety",
+	"icon": "bi-chat-square-text",
+	"table": "em_toolbox_talks",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Completed"
+	],
+	"fields": [
+		{
+			"name": "topic",
+			"label": "Topic",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "talk_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "presenter",
+			"label": "Presenter",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "attendee_count",
+			"label": "Attendees",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "attendees",
+			"label": "Attendee names",
+			"type": "textarea"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		},
+		{
+			"name": "file_url",
+			"label": "Sign-in sheet link",
+			"type": "url"
+		}
+	]
+}

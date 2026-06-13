@@ -1,0 +1,59 @@
+{
+	"id": "warranties",
+	"name": "Warranties",
+	"section": "closeout",
+	"icon": "bi-patch-check-fill",
+	"table": "em_warranties",
+	"version": "1.0.0",
+	"statuses": [
+		"Requested",
+		"Received",
+		"Active",
+		"Expired"
+	],
+	"fields": [
+		{
+			"name": "item",
+			"label": "Warranted item / system",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Warrantor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "duration",
+			"label": "Duration",
+			"type": "text",
+			"list": true,
+			"help": "e.g. 2 years"
+		},
+		{
+			"name": "start_date",
+			"label": "Warranty start",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "end_date",
+			"label": "Warranty end",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		},
+		{
+			"name": "terms",
+			"label": "Terms",
+			"type": "textarea"
+		}
+	]
+}

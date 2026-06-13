@@ -1,0 +1,116 @@
+{
+	"id": "subcontractor-invoices",
+	"name": "Subcontractor Invoices",
+	"section": "cost",
+	"icon": "bi-receipt",
+	"table": "em_subcontractor_invoices",
+	"version": "1.0.0",
+	"statuses": [
+		"Received",
+		"Under Review",
+		"Approved",
+		"Rejected",
+		"Paid"
+	],
+	"fields": [
+		{
+			"name": "invoice_no",
+			"label": "Invoice #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "commitment_no",
+			"label": "Commitment #",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "period_to",
+			"label": "Period to",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Invoice amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "retainage",
+			"label": "Retainage",
+			"type": "currency"
+		},
+		{
+			"name": "approved_amount",
+			"label": "Approved amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Received",
+		"states": {
+			"Received": {
+				"transitions": [
+					{
+						"to": "Under Review",
+						"label": "Begin review",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Review": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Paid",
+						"label": "Mark paid",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": []
+			},
+			"Paid": {
+				"transitions": []
+			}
+		}
+	}
+}

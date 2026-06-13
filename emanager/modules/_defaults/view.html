@@ -1,0 +1,52 @@
+<div class="em-view">
+	<div class="card mb-3">
+		<div class="card-header bg-body d-flex flex-wrap align-items-center gap-2">
+			<button type="button" class="btn btn-sm btn-outline-secondary" data-em="btn-back" aria-label="Back to list">
+				<i class="bi bi-arrow-left" aria-hidden="true"></i>
+			</button>
+			<h2 class="h5 mb-0 me-2" data-em="view-title">Record</h2>
+			<span data-em="view-status"></span>
+			<div class="ms-auto btn-group btn-group-sm" role="group" aria-label="Record actions">
+				<button type="button" class="btn btn-outline-secondary" data-em="btn-pdf"><i class="bi bi-filetype-pdf" aria-hidden="true"></i> PDF</button>
+				<button type="button" class="btn btn-outline-primary" data-em="btn-edit"><i class="bi bi-pencil" aria-hidden="true"></i> Edit</button>
+				<button type="button" class="btn btn-outline-danger" data-em="btn-delete"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
+			</div>
+		</div>
+		<div class="card-body">
+			<dl class="row g-2 mb-0" data-em="view-fields"></dl>
+		</div>
+		<div class="card-footer bg-body small text-secondary" data-em="view-meta"></div>
+	</div>
+
+	<!-- Workflow panel: status actions + record linking (hidden when the module has no workflow). -->
+	<div class="card mb-3 em-workflow d-none em-no-print" data-em="workflow">
+		<div class="card-header bg-body d-flex align-items-center gap-2">
+			<h3 class="h6 mb-0"><i class="bi bi-diagram-3 me-1" aria-hidden="true"></i> Workflow</h3>
+			<span class="small text-secondary" data-em="workflow-state"></span>
+		</div>
+		<div class="card-body">
+			<div class="d-flex flex-wrap gap-2" data-em="workflow-actions"></div>
+			<div class="d-flex flex-wrap gap-2 mt-2" data-em="workflow-links"></div>
+		</div>
+	</div>
+
+	<!-- Activity timeline (status history / audit trail). -->
+	<div class="card mb-3 em-activity d-none em-no-print" data-em="activity-card">
+		<div class="card-header bg-body"><h3 class="h6 mb-0"><i class="bi bi-clock-history me-1" aria-hidden="true"></i> Activity</h3></div>
+		<div class="card-body"><ol class="em-timeline mb-0" data-em="activity"></ol></div>
+	</div>
+
+	<div class="card em-comments em-no-print">
+		<div class="card-header bg-body"><h3 class="h6 mb-0"><i class="bi bi-chat-left-text me-1" aria-hidden="true"></i> Comments</h3></div>
+		<div class="card-body">
+			<div data-em="comments" class="mb-3"></div>
+			<form data-em="comment-form">
+				<div class="mb-2">
+					<label class="form-label visually-hidden" for="em-comment-body">Add a comment</label>
+					<textarea class="form-control" id="em-comment-body" rows="2" placeholder="Add a comment…" required></textarea>
+				</div>
+				<button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-send" aria-hidden="true"></i> Comment</button>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,58 @@
+{
+	"id": "pull-planning",
+	"name": "Pull Planning",
+	"section": "field",
+	"icon": "bi-arrow-left-right",
+	"table": "em_pull_planning",
+	"version": "1.0.0",
+	"statuses": [
+		"Planned",
+		"Committed",
+		"Complete",
+		"Missed"
+	],
+	"fields": [
+		{
+			"name": "milestone",
+			"label": "Milestone",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "task",
+			"label": "Task / commitment",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "promise_date",
+			"label": "Promise date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "duration_days",
+			"label": "Duration (days)",
+			"type": "number"
+		},
+		{
+			"name": "constraints",
+			"label": "Constraints",
+			"type": "textarea"
+		},
+		{
+			"name": "variance_reason",
+			"label": "Variance reason",
+			"type": "textarea"
+		}
+	]
+}

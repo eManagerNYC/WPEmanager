@@ -1,0 +1,59 @@
+{
+	"id": "schedule",
+	"name": "Schedule",
+	"section": "field",
+	"icon": "bi-calendar-range",
+	"table": "em_schedule",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Started",
+		"In Progress",
+		"Complete",
+		"On Hold"
+	],
+	"fields": [
+		{
+			"name": "activity_id",
+			"label": "Activity ID",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "activity",
+			"label": "Activity name",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "start_date",
+			"label": "Start",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "finish_date",
+			"label": "Finish",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "percent_complete",
+			"label": "% complete",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "responsible",
+			"label": "Responsible party",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

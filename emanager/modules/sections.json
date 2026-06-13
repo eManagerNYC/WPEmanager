@@ -1,0 +1,16 @@
+[
+	{ "id": "preconstruction", "name": "Preconstruction", "icon": "bi-clipboard-data" },
+	{ "id": "engineering", "name": "Engineering", "icon": "bi-rulers" },
+	{ "id": "change-management", "name": "Change Management", "icon": "bi-arrow-left-right" },
+	{ "id": "field", "name": "Field", "icon": "bi-cone-striped" },
+	{ "id": "quality", "name": "Quality", "icon": "bi-patch-check" },
+	{ "id": "safety", "name": "Safety", "icon": "bi-shield-check" },
+	{ "id": "sustainability", "name": "Sustainability", "icon": "bi-tree" },
+	{ "id": "contracts", "name": "Contracts", "icon": "bi-file-earmark-text" },
+	{ "id": "cost", "name": "Cost", "icon": "bi-currency-dollar" },
+	{ "id": "bim", "name": "BIM", "icon": "bi-box" },
+	{ "id": "closeout", "name": "Closeout", "icon": "bi-journal-check" },
+	{ "id": "resources", "name": "Resources", "icon": "bi-database" },
+	{ "id": "settings", "name": "Settings", "icon": "bi-gear" },
+	{ "id": "reports", "name": "Reports", "icon": "bi-graph-up" }
+]

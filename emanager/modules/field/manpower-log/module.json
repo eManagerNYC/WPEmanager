@@ -1,0 +1,55 @@
+{
+	"id": "manpower-log",
+	"name": "Manpower Log",
+	"section": "field",
+	"icon": "bi-person-lines-fill",
+	"table": "em_manpower_log",
+	"version": "1.0.0",
+	"statuses": [
+		"Logged"
+	],
+	"fields": [
+		{
+			"name": "log_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "workers",
+			"label": "Workers on site",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "hours",
+			"label": "Total hours",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "area",
+			"label": "Work area",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

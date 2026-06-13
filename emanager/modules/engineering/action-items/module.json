@@ -1,0 +1,125 @@
+{
+	"id": "action-items",
+	"name": "Action Items",
+	"section": "engineering",
+	"icon": "bi-check2-circle",
+	"table": "em_action_items",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"In Progress",
+		"Blocked",
+		"Complete"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Action",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "assigned_to",
+			"label": "Assigned to",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "priority",
+			"label": "Priority",
+			"type": "select",
+			"options": [
+				"Low",
+				"Medium",
+				"High"
+			],
+			"list": true
+		},
+		{
+			"name": "category",
+			"label": "Category",
+			"type": "select",
+			"options": [
+				"Design",
+				"Procurement",
+				"Field",
+				"Cost",
+				"Safety",
+				"Closeout",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "due_date",
+			"label": "Due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "source",
+			"label": "Source (meeting / RFI / etc.)",
+			"type": "text"
+		},
+		{
+			"name": "description",
+			"label": "Details",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Start",
+						"party": [
+							"gc",
+							"subcontractor",
+							"consultant"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Complete",
+						"label": "Complete",
+						"party": [
+							"gc",
+							"subcontractor",
+							"consultant"
+						]
+					},
+					{
+						"to": "Blocked",
+						"label": "Block",
+						"party": [
+							"gc",
+							"subcontractor",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Blocked": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Unblock",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Complete": {
+				"transitions": []
+			}
+		}
+	}
+}

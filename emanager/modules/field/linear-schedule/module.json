@@ -1,0 +1,89 @@
+{
+	"id": "linear-schedule",
+	"name": "Linear / Takt Schedule",
+	"section": "field",
+	"icon": "bi-graph-up",
+	"table": "em_linear_schedule",
+	"version": "1.0.0",
+	"statuses": [
+		"Planned",
+		"In Progress",
+		"Complete",
+		"Delayed"
+	],
+	"fields": [
+		{
+			"name": "activity",
+			"label": "Activity",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location / zone",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "location_index",
+			"label": "Location order (floor/zone #)",
+			"type": "number",
+			"required": true,
+			"list": true,
+			"help": "Numeric order up the building / along the line — drives the Line-of-Balance Y axis."
+		},
+		{
+			"name": "crew",
+			"label": "Crew / trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "takt_zone",
+			"label": "Takt wagon",
+			"type": "text"
+		},
+		{
+			"name": "planned_start",
+			"label": "Planned start",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "planned_finish",
+			"label": "Planned finish",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "duration_days",
+			"label": "Duration (days)",
+			"type": "number"
+		},
+		{
+			"name": "production_rate",
+			"label": "Production rate",
+			"type": "text",
+			"help": "e.g. 1 floor / day"
+		},
+		{
+			"name": "predecessor",
+			"label": "Predecessor",
+			"type": "text"
+		},
+		{
+			"name": "percent_complete",
+			"label": "% complete",
+			"type": "number",
+			"list": true
+		}
+	]
+}

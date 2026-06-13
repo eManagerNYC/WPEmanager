@@ -1,0 +1,64 @@
+{
+	"id": "transmittals",
+	"name": "Transmittals",
+	"section": "engineering",
+	"icon": "bi-send",
+	"table": "em_transmittals",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Sent",
+		"Acknowledged"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "Transmittal number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "to_company",
+			"label": "To",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "attention",
+			"label": "Attention",
+			"type": "text"
+		},
+		{
+			"name": "sent_date",
+			"label": "Date sent",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "via",
+			"label": "Sent via",
+			"type": "select",
+			"options": [
+				"Email",
+				"Courier",
+				"Mail",
+				"Hand Delivery",
+				"Portal"
+			],
+			"list": true
+		},
+		{
+			"name": "contents",
+			"label": "Contents",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "remarks",
+			"label": "Remarks",
+			"type": "textarea"
+		}
+	]
+}

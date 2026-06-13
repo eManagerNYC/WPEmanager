@@ -1,0 +1,63 @@
+{
+	"id": "punchlist",
+	"name": "Punchlist",
+	"section": "field",
+	"icon": "bi-list-check",
+	"table": "em_punchlist",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Ready for Review",
+		"Complete",
+		"Verified"
+	],
+	"fields": [
+		{
+			"name": "item_no",
+			"label": "Item number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "responsible",
+			"label": "Responsible subcontractor",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "due_date",
+			"label": "Due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "photo_url",
+			"label": "Photo link",
+			"type": "url"
+		}
+	]
+}

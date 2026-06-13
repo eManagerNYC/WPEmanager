@@ -1,0 +1,58 @@
+{
+	"id": "bid-packages",
+	"name": "Bid Packages",
+	"section": "preconstruction",
+	"icon": "bi-box-seam",
+	"table": "em_bid_packages",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Out to Bid",
+		"Bids Received",
+		"Awarded",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "Package number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "csi_division",
+			"label": "CSI division",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			}
+		},
+		{
+			"name": "bid_due",
+			"label": "Bids due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "estimate",
+			"label": "Estimated value",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope description",
+			"type": "textarea"
+		}
+	]
+}

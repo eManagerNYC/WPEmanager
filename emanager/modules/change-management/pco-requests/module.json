@@ -1,0 +1,124 @@
+{
+	"id": "pco-requests",
+	"name": "PCO Requests (PCOR)",
+	"section": "change-management",
+	"icon": "bi-lightning-charge",
+	"table": "em_pco_requests",
+	"version": "1.0.0",
+	"statuses": [
+		"Manager Review",
+		"Ready to Submit",
+		"Issued as NOC",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "pcor_no",
+			"label": "PCOR number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "origin",
+			"label": "Originated by",
+			"type": "select",
+			"options": [
+				"Field Staff (PCO Request)",
+				"Owner (Work Request)"
+			],
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "drawing_ref",
+			"label": "Marked-up drawing link",
+			"type": "url"
+		},
+		{
+			"name": "photo_url",
+			"label": "Photo link",
+			"type": "url"
+		},
+		{
+			"name": "rom_estimate",
+			"label": "ROM estimate",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "cost_impact",
+			"label": "Cost impact",
+			"type": "checkbox"
+		},
+		{
+			"name": "schedule_impact",
+			"label": "Schedule impact",
+			"type": "checkbox"
+		}
+	],
+	"workflow": {
+		"initial": "Manager Review",
+		"states": {
+			"Manager Review": {
+				"transitions": [
+					{
+						"to": "Ready to Submit",
+						"label": "Approve for submission",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Ready to Submit": {
+				"transitions": [
+					{
+						"to": "Issued as NOC",
+						"label": "Issue NOC",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued as NOC": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "nocs",
+			"label": "Issue NOC",
+			"map": {
+				"title": "title",
+				"description": "description",
+				"rom_estimate": "rom_estimate",
+				"drawing_ref": "drawing_ref"
+			}
+		}
+	]
+}

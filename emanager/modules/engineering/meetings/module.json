@@ -1,0 +1,69 @@
+{
+	"id": "meetings",
+	"name": "Meeting Agenda / Minutes",
+	"section": "engineering",
+	"icon": "bi-calendar3",
+	"table": "em_meetings",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Agenda Issued",
+		"Held",
+		"Minutes Issued"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Meeting title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "meeting_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"OAC",
+				"Subcontractor",
+				"Safety",
+				"Preconstruction",
+				"Coordination",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "meeting_date",
+			"label": "Date & time",
+			"type": "datetime",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "attendees",
+			"label": "Attendees",
+			"type": "textarea"
+		},
+		{
+			"name": "agenda",
+			"label": "Agenda",
+			"type": "textarea"
+		},
+		{
+			"name": "minutes",
+			"label": "Minutes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,53 @@
+{
+	"id": "cost-codes",
+	"name": "Cost Codes",
+	"section": "resources",
+	"icon": "bi-upc",
+	"table": "em_cost_codes",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "code",
+			"label": "Cost code",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "division",
+			"label": "CSI division",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
+			"name": "category",
+			"label": "Category",
+			"type": "select",
+			"options": [
+				"Labor",
+				"Material",
+				"Equipment",
+				"Subcontract",
+				"General Conditions",
+				"Other"
+			],
+			"list": true
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"id": "budget-forecast",
+	"name": "Budget & Forecast",
+	"section": "cost",
+	"icon": "bi-bar-chart-line",
+	"table": "em_budget_forecast",
+	"version": "1.0.0",
+	"statuses": [
+		"Original Budget",
+		"Revised",
+		"Forecast",
+		"Final"
+	],
+	"fields": [
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			},
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "original_budget",
+			"label": "Original budget",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "approved_changes",
+			"label": "Approved changes",
+			"type": "currency"
+		},
+		{
+			"name": "committed",
+			"label": "Committed cost",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "forecast_final",
+			"label": "Forecast at completion",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "variance_notes",
+			"label": "Variance notes",
+			"type": "textarea"
+		}
+	]
+}

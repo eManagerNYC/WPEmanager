@@ -1,0 +1,96 @@
+function base64_decode(data) {
+	//  discuss at: http://phpjs.org/functions/base64_decode/
+	// original by: Tyler Akins (http://rumkin.com)
+	// improved by: Thunder.m
+	// improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	// improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	//    input by: Aman Gupta
+	//    input by: Brett Zamir (http://brett-zamir.me)
+	// bugfixed by: Onno Marsman
+	// bugfixed by: Pellentesque Malesuada
+	// bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	//   example 1: base64_decode('S2V2aW4gdmFuIFpvbm5ldmVsZA==');
+	//   returns 1: 'Kevin van Zonneveld'
+	//   example 2: base64_decode('YQ===');
+	//   returns 2: 'a'
+	var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+	var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+		ac = 0,
+		dec = '',
+		tmp_arr = [];
+	if ( !data) {
+		return data;
+	}
+	data += '';
+	do { // unpack four hexets into three octets using index points in b64
+		h1 = b64.indexOf(data.charAt(i++));
+		h2 = b64.indexOf(data.charAt(i++));
+		h3 = b64.indexOf(data.charAt(i++));
+		h4 = b64.indexOf(data.charAt(i++));
+		bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
+		o1 = bits >> 16 & 0xff;
+		o2 = bits >> 8 & 0xff;
+		o3 = bits & 0xff;
+		if (h3 == 64) {
+			tmp_arr[ac++] = String.fromCharCode(o1);
+		} else if (h4 == 64) {
+			tmp_arr[ac++] = String.fromCharCode(o1, o2);
+		} else {
+			tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
+		}
+	} while (i < data.length);
+	dec = tmp_arr.join('');
+	return dec.replace(/\0+$/, '');
+}
+
+jQuery(document).ready(function($){
+
+	/**
+	 * File manager
+	 */
+	var elf = $('#elfinder').elfinder({
+		'requestType' : 'post',
+        'url'         : eman.connector,
+        'customData'  : eman.data,
+        'debug'       : true,
+        'resizable'   : false,
+		'handlers'    : {
+/**/
+			'select'      : function( event, elfinderInstance ) {
+
+				if ( navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i) ) {
+					var selected = event.data.selected;
+					if ( selected.length > 0 ) {
+						var file = elfinderInstance.file(selected[0]);
+						if ( 'directory' == file.mime ) {
+							//opens a folder
+							elfinderInstance.request({data:{cmd: 'open', target: selected[0]},notify:{type:'open',target:selected[0]}, syncOnFail:true});
+						}
+						else // if ( 'application/pdf' == file.mime && eman.folder )
+						{
+							var path = base64_decode(file.hash.replace('l1_', ''));
+							var folders = base64_decode(eman.folder).split('/');
+							window.open( base64_decode(eman.upload) + '/' + folders[0] + '/' + path );//encodeURIComponent( )
+
+							console.log(elfinderInstance.request({}));
+							//$url = eman.home_url +'/'+ eman.data.folder +'/'+ file.name;
+							//var url = elf.uploadURL;// +'/'+ file.name;
+							//window.open( url );
+						}
+					}
+				}
+			},
+/**/
+			'load' : function( event ) {
+				//console.log(event);
+			},
+			'error' : function( event ) {
+				//console.log(event);
+			},
+			'success' : function( event ) {
+				//console.log(event);
+			},
+		}
+    }).elfinder('instance');
+
+});

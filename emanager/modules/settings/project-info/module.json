@@ -1,0 +1,12 @@
+{
+	"id": "project-info",
+	"name": "Project Info",
+	"section": "settings",
+	"icon": "bi-info-circle",
+	"table": "em_comments",
+	"version": "1.0.0",
+	"virtual": true,
+	"statuses": [],
+	"fields": [],
+	"description": "Virtual module — displays project settings from WordPress; edit them under wp-admin → eManager."
+}

@@ -1,0 +1,67 @@
+{
+	"id": "environmental-monitoring",
+	"name": "Environmental Monitoring",
+	"section": "sustainability",
+	"icon": "bi-moisture",
+	"table": "em_environmental_monitoring",
+	"version": "1.0.0",
+	"statuses": [
+		"Logged",
+		"Exceedance",
+		"Resolved"
+	],
+	"fields": [
+		{
+			"name": "monitor_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "parameter",
+			"label": "Parameter",
+			"type": "select",
+			"options": [
+				"Stormwater (SWPPP)",
+				"Dust",
+				"Noise",
+				"Erosion",
+				"Spill",
+				"Air Quality"
+			],
+			"list": true
+		},
+		{
+			"name": "reading",
+			"label": "Reading",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "permit_limit",
+			"label": "Permit limit",
+			"type": "text"
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "action_taken",
+			"label": "Action taken",
+			"type": "textarea"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

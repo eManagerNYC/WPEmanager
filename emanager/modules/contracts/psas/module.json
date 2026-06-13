@@ -1,0 +1,58 @@
+{
+	"id": "psas",
+	"name": "Professional Service Agreements",
+	"section": "contracts",
+	"icon": "bi-briefcase",
+	"table": "em_psas",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Out for Signature",
+		"Executed",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "agreement_no",
+			"label": "Agreement number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "consultant",
+			"label": "Consultant",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "service",
+			"label": "Service description",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "value",
+			"label": "Agreement value",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "start_date",
+			"label": "Start",
+			"type": "date"
+		},
+		{
+			"name": "end_date",
+			"label": "End",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "terms",
+			"label": "Key terms",
+			"type": "textarea"
+		}
+	]
+}

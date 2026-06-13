@@ -1,0 +1,66 @@
+{
+	"id": "submittals",
+	"name": "Submittals",
+	"section": "engineering",
+	"icon": "bi-file-earmark-arrow-up",
+	"table": "em_submittals",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"In Review",
+		"Approved",
+		"Approved as Noted",
+		"Revise & Resubmit",
+		"Rejected"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "Submittal number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "spec_section",
+			"label": "Spec section",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "submit_by",
+			"label": "Submit by",
+			"type": "date"
+		},
+		{
+			"name": "required_on_site",
+			"label": "Required on site",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

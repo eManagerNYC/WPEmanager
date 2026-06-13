@@ -1,0 +1,65 @@
+{
+	"id": "bid-submissions",
+	"name": "Bid Submissions (Leveling)",
+	"section": "preconstruction",
+	"icon": "bi-bar-chart-steps",
+	"table": "em_bid_submissions",
+	"version": "1.0.0",
+	"statuses": [
+		"Invited",
+		"Declined",
+		"Submitted",
+		"Shortlisted",
+		"Awarded",
+		"Not Awarded"
+	],
+	"fields": [
+		{
+			"name": "bidder",
+			"label": "Bidder",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "bid_package",
+			"label": "Bid package",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "base_bid",
+			"label": "Base bid",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "alternates_total",
+			"label": "Alternates total",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "submitted_date",
+			"label": "Submitted",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "inclusions",
+			"label": "Inclusions",
+			"type": "textarea"
+		},
+		{
+			"name": "exclusions",
+			"label": "Exclusions / qualifications",
+			"type": "textarea"
+		},
+		{
+			"name": "score",
+			"label": "Evaluation score",
+			"type": "number"
+		}
+	]
+}

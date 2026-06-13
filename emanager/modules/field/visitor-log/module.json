@@ -1,0 +1,59 @@
+{
+	"id": "visitor-log",
+	"name": "Visitor Log",
+	"section": "field",
+	"icon": "bi-person-badge-fill",
+	"table": "em_visitor_log",
+	"version": "1.0.0",
+	"statuses": [
+		"Logged"
+	],
+	"fields": [
+		{
+			"name": "visit_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "visitor_name",
+			"label": "Visitor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "purpose",
+			"label": "Purpose",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "time_in",
+			"label": "Time in",
+			"type": "text"
+		},
+		{
+			"name": "time_out",
+			"label": "Time out",
+			"type": "text"
+		},
+		{
+			"name": "escort",
+			"label": "Escort",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,125 @@
+{
+	"id": "owner-invoices",
+	"name": "Owner Invoices (Requisitions)",
+	"section": "cost",
+	"icon": "bi-receipt-cutoff",
+	"table": "em_owner_invoices",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Approved",
+		"Rejected",
+		"Paid"
+	],
+	"fields": [
+		{
+			"name": "invoice_no",
+			"label": "Application #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "period_to",
+			"label": "Period to",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "contract_value",
+			"label": "Contract value",
+			"type": "currency"
+		},
+		{
+			"name": "work_completed",
+			"label": "Work completed to date",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "stored_materials",
+			"label": "Stored materials",
+			"type": "currency"
+		},
+		{
+			"name": "retainage",
+			"label": "Retainage",
+			"type": "currency"
+		},
+		{
+			"name": "amount_due",
+			"label": "Amount due",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit to owner",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Paid",
+						"label": "Mark paid",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": [
+					{
+						"to": "Draft",
+						"label": "Revise",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Paid": {
+				"transitions": []
+			}
+		}
+	}
+}

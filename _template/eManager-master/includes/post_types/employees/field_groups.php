@@ -1,0 +1,153 @@
+<?php
+
+if ( function_exists("register_field_group") )
+{
+	register_field_group(array (
+		'id' => 'acf_employees',
+		'title' => 'Employees',
+		'fields' => array (
+			array (
+				'key' => 'field_52b84aemployee',
+				'label' => 'Company',
+				'name' => 'company',
+				'type' => 'post_object',
+				'post_type' => array (
+					0 => 'em_companies',
+				),
+				'taxonomy' => array (
+					0 => 'all',
+				),
+				'allow_null' => 1,
+				'multiple' => 0,
+			),
+			array (
+				'key' => 'field_52a087a465d12',
+				'label' => 'Gender',
+				'name' => 'gender',
+				'type' => 'radio',
+				'choices' => array (
+					'Male' => 'Male',
+					'Female' => 'Female',
+				),
+				'other_choice' => 0,
+				'save_other_choice' => 0,
+				'default_value' => '',
+				'layout' => 'horizontal',
+			),
+			array (
+				'key' => 'field_52a087eb65d13',
+				'label' => 'Class',
+				'name' => 'class',
+				'type' => 'radio',
+				'choices' => array (
+					'Minority' => 'Minority',
+					'Non-Minority' => 'Non-Minority',
+				),
+				'other_choice' => 0,
+				'save_other_choice' => 0,
+				'default_value' => '',
+				'layout' => 'horizontal',
+			),
+			array (
+				'key' => 'field_52a0881065d14',
+				'label' => 'Phone Number',
+				'name' => 'phone',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_52a0883265d15',
+				'label' => 'Email',
+				'name' => 'email',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_52a0884265d16',
+				'label' => 'Position',
+				'name' => 'position',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_52a0884265d20',
+				'label' => 'Badge ID',
+				'name' => 'badge_id',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_52a0885165d17',
+				'label' => 'Labor Type',
+				'name' => 'classification',
+				'type' => 'post_object',
+				'post_type' => array (
+					0 => 'em_labortypes',
+				),
+				'taxonomy' => array (
+					0 => 'all',
+				),
+				'allow_null' => 1,
+				'multiple' => 0,
+			),
+			array (
+				'key' => 'field_52a088b165d18',
+				'label' => 'Credentials',
+				'name' => 'credentials',
+				'type' => 'textarea',
+				'default_value' => '',
+				'placeholder' => '',
+				'maxlength' => '',
+				'formatting' => 'br',
+			),
+			array (
+				'key' => 'field_52a088b165d19',
+				'label' => 'Notes',
+				'name' => 'notes',
+				'type' => 'textarea',
+				'default_value' => '',
+				'placeholder' => '',
+				'maxlength' => '',
+				'formatting' => 'br',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'em_employees',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'normal',
+			'layout' => 'no_box',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+}

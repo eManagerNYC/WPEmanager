@@ -1,0 +1,73 @@
+{
+	"id": "potential-changes",
+	"name": "Potential Changes",
+	"section": "cost",
+	"icon": "bi-lightning",
+	"table": "em_potential_changes",
+	"version": "1.0.0",
+	"statuses": [
+		"Identified",
+		"Pricing",
+		"Submitted",
+		"Approved",
+		"Rejected",
+		"Converted to CO"
+	],
+	"fields": [
+		{
+			"name": "pco_no",
+			"label": "PCO number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "reason",
+			"label": "Reason",
+			"type": "select",
+			"options": [
+				"Owner Request",
+				"Design Change",
+				"Field Condition",
+				"Code Requirement",
+				"Allowance",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "rom_estimate",
+			"label": "ROM estimate",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			}
+		},
+		{
+			"name": "identified_date",
+			"label": "Identified",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,79 @@
+{
+	"id": "observations",
+	"name": "Observations",
+	"section": "safety",
+	"icon": "bi-eye",
+	"table": "em_observations",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"In Progress",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Observation",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "observation_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Safe Behavior",
+				"At-Risk Behavior",
+				"Hazard",
+				"Near Miss",
+				"Good Catch"
+			],
+			"list": true
+		},
+		{
+			"name": "severity",
+			"label": "Severity",
+			"type": "select",
+			"options": [
+				"Low",
+				"Medium",
+				"High",
+				"Critical"
+			],
+			"list": true
+		},
+		{
+			"name": "observed_on",
+			"label": "Date observed",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "company_observed",
+			"label": "Company observed",
+			"type": "text"
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "corrective_action",
+			"label": "Corrective action",
+			"type": "textarea"
+		}
+	]
+}

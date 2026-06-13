@@ -1,0 +1,64 @@
+{
+	"id": "lien-waivers",
+	"name": "Lien Waivers",
+	"section": "contracts",
+	"icon": "bi-file-earmark-check",
+	"table": "em_lien_waivers",
+	"version": "1.0.0",
+	"statuses": [
+		"Requested",
+		"Received",
+		"Approved",
+		"Rejected"
+	],
+	"fields": [
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "waiver_type",
+			"label": "Waiver type",
+			"type": "select",
+			"options": [
+				"Conditional Progress",
+				"Unconditional Progress",
+				"Conditional Final",
+				"Unconditional Final"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "through_date",
+			"label": "Through date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "received_date",
+			"label": "Received",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		},
+		{
+			"name": "authorized_signature",
+			"label": "Authorized signature",
+			"type": "signature"
+		}
+	]
+}

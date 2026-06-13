@@ -1,0 +1,203 @@
+/******************************************************************
+
+Stylesheet: Mixins
+
+******************************************************************/
+
+/*********************
+FONT STACKS
+*********************/
+$sans_serif:        "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$serif:             "Georgia", Cambria, Times New Roman, Times, serif;
+
+
+/*********************
+Grid gutter width
+*********************/
+
+$gutter:            0.75rem;		// 12px
+
+
+/*********************
+Default bottom margin
+
+This is used for paragraphs, 
+lists, and pretty much everywhere 
+as a base to help with vertical rhythm
+*********************/
+
+$margin:            $gutter*2;
+
+
+/*********************
+The golden ratio
+*********************/
+
+$grid_large:        61.803398875;
+$grid_small:        38.196601125;
+
+
+/*********************
+COLORS
+*********************/
+
+$alert_blue:        #d9edf7;
+$alert_green:       #dff0d8;
+$alert_red:         #f2dede;
+$alert_yellow:      #fcf8e3;
+
+$black:             #222;
+$white:             #fff;
+
+$gray:              #999;
+$gray_light:        #f2f2f2;
+$gray_dark:         #58585b;
+$gray_disabled:     #595d65;
+$text_color:        #666;
+
+$blue:              #1976BC;
+$blue_dark:         #002654;
+
+$orange:            #F89406;
+$babyblue:          #379EBC;
+$navy:              #002654;
+$verde:             #55AB55;
+
+$link_color:        $blue;
+$link_hover:        darken($link_color, 10%);
+
+
+/*********************
+REUSABLE ITEMS
+*********************/
+
+// INLINE-BLOCK
+// inline-block support for legacy browsers
+@mixin inline-block($position: middle) {
+	display: inline-block;
+	vertical-align: $position;
+	@include old-ie {
+		*display: inline;
+		zoom: 1;
+	}
+}
+
+
+/*********************
+BUTTONS
+*********************/
+
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+	color: $white !important;
+}
+
+.btn-default {
+	color: $text_color;
+}
+
+/** /
+%btn {
+	border: none;
+	border-radius: 4px;
+	color: $white;
+	cursor: pointer;
+	display: inline-block;
+	font-family: $sans_serif;
+	font-size: 1rem;
+	font-weight: bold;
+	height: 3rem;
+	letter-spacing: 0.5px !important;
+	line-height: 3rem;
+	padding: 0 1rem;
+	position: relative;
+	text-decoration: none;
+	transition: background-color 0.2s ease-in-out;
+
+	&:hover, &:focus {
+		color: $white;
+		text-decoration: none;
+	}
+
+	&:active {
+		top: 1px;
+	}
+}
+
+#wp-submit,
+.search-submit,
+.form-submit input,
+#poststuff input[type="submit"],
+.button,
+.btn {
+	@extend %btn;
+	background-color: $link_color;
+
+	&:hover,
+	&:focus {
+		background-color: $link_hover;
+	}
+
+	&:active {
+		background-color: darken($link_color, 5%);
+	}
+}
+/**/
+%btn,
+.sewn_messenger-message-send,
+#wp-submit,
+.search-submit,
+.form-submit input,
+//.field-submit button,
+.submit-area input[type="submit"],
+#poststuff input[type="submit"] {
+//	@extend .btn;
+	//@extend .btn-primary;
+	//@extend .btn-lg;
+	@include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+	@include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $border-radius-base);
+	//float: right;
+}
+
+
+/*********************
+BREAKPOINTS
+*********************/
+
+// FOR OLD IE
+$old-ie:			false !default;
+$ignore-mqs:		false !default;
+
+// BREAK POINTS
+$small:				"screen and (min-width: 30em)"; // 480px
+$medium:			"screen and (min-width: 48em)";	// 768px
+$large:				"screen and (min-width: 64em)";	// 1024px
+$xlarge:			"screen and (min-width: 90em)";	// 1440px
+
+@mixin breakpoint($point) {
+	@if $ignore-mqs or $old-ie {
+		@if $old-ie and $point == xlarge {
+
+		}
+		@else {
+			@content; // output all content passed in
+		}
+	}
+	@else {
+		@if $point == xlarge {
+			@media #{$xlarge} { @content; }	// output xlarge screen content
+		}
+		@if $point == large {
+			@media #{$large} { @content; }  // output large screen content
+		}
+		@if $point == medium {
+			@media #{$medium} { @content; } // output medium screen content
+		}
+		@if $point == small {
+			@media #{$small} { @content; }  // output small screen content
+		}
+	}
+}

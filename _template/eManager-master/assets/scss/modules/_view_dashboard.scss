@@ -1,0 +1,198 @@
+/******************************************************************
+
+Stylesheet: Dashboard View
+
+******************************************************************/
+
+.dash-orange {
+	background: $orange;
+}
+.dash-babyblue {
+	background: $babyblue;
+}
+.dash-navy {
+	background: $navy;
+}
+.dash-verde {
+	background-color: $verde;
+}
+
+.dashboard {
+	width: 100%;
+	height: auto;
+
+	.dashboard_line {
+		clear: both;
+		width: 100%;
+	}
+
+	.dashboard_tile {
+		margin-bottom: $gutter;
+		text-align: center;
+
+		> div {
+			border-radius: 4px;
+			height: 146px;
+		}
+
+		.dashboard_weather,
+		.dashboard_title {
+			color: $white;
+			font-weight: normal;
+			padding-top: $gutter;
+
+			a:link, a:visited, a:active {
+				color: $white;
+				text-decoration: none;
+			}
+		}
+		.dashboard_title {
+			font-size: 1.3em;
+		}
+	}
+
+	.dashboard_tile_empty {
+		display: none;
+	}
+
+	@include breakpoint(medium)
+	{
+		.dashboard_line {
+			> div:last-child {
+				@include lastcol;
+			}
+		}
+
+		.dashboard_tile_empty {
+			display: block;
+		}
+	}
+}
+
+.flip-container {
+	perspective: 1000;
+	transform-style: preserve-3d;
+
+	.flipper {
+		@extend .cf;
+		perspective: 1000;
+		position: relative;
+		transition: 0.6s;
+		transform: rotateY(0deg);
+		transform-style: preserve-3d;
+	}
+
+	.front, .back {
+		backface-visibility: hidden;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		transition: 0.6s;
+		transform: rotateY(0deg);
+		transform-style: preserve-3d;
+		width: 100%;
+
+		.btn {
+			margin-top: $gutter;
+		}
+	}
+
+	.front {
+		display: none;
+	}
+
+	@include breakpoint(large)
+	{
+		.front {
+			display: block;
+			transform: rotateY(0deg);
+			z-index: 2;
+		}
+
+		.back {
+			transform: rotateY(180deg);
+			z-index: 1;
+		}
+
+		&:hover .flipper,
+		&.hover .flipper {
+			//transform: rotateY(180deg);
+			.front {
+				//display: none !important;
+				transform: rotateY(180deg);
+				z-index: 1;
+			}
+			.back {
+				transform: rotateY(0deg);
+				z-index: 2;
+			}
+		}
+	}
+}
+
+
+/* entire container, keeps perspective * /
+.flip-container {
+	perspective: 1000;
+	transform-style: preserve-3d;
+
+	.flipper {
+		@extend .cf;
+		position: relative;
+		transition: 0.6s;
+		transform-style: preserve-3d;
+		width: 100%;
+	}
+
+	.front,
+	.back {
+		backface-visibility: hidden;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		transition: 0.6s;
+		transform-style: preserve-3d;
+		width: 100%;
+
+		.btn {
+			margin-top: $gutter;
+		}
+	}
+
+	.front {
+		display: none;
+		transform: rotateY(0deg);
+		z-index: 2;
+	}
+
+	@include breakpoint(medium)
+	{
+		.front {
+			display: block;
+		}
+
+		.back {
+			transform: rotateY(180deg);
+		}
+
+		&:hover {
+			.back {
+				transform: rotateY(0deg);
+			}
+			.front {
+				transform: rotateY(180deg);
+			}
+		}
+	}
+}
+/**/
+
+.dashboard_weather {
+	@extend .cf;
+}
+
+.dashboard_line_folders .dashboard_title {
+	font-size: 1.3em;
+}

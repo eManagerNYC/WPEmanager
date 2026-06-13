@@ -1,0 +1,12 @@
+{
+	"id": "pay-applications",
+	"name": "Pay Applications (G702)",
+	"section": "cost",
+	"icon": "bi-file-earmark-spreadsheet",
+	"table": "em_comments",
+	"version": "1.0.0",
+	"virtual": true,
+	"statuses": [],
+	"fields": [],
+	"description": "Virtual module — builds an AIA G702 Application & Certificate for Payment from the Schedule of Values (G703) lines, with retainage, previous certificates and a formatted G702+G703 PDF export."
+}

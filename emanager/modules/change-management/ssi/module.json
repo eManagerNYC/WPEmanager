@@ -1,0 +1,134 @@
+{
+	"id": "ssi",
+	"name": "Supplemental Scope Info (SSI)",
+	"section": "change-management",
+	"icon": "bi-file-earmark-plus",
+	"table": "em_ssi",
+	"version": "1.0.0",
+	"statuses": [
+		"Owner Review",
+		"Assign Contracts",
+		"Assign PCO & Funding",
+		"Manager Review",
+		"SSI Approved",
+		"Issued as SSID"
+	],
+	"fields": [
+		{
+			"name": "ssi_no",
+			"label": "SSI number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "scope_description",
+			"label": "Scope description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "pco_number",
+			"label": "PCO number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "funding_source",
+			"label": "Funding source",
+			"type": "text"
+		},
+		{
+			"name": "backup_url",
+			"label": "Backup / sketch link",
+			"type": "url"
+		}
+	],
+	"workflow": {
+		"initial": "Owner Review",
+		"states": {
+			"Owner Review": {
+				"transitions": [
+					{
+						"to": "Assign Contracts",
+						"label": "Approve (recommend vs. execute)",
+						"party": [
+							"owner",
+							"rep"
+						],
+						"directions": [
+							"P&P",
+							"PO",
+							"DNP"
+						]
+					}
+				]
+			},
+			"Assign Contracts": {
+				"transitions": [
+					{
+						"to": "Assign PCO & Funding",
+						"label": "Assign contracts",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Assign PCO & Funding": {
+				"transitions": [
+					{
+						"to": "Manager Review",
+						"label": "Assign PCO# & funding",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Manager Review": {
+				"transitions": [
+					{
+						"to": "SSI Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"SSI Approved": {
+				"transitions": [
+					{
+						"to": "Issued as SSID",
+						"label": "Issue SSID",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued as SSID": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "directives",
+			"label": "Issue Scope Directive (SSID)",
+			"map": {
+				"title": "title",
+				"scope": "scope_description",
+				"pco_number": "pco_number"
+			}
+		}
+	]
+}

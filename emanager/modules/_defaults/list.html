@@ -1,0 +1,28 @@
+<div class="em-list card">
+	<div class="card-header bg-body">
+		<div class="d-flex flex-wrap align-items-center gap-2">
+			<h2 class="h5 mb-0 me-auto" data-em="list-title">Records</h2>
+			<select class="form-select form-select-sm w-auto" data-em="filter-status" aria-label="Filter by status">
+				<option value="">All statuses</option>
+			</select>
+			<input type="search" class="form-control form-control-sm w-auto" placeholder="Search…" data-em="list-search" aria-label="Search records" />
+			<div class="btn-group btn-group-sm" role="group" aria-label="Export">
+				<button type="button" class="btn btn-outline-secondary" data-em="btn-csv"><i class="bi bi-filetype-csv" aria-hidden="true"></i> CSV</button>
+				<button type="button" class="btn btn-outline-secondary" data-em="btn-pdf"><i class="bi bi-filetype-pdf" aria-hidden="true"></i> PDF</button>
+			</div>
+			<button type="button" class="btn btn-primary btn-sm" data-em="btn-new"><i class="bi bi-plus-lg" aria-hidden="true"></i> New</button>
+		</div>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-hover align-middle mb-0 em-table">
+			<thead class="table-light" data-em="list-head"></thead>
+			<tbody data-em="list-body"></tbody>
+		</table>
+	</div>
+	<div class="card-footer bg-body d-flex flex-wrap align-items-center gap-2">
+		<span class="small text-secondary" data-em="list-count"></span>
+		<nav class="ms-auto" aria-label="Pagination">
+			<ul class="pagination pagination-sm" data-em="list-pages"></ul>
+		</nav>
+	</div>
+</div>

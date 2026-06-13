@@ -1,0 +1,55 @@
+{
+	"id": "photo-library",
+	"name": "Photo Library",
+	"section": "field",
+	"icon": "bi-camera",
+	"table": "em_photo_library",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Archived"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "photo_url",
+			"label": "Photo link",
+			"type": "url",
+			"required": true
+		},
+		{
+			"name": "taken_on",
+			"label": "Date taken",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "tags",
+			"label": "Tags",
+			"type": "text",
+			"help": "Comma-separated"
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

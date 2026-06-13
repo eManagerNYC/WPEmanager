@@ -1,0 +1,147 @@
+{
+	"id": "incidents",
+	"name": "Incidents",
+	"section": "safety",
+	"icon": "bi-bandaid",
+	"table": "em_incidents",
+	"version": "1.0.0",
+	"statuses": [
+		"Reported",
+		"Investigating",
+		"Corrective Action",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "incident_no",
+			"label": "Incident #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "incident_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Near Miss",
+				"First Aid",
+				"Recordable Injury",
+				"Lost Time",
+				"Illness",
+				"Property Damage",
+				"Environmental"
+			],
+			"list": true
+		},
+		{
+			"name": "severity",
+			"label": "Severity",
+			"type": "select",
+			"options": [
+				"Low",
+				"Medium",
+				"High",
+				"Critical"
+			],
+			"list": true
+		},
+		{
+			"name": "incident_date",
+			"label": "Date & time",
+			"type": "datetime",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "company_involved",
+			"label": "Company involved",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "injured_party",
+			"label": "Injured / affected party",
+			"type": "text"
+		},
+		{
+			"name": "description",
+			"label": "What happened",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "root_cause",
+			"label": "Root cause",
+			"type": "textarea"
+		},
+		{
+			"name": "corrective_action",
+			"label": "Corrective action",
+			"type": "textarea"
+		},
+		{
+			"name": "osha_recordable",
+			"label": "OSHA recordable",
+			"type": "checkbox"
+		}
+	],
+	"workflow": {
+		"initial": "Reported",
+		"states": {
+			"Reported": {
+				"transitions": [
+					{
+						"to": "Investigating",
+						"label": "Begin investigation",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Investigating": {
+				"transitions": [
+					{
+						"to": "Corrective Action",
+						"label": "Assign corrective action",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Corrective Action": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
+}

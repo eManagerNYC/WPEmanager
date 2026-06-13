@@ -1,0 +1,55 @@
+{
+	"id": "training-records",
+	"name": "Owner Training",
+	"section": "closeout",
+	"icon": "bi-easel",
+	"table": "em_training_records",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Completed"
+	],
+	"fields": [
+		{
+			"name": "system",
+			"label": "System",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Session title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "training_date",
+			"label": "Date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "trainer",
+			"label": "Trainer",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "attendee_count",
+			"label": "Attendees",
+			"type": "number"
+		},
+		{
+			"name": "file_url",
+			"label": "Recording / materials link",
+			"type": "url"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

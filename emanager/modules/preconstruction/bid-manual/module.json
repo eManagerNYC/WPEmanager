@@ -1,0 +1,50 @@
+{
+	"id": "bid-manual",
+	"name": "Bid Manual",
+	"section": "preconstruction",
+	"icon": "bi-journal-text",
+	"table": "em_bid_manual",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Published",
+		"Superseded"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Document title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "section_no",
+			"label": "Manual section",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "revision",
+			"label": "Revision",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "issue_date",
+			"label": "Issue date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		},
+		{
+			"name": "summary",
+			"label": "Summary",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,57 @@
+{
+	"id": "contingency-log",
+	"name": "Contingency Log",
+	"section": "cost",
+	"icon": "bi-shield-exclamation",
+	"table": "em_contingency_log",
+	"version": "1.0.0",
+	"statuses": [
+		"Available",
+		"Pending",
+		"Used"
+	],
+	"fields": [
+		{
+			"name": "entry_no",
+			"label": "Entry #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "contingency_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Owner",
+				"GC / CM",
+				"Design"
+			],
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "entry_date",
+			"label": "Date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "reference",
+			"label": "Reference",
+			"type": "text"
+		}
+	]
+}

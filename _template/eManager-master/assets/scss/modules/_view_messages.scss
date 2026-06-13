@@ -1,0 +1,162 @@
+/******************************************************************
+
+Stylesheet: Messenger View
+
+******************************************************************/
+
+#inbox,
+#sidebar-inbox {
+	margin-bottom: $gutter;
+}
+
+@include breakpoint(medium)
+{
+	#inbox {
+		@include grid_col(9);
+	}
+	#sidebar-inbox {
+		@include grid_col(3,12,last);
+	}
+}
+
+.badge-private {
+	background-color: #d9534f;
+}
+
+.badge-new {
+	background-color: #5cb85c;
+}
+
+.sewn_messenger_inbox {
+	padding-top: $gutter;
+
+	.messages {
+		font-size: 0.75em;
+		margin-top: 2em;
+	}
+	&, ul, .message {
+		width: 100%;
+	}
+	.message {
+		margin: 0;
+		padding: 10px 1%;
+		& > span {
+			display: block;
+			vertical-align: top;
+		}
+		.status {
+			display: inline-block;
+			width: 35px;
+		}
+		.new-indicator {
+			padding-left: 3px;
+			padding-right: 3px;
+		}
+		.from {
+			.user {
+				font-weight: bold;
+			}
+		}
+		.classification-date {
+			clear: both;
+			float: right;
+			font-weight: bold;
+			text-align: right;
+		}
+		.date {
+			font-weight: normal;
+		}
+		.subject-read {
+			.message-subject {
+				float: left;
+				font-weight: bold;
+			}
+			.btn {
+				margin-left: 0.5em;
+			}
+		}
+	}
+	.odd {
+		background-color: #efefef;
+	}
+}
+
+.sewn_messenger_add_filter {
+	height: auto;
+	padding: 0;
+
+	.postbox {
+		min-width: 0;
+	}
+	> .field {
+		display: none;
+		height: 0;
+		overflow: hidden;
+		width: 0;
+		visibility: hidden;
+	}
+	.acf_postbox > .inside > .field {
+		padding: 0;
+	}
+	input[type="submit"] {
+		font-size: 12px;
+		line-height: 1.5;
+		margin-bottom: 0;
+		padding-bottom: 1px;
+		padding-top: 1px;
+	}
+}
+
+.sewn_messenger_filters {
+	.acf_postbox > .inside > .field {
+		padding: 0;
+	}
+	input[type="submit"] {
+		font-size: 12px;
+		line-height: 1.5;
+		margin-bottom: 0;
+		padding-bottom: 1px;
+		padding-top: 1px;
+	}
+}
+
+#sidebar-inbox {
+	h4 {
+		margin: $margin 0 $gutter;
+	}
+	hr {
+		clear: both;
+		margin: $gutter 0;
+		width: 100%;
+	}
+}
+
+.sewn_messenger_filters_list {
+	li {
+		display: inline-block;
+		float: left;
+		margin: 0 $gutter $gutter 0;
+	}
+}
+
+.message-view-archive {
+	clear: left;
+}
+
+.message {
+	.byline {
+		dl {
+			margin-bottom: 1em;
+			dt, dd {
+				float: left;
+			}
+			dt {
+				font-weight: normal;
+				width: 25%;
+			}
+			dd {
+				width: 75%;
+			}
+		}
+	}
+}

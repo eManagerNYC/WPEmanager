@@ -1,0 +1,73 @@
+{
+	"id": "pretask-plans",
+	"name": "Pre-Task Plans (PTPs)",
+	"section": "safety",
+	"icon": "bi-clipboard-check",
+	"table": "em_pretask_plans",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Reviewed"
+	],
+	"fields": [
+		{
+			"name": "task",
+			"label": "Task description",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "plan_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "crew",
+			"label": "Crew / company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "crew_size",
+			"label": "Crew size",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Work location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "hazards",
+			"label": "Hazards identified",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "controls",
+			"label": "Controls / mitigation",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "tools",
+			"label": "Tools & equipment",
+			"type": "textarea"
+		},
+		{
+			"name": "foreman_signature",
+			"label": "Foreman signature",
+			"type": "signature"
+		}
+	]
+}

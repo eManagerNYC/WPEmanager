@@ -1,0 +1,50 @@
+{
+	"id": "crews",
+	"name": "Crews",
+	"section": "field",
+	"icon": "bi-people-fill",
+	"table": "em_crews",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Demobilized"
+	],
+	"fields": [
+		{
+			"name": "crew_name",
+			"label": "Crew name",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "foreman",
+			"label": "Foreman",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "headcount",
+			"label": "Headcount",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,151 @@
+{
+	"id": "etickets",
+	"name": "eTickets (T&M)",
+	"section": "change-management",
+	"icon": "bi-ticket-detailed",
+	"table": "em_etickets",
+	"version": "1.0.0",
+	"statuses": [
+		"Superintendent Review",
+		"Manager Review",
+		"Approved",
+		"Invoiced",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "ticket_no",
+			"label": "Ticket number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "work_date",
+			"label": "Work date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "directive_no",
+			"label": "Directive reference",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "responsible_person",
+			"label": "Responsible person",
+			"type": "text"
+		},
+		{
+			"name": "work_description",
+			"label": "Work performed",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "line_items",
+			"label": "Labor / material / equipment lines",
+			"type": "json",
+			"help": "Built on the eTicket form from the project rate tables."
+		},
+		{
+			"name": "labor_total",
+			"label": "Labor total",
+			"type": "currency"
+		},
+		{
+			"name": "material_total",
+			"label": "Material total",
+			"type": "currency"
+		},
+		{
+			"name": "equipment_total",
+			"label": "Equipment total",
+			"type": "currency"
+		},
+		{
+			"name": "total",
+			"label": "Ticket total",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "super_signature",
+			"label": "Superintendent signature",
+			"type": "signature"
+		},
+		{
+			"name": "gc_signature",
+			"label": "GC signature",
+			"type": "signature"
+		}
+	],
+	"workflow": {
+		"initial": "Superintendent Review",
+		"states": {
+			"Superintendent Review": {
+				"transitions": [
+					{
+						"to": "Manager Review",
+						"label": "Sign (Superintendent)",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Manager Review": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve & sign",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Superintendent Review",
+						"label": "Return",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Invoiced",
+						"label": "Mark invoiced",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Invoiced": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	}
+}

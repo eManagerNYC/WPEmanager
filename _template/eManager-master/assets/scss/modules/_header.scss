@@ -1,0 +1,64 @@
+/******************************************************************
+
+Stylesheet: Header
+
+******************************************************************/
+
+#header {
+	#inner-header {
+		position: relative;
+	}
+
+	#logo {
+		//margin: $margin $margin $margin $gutter;
+		margin: 0;
+		padding: 0;
+		width: 240px;
+		a {
+			display: block;
+			line-height: 1;
+		}
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+}
+
+body.logged-in #header {
+	background: $white;
+}
+
+#mainnav {
+	background: $blue_dark url(../img/mosaic.png) repeat center top;
+	.wrap {
+		position: relative;
+	}
+}
+
+#subnav {
+	background: $blue;
+	font-size: 0.8em;
+	.wrap {
+		position: relative;
+	}
+	ul > li {
+		display: block;
+	}
+	a {
+		padding: #{$gutter/2} $gutter;
+	}
+	.current_page_item a {
+		background: darken($blue, 10%) url(../img/mosaic_light.png) repeat center top;
+	}
+}
+
+@include breakpoint(medium)
+{
+	#subnav {
+		ul > li {
+			display: inline-block;
+		}
+	}
+}

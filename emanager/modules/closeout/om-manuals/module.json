@@ -1,0 +1,52 @@
+{
+	"id": "om-manuals",
+	"name": "O&M Manuals",
+	"section": "closeout",
+	"icon": "bi-book",
+	"table": "em_om_manuals",
+	"version": "1.0.0",
+	"statuses": [
+		"Requested",
+		"Received",
+		"Under Review",
+		"Accepted",
+		"Transmitted to Owner"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Manual title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "spec_section",
+			"label": "Spec section",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Responsible subcontractor",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "received_date",
+			"label": "Received",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,59 @@
+{
+	"id": "jhas",
+	"name": "Job Hazard Analyses (JHAs)",
+	"section": "safety",
+	"icon": "bi-exclamation-triangle",
+	"table": "em_jhas",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Active",
+		"Under Review",
+		"Archived"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "JHA title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade / operation",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "revision",
+			"label": "Revision",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "review_date",
+			"label": "Last review",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "job_steps",
+			"label": "Job steps",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "hazards",
+			"label": "Hazards",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "controls",
+			"label": "Controls",
+			"type": "textarea",
+			"required": true
+		}
+	]
+}

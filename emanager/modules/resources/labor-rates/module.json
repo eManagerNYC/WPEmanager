@@ -1,0 +1,51 @@
+{
+	"id": "labor-rates",
+	"name": "Labor Rates",
+	"section": "resources",
+	"icon": "bi-person-workspace",
+	"table": "em_labor_rates",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "classification",
+			"label": "Classification",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "base_rate",
+			"label": "Base rate ($/hr)",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "burden_rate",
+			"label": "Burdened rate ($/hr)",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "overtime_rate",
+			"label": "OT rate ($/hr)",
+			"type": "currency"
+		},
+		{
+			"name": "effective_date",
+			"label": "Effective",
+			"type": "date",
+			"list": true
+		}
+	]
+}

@@ -1,0 +1,73 @@
+{
+	"id": "schedule-of-values",
+	"name": "Schedule of Values (G703)",
+	"section": "cost",
+	"icon": "bi-list-columns",
+	"table": "em_schedule_of_values",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "item_no",
+			"label": "Item # (Col A)",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description of work (Col B)",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "scheduled_value",
+			"label": "Scheduled value (Col C)",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "previous_completed",
+			"label": "From previous application (Col D)",
+			"type": "currency"
+		},
+		{
+			"name": "this_period",
+			"label": "This period (Col E)",
+			"type": "currency"
+		},
+		{
+			"name": "materials_stored",
+			"label": "Materials stored (Col F)",
+			"type": "currency"
+		},
+		{
+			"name": "total_completed",
+			"label": "Total completed & stored (Col G)",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "percent_complete",
+			"label": "% (G/C)",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "balance_to_finish",
+			"label": "Balance to finish (Col H)",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "retainage",
+			"label": "Retainage (Col I)",
+			"type": "currency"
+		}
+	]
+}

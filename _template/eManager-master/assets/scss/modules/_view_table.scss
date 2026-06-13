@@ -1,0 +1,82 @@
+/******************************************************************
+
+Stylesheet: Table List View
+
+******************************************************************/
+
+.em_tables {
+	table {
+		//font-size: 0.75em;
+	}
+
+	th {
+		font-size: 0.625em;
+		padding: 4px !important;
+		text-transform: uppercase;
+
+		a {
+			color: #666666;
+			.fa {
+				color: $black;
+			}
+			&:hover {
+				&, .fa {
+					color: #2a9ed4;//#1a5a78;
+				}
+			}
+		}
+	} 
+
+	.noc_number,
+	.pco_number,
+	.ewo_number {
+		width: 65px;
+	}
+
+	.hidden_column {
+	    display: none !important;
+	    height: 0 !important;
+	    overflow: hidden !important;
+	    visibility: hidden !important;
+	    width: 0 !important;
+	}
+}
+
+.table-dcr-summary {
+	th:last-child {
+		text-align: center;
+	}
+	td table {
+		width: 100%;
+		td {
+			width: 25%;
+		}
+		td:first-child {
+			width: auto;
+			text-align: right;
+			padding-right: 1ex;
+			&:after {
+				content: ":";
+			}
+		}
+	}
+}
+.table-dcr-minorities {
+	th {
+		text-align: center;
+	}
+	table {
+		tr:first-child {
+			& > td, & > th {
+				background: transparent;
+				border-top: none;
+				padding-bottom: 0px;
+			}
+			& + tr th {
+				border-top: none;
+				padding-top: 0px;
+			}
+		}
+		text-align: center;
+	}
+}

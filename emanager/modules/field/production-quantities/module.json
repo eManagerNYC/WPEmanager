@@ -1,0 +1,70 @@
+{
+	"id": "production-quantities",
+	"name": "Production Quantities",
+	"section": "field",
+	"icon": "bi-graph-up-arrow",
+	"table": "em_production_quantities",
+	"version": "1.0.0",
+	"statuses": [
+		"Planned",
+		"In Progress",
+		"Complete"
+	],
+	"fields": [
+		{
+			"name": "activity",
+			"label": "Activity",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
+			"name": "unit",
+			"label": "Unit",
+			"type": "text"
+		},
+		{
+			"name": "planned_qty",
+			"label": "Planned qty",
+			"type": "number"
+		},
+		{
+			"name": "installed_qty",
+			"label": "Installed qty",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "work_date",
+			"label": "Date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

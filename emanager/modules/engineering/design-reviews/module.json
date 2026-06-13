@@ -1,0 +1,131 @@
+{
+	"id": "design-reviews",
+	"name": "Design Reviews",
+	"section": "engineering",
+	"icon": "bi-vector-pen",
+	"table": "em_design_reviews",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Started",
+		"In Review",
+		"Comments Issued",
+		"Approved"
+	],
+	"fields": [
+		{
+			"name": "review_no",
+			"label": "Review #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "discipline",
+			"label": "Discipline",
+			"type": "select",
+			"options": [
+				"Architectural",
+				"Structural",
+				"Civil",
+				"MEP",
+				"Fire",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "phase",
+			"label": "Phase",
+			"type": "select",
+			"options": [
+				"Schematic",
+				"Design Development",
+				"Construction Docs",
+				"Shop Drawings"
+			],
+			"list": true
+		},
+		{
+			"name": "reviewer",
+			"label": "Reviewer",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "review_date",
+			"label": "Review date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "comments",
+			"label": "Comments",
+			"type": "textarea"
+		},
+		{
+			"name": "file_url",
+			"label": "Marked-up set link",
+			"type": "url"
+		}
+	],
+	"workflow": {
+		"initial": "Not Started",
+		"states": {
+			"Not Started": {
+				"transitions": [
+					{
+						"to": "In Review",
+						"label": "Begin review",
+						"party": [
+							"consultant",
+							"gc"
+						]
+					}
+				]
+			},
+			"In Review": {
+				"transitions": [
+					{
+						"to": "Comments Issued",
+						"label": "Issue comments",
+						"party": [
+							"consultant",
+							"gc"
+						]
+					}
+				]
+			},
+			"Comments Issued": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"consultant",
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "In Review",
+						"label": "Re-review",
+						"party": [
+							"consultant",
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": []
+			}
+		}
+	}
+}

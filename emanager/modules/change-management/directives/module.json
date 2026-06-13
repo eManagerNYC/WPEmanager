@@ -1,0 +1,132 @@
+{
+	"id": "directives",
+	"name": "Scope / PCO Directives",
+	"section": "change-management",
+	"icon": "bi-signpost-2",
+	"table": "em_directives",
+	"version": "1.0.0",
+	"statuses": [
+		"Issued",
+		"Acknowledged",
+		"In Progress",
+		"Complete",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "directive_no",
+			"label": "Directive number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "directive_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"SSID (Scope)",
+				"PCOD (PCO)",
+				"Work Directive"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "pco_number",
+			"label": "PCO number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope of work",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "rom_estimate",
+			"label": "ROM estimate",
+			"type": "currency"
+		}
+	],
+	"workflow": {
+		"initial": "Issued",
+		"states": {
+			"Issued": {
+				"transitions": [
+					{
+						"to": "Acknowledged",
+						"label": "Acknowledge",
+						"party": [
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Acknowledged": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Start work",
+						"party": [
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Complete",
+						"label": "Mark complete",
+						"party": [
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Complete": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "proposals",
+			"label": "Request proposal (Pricing Only)",
+			"map": {
+				"title": "title",
+				"scope": "scope",
+				"directive_no": "directive_no"
+			}
+		},
+		{
+			"spawn": "etickets",
+			"label": "Generate eTicket (Proceed & Pricing)",
+			"map": {
+				"subcontractor": "subcontractor",
+				"work_description": "scope",
+				"directive_no": "directive_no"
+			}
+		}
+	]
+}

@@ -1,0 +1,142 @@
+#comments-title {
+	margin: 0 0 $gutter;
+}
+
+.commentlist {
+	margin: 0 0 $margin;
+	list-style-type: none;
+}
+
+.comment {
+	position: relative;
+	clear: both;
+	overflow: hidden;
+	padding: $gutter $gutter 0;
+
+	.vcard {
+		border-bottom: 1px solid $gray;
+		line-height: 1;
+		margin-bottom: #{$gutter/2};
+		padding-bottom: #{$gutter/2};
+
+		cite {
+			display: block;
+			font-weight: 700;
+			font-style: normal;
+		}
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.children {
+		margin: 0;
+	}
+
+	&[class*=depth-] {
+		margin-top: 1.1em;
+	}
+
+	&.depth-1 {
+		margin-left: 0;
+		margin-top: 0;
+	}
+
+	&:not(.depth-1) {
+		margin-top: 0;
+		margin-left: 7px;
+		padding: 7px;
+	}
+
+	&.odd {
+		background-color: $white;
+	}
+	&.even {
+		background: $gray_light;
+	}
+}
+
+.comment_content {
+	& p {
+		margin: 0 0 $gutter;
+		font-size: 1em;
+		line-height: 1.5em;
+	}
+}
+
+.comment-reply-link {
+	@extend %btn;
+	font-size: 0.9em;
+	float: right;
+}
+
+.comment-edit-link {
+	font-style: italic;
+	margin: 0 7px;
+	text-decoration: none;
+	font-size: 0.9em;
+}
+
+/******************************************************************
+COMMENT FORM STYLES
+******************************************************************/
+
+.comment-respond {
+	@extend .cf;
+	padding: 0 0 0 0;
+}
+
+#reply-title {
+	margin: 0;
+}
+
+.logged-in-as {
+	font-size: 0.75em;
+	font-style: italic;
+	margin: 0;
+
+	& a {
+		color: $text_color;
+	}
+}
+
+.comment-form-comment {
+	margin: 0;
+
+	& textarea {
+		margin-bottom: 0;
+		min-height: 4.5em;
+	}
+}
+
+#comment-image-wrapper {
+	padding: $gutter 0;
+
+	#file-upload {
+		background: $gray_light;
+		padding: $gutter;
+	}
+
+	label {
+		font-weight: bold;
+	}
+}
+
+.form-allowed-tags {
+	padding: 1.5em;
+	background-color: $gray_light;
+	font-size: 0.9em;
+}
+
+#comment-form-title {
+	margin: 0 0 1.1em;
+}
+
+#allowed_tags {
+	margin: 1.5em 10px 0.7335em 0;
+}
+
+.nocomments {
+	margin: 0 20px 1.1em;
+}

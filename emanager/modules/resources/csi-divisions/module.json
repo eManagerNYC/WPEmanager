@@ -1,0 +1,33 @@
+{
+	"id": "csi-divisions",
+	"name": "CSI Divisions",
+	"section": "resources",
+	"icon": "bi-list-ol",
+	"table": "em_csi_divisions",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "Division number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Division title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

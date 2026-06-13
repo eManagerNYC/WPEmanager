@@ -1,0 +1,87 @@
+{
+	"id": "asset-register",
+	"name": "Asset Register",
+	"section": "closeout",
+	"icon": "bi-hdd-stack",
+	"table": "em_asset_register",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Under Warranty",
+		"Decommissioned"
+	],
+	"fields": [
+		{
+			"name": "asset_tag",
+			"label": "Asset tag",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "asset_name",
+			"label": "Asset name",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "system",
+			"label": "System",
+			"type": "select",
+			"options": [
+				"HVAC",
+				"Electrical",
+				"Plumbing",
+				"Fire / Life Safety",
+				"Conveying",
+				"Envelope",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "manufacturer",
+			"label": "Manufacturer",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "model",
+			"label": "Model",
+			"type": "text"
+		},
+		{
+			"name": "serial",
+			"label": "Serial #",
+			"type": "text"
+		},
+		{
+			"name": "install_date",
+			"label": "Installed",
+			"type": "date"
+		},
+		{
+			"name": "warranty_end",
+			"label": "Warranty ends",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,53 @@
+{
+	"id": "allowances",
+	"name": "Allowances",
+	"section": "cost",
+	"icon": "bi-wallet2",
+	"table": "em_allowances",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Partially Drawn",
+		"Reconciled",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "allowance_no",
+			"label": "Allowance #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "budgeted",
+			"label": "Budgeted",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "used",
+			"label": "Used",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "remaining",
+			"label": "Remaining",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

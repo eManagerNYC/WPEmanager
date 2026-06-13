@@ -1,0 +1,64 @@
+{
+	"id": "change-orders",
+	"name": "Change Orders",
+	"section": "cost",
+	"icon": "bi-arrow-repeat",
+	"table": "em_change_orders",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Approved",
+		"Executed",
+		"Rejected"
+	],
+	"fields": [
+		{
+			"name": "co_no",
+			"label": "CO number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "co_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Owner CO",
+				"Subcontract CO"
+			],
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "time_extension_days",
+			"label": "Time extension (days)",
+			"type": "number"
+		},
+		{
+			"name": "executed_date",
+			"label": "Executed",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

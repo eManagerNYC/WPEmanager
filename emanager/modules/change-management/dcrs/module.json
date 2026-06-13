@@ -1,0 +1,100 @@
+{
+	"id": "dcrs",
+	"name": "Daily Construction Reports (DCR)",
+	"section": "change-management",
+	"icon": "bi-clipboard-data",
+	"table": "em_dcrs",
+	"version": "1.0.0",
+	"statuses": [
+		"Superintendent Review",
+		"Revise",
+		"Approved"
+	],
+	"fields": [
+		{
+			"name": "dcr_no",
+			"label": "DCR number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "report_date",
+			"label": "Report date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "work_performed",
+			"label": "Work performed",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "manpower",
+			"label": "Workers on site",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "equipment_used",
+			"label": "Equipment used",
+			"type": "textarea"
+		},
+		{
+			"name": "delays",
+			"label": "Delays / issues",
+			"type": "textarea"
+		},
+		{
+			"name": "sub_signature",
+			"label": "Subcontractor signature",
+			"type": "signature"
+		}
+	],
+	"workflow": {
+		"initial": "Superintendent Review",
+		"states": {
+			"Superintendent Review": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Revise",
+						"label": "Return for revision",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Revise": {
+				"transitions": [
+					{
+						"to": "Superintendent Review",
+						"label": "Resubmit",
+						"party": [
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": []
+			}
+		}
+	}
+}

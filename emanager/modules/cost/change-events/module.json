@@ -1,0 +1,122 @@
+{
+	"id": "change-events",
+	"name": "Change Events",
+	"section": "cost",
+	"icon": "bi-diagram-2",
+	"table": "em_change_events",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Pending",
+		"Converted",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "event_no",
+			"label": "Event #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "event_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"RFI-driven",
+				"Owner Change",
+				"Design Change",
+				"Field Condition",
+				"Allowance",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "rom_cost",
+			"label": "ROM cost",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "rom_schedule_days",
+			"label": "ROM schedule (days)",
+			"type": "number"
+		},
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			}
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		}
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Pending",
+						"label": "Price it",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Pending": {
+				"transitions": [
+					{
+						"to": "Converted",
+						"label": "Convert to PCO",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Converted": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "potential-changes",
+			"label": "Convert to PCO",
+			"map": {
+				"title": "title",
+				"description": "description",
+				"rom_estimate": "rom_cost"
+			}
+		}
+	]
+}

@@ -1,0 +1,113 @@
+{
+	"id": "value-engineering",
+	"name": "Value Engineering",
+	"section": "preconstruction",
+	"icon": "bi-piggy-bank",
+	"table": "em_value_engineering",
+	"version": "1.0.0",
+	"statuses": [
+		"Proposed",
+		"Under Review",
+		"Accepted",
+		"Rejected",
+		"Implemented"
+	],
+	"fields": [
+		{
+			"name": "ve_no",
+			"label": "VE #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "proposed_savings",
+			"label": "Proposed savings",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "schedule_impact",
+			"label": "Schedule impact",
+			"type": "text"
+		},
+		{
+			"name": "quality_impact",
+			"label": "Quality / performance impact",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Proposed",
+		"states": {
+			"Proposed": {
+				"transitions": [
+					{
+						"to": "Under Review",
+						"label": "Review",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Review": {
+				"transitions": [
+					{
+						"to": "Accepted",
+						"label": "Accept",
+						"party": [
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Accepted": {
+				"transitions": [
+					{
+						"to": "Implemented",
+						"label": "Mark implemented",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": []
+			},
+			"Implemented": {
+				"transitions": []
+			}
+		}
+	}
+}

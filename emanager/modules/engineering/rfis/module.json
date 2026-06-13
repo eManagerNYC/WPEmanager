@@ -1,0 +1,120 @@
+{
+	"id": "rfis",
+	"name": "RFIs",
+	"section": "engineering",
+	"icon": "bi-question-circle",
+	"table": "em_rfis",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Open",
+		"Answered",
+		"Closed",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "RFI number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "question",
+			"label": "Question",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "answer",
+			"label": "Answer",
+			"type": "textarea"
+		},
+		{
+			"name": "assigned_to",
+			"label": "Assigned to (Consultant)",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "date_required",
+			"label": "Answer required by",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "drawing_ref",
+			"label": "Drawing reference",
+			"type": "text"
+		},
+		{
+			"name": "cost_impact",
+			"label": "Cost impact",
+			"type": "checkbox"
+		},
+		{
+			"name": "schedule_impact",
+			"label": "Schedule impact",
+			"type": "checkbox"
+		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Open",
+						"label": "Submit RFI",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Open": {
+				"transitions": [
+					{
+						"to": "Answered",
+						"label": "Answer RFI",
+						"party": [
+							"consultant"
+						]
+					}
+				]
+			},
+			"Answered": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close RFI",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Open",
+						"label": "Reopen",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	}
+}

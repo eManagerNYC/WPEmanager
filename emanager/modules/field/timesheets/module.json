@@ -1,0 +1,119 @@
+{
+	"id": "timesheets",
+	"name": "Timesheets",
+	"section": "field",
+	"icon": "bi-clock",
+	"table": "em_timesheets",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Approved",
+		"Rejected"
+	],
+	"fields": [
+		{
+			"name": "work_date",
+			"label": "Work date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "worker_name",
+			"label": "Worker",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade / classification",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "cost_code",
+			"label": "Cost code",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			}
+		},
+		{
+			"name": "regular_hours",
+			"label": "Regular hours",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "overtime_hours",
+			"label": "OT hours",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": []
+			},
+			"Rejected": {
+				"transitions": [
+					{
+						"to": "Draft",
+						"label": "Revise",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			}
+		}
+	}
+}

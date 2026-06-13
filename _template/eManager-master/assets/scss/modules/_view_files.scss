@@ -1,0 +1,38 @@
+/******************************************************************
+
+Stylesheet: File Manager View
+
+******************************************************************/
+
+.doc-title {
+	font-size: 1.1em;
+	margin-bottom: 1em;
+
+	.doc-location,
+	.doc-role {
+		span {
+			font-weight: bold;
+		}
+	}
+	.doc-location {
+		
+	}
+	.doc-role {
+		
+	}
+}
+
+#elfinder {
+	clear: both;
+
+	.elfinder-button {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		height: 24px;
+		width: 24px;
+	}
+	.elfinder-button-search {
+		width: 160px;
+	}
+}

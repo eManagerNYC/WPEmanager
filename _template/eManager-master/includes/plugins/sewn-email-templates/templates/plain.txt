@@ -1,0 +1,36 @@
+*|IF:TEASER|* *|TEASER|*
+------------------------------------------------------------
+*|END:IF|* *|IF:TITLE|*
+
+
+*|TITLE|*
+------------------------------------------------------------
+*|END:IF|* *|IF:SUBTITLE|*
+
+
+** *|SUBTITLE|*
+------------------------------------------------------------
+*|END:IF|*
+
+
+*|CONTENT|*
+
+
+============================================================*|IF:SOCIAL:TWITTER|*
+*|SOCIAL:TWITTER|* *|END:IF|* *|IF:SOCIAL:FACEBOOK|* 
+*|SOCIAL:FACEBOOK|* *|END:IF|* *|IF:SOCIAL:LINKEDIN|* 
+*|SOCIAL:LINKEDIN|* *|END:IF|* *|IF:SOCIAL:GOOGLEPLUS|* 
+*|SOCIAL:GOOGLEPLUS|* *|END:IF|* *|IF:SOCIAL:PINTEREST|* 
+*|SOCIAL:PINTEREST|* *|END:IF|* *|IF:SOCIAL:INSTAGRAM|* 
+*|SOCIAL:INSTAGRAM|* *|END:IF|*
+
+Copyright © *|CURRENT_YEAR|* *|BLOGINFO:NAME|*, All rights reserved.
+*|BLOGINFO:DESCRIPTION|*
+
+*|IF:ADDRESS|*
+Our mailing address is:
+*|ADDRESS|*
+*|END:IF|*
+
+*|UNSUB|*
+*|UPDATE_PROFILE|*

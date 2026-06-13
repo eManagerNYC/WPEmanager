@@ -1,0 +1,63 @@
+{
+	"id": "orientations",
+	"name": "Employee Orientations",
+	"section": "safety",
+	"icon": "bi-person-badge",
+	"table": "em_orientations",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Completed",
+		"Expired"
+	],
+	"fields": [
+		{
+			"name": "employee_name",
+			"label": "Employee name",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "orientation_date",
+			"label": "Orientation date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "badge_no",
+			"label": "Badge number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "emergency_contact",
+			"label": "Emergency contact",
+			"type": "text"
+		},
+		{
+			"name": "certifications",
+			"label": "Certifications",
+			"type": "textarea"
+		},
+		{
+			"name": "employee_signature",
+			"label": "Employee signature",
+			"type": "signature"
+		}
+	]
+}

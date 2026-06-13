@@ -1,0 +1,120 @@
+{
+	"id": "proposals",
+	"name": "Subcontractor Proposals",
+	"section": "change-management",
+	"icon": "bi-cash-coin",
+	"table": "em_proposals",
+	"version": "1.0.0",
+	"statuses": [
+		"Submitted",
+		"Under Reconciliation",
+		"Reconciled",
+		"Submitted as COR"
+	],
+	"fields": [
+		{
+			"name": "proposal_no",
+			"label": "Proposal number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subcontractor",
+			"label": "Subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "directive_no",
+			"label": "Directive reference",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope",
+			"type": "textarea"
+		},
+		{
+			"name": "amount",
+			"label": "Proposed amount",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "breakdown",
+			"label": "Cost breakdown",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Submitted",
+		"states": {
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Under Reconciliation",
+						"label": "Begin reconciliation",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Reconciliation": {
+				"transitions": [
+					{
+						"to": "Reconciled",
+						"label": "Mark reconciled",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					},
+					{
+						"to": "Submitted",
+						"label": "Return to subcontractor",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Reconciled": {
+				"transitions": [
+					{
+						"to": "Submitted as COR",
+						"label": "Bundle into COR",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted as COR": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "cors",
+			"label": "Generate COR / AL letter",
+			"map": {
+				"title": "title",
+				"amount": "amount",
+				"scope": "scope"
+			}
+		}
+	]
+}

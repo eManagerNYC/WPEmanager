@@ -1,0 +1,168 @@
+{
+	"id": "inspections",
+	"name": "Inspections",
+	"section": "quality",
+	"icon": "bi-clipboard2-check",
+	"table": "em_inspections",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"In Progress",
+		"Failed",
+		"Reinspection",
+		"Passed",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "inspection_no",
+			"label": "Inspection #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "inspection_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Quality",
+				"Owner",
+				"AHJ / Code",
+				"Commissioning",
+				"Pre-pour",
+				"MEP Rough-in",
+				"Final",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			},
+			"list": true
+		},
+		{
+			"name": "inspector",
+			"label": "Inspector",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "scheduled_date",
+			"label": "Scheduled",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "checklist",
+			"label": "Checklist items",
+			"type": "textarea"
+		},
+		{
+			"name": "findings",
+			"label": "Findings",
+			"type": "textarea"
+		},
+		{
+			"name": "inspector_signature",
+			"label": "Inspector signature",
+			"type": "signature"
+		}
+	],
+	"workflow": {
+		"initial": "Scheduled",
+		"states": {
+			"Scheduled": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Begin inspection",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Passed",
+						"label": "Pass",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Failed",
+						"label": "Fail",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Failed": {
+				"transitions": [
+					{
+						"to": "Reinspection",
+						"label": "Schedule re-inspection",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Reinspection": {
+				"transitions": [
+					{
+						"to": "Passed",
+						"label": "Pass",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Failed",
+						"label": "Fail",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Passed": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
+}

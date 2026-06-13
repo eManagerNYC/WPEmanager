@@ -1,0 +1,63 @@
+{
+	"id": "invoicing",
+	"name": "Invoicing (AIA G702/G703)",
+	"section": "cost",
+	"icon": "bi-receipt",
+	"table": "em_invoicing",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Approved",
+		"Paid",
+		"Rejected"
+	],
+	"fields": [
+		{
+			"name": "application_no",
+			"label": "Application number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "period_to",
+			"label": "Period to",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "scheduled_value",
+			"label": "Scheduled value (G703)",
+			"type": "currency"
+		},
+		{
+			"name": "work_completed",
+			"label": "Work completed to date",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "stored_materials",
+			"label": "Stored materials",
+			"type": "currency"
+		},
+		{
+			"name": "retainage",
+			"label": "Retainage",
+			"type": "currency"
+		},
+		{
+			"name": "current_due",
+			"label": "Current payment due (G702)",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

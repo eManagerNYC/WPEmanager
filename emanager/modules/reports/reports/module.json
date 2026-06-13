@@ -1,0 +1,12 @@
+{
+	"id": "reports",
+	"name": "Project Statistics",
+	"section": "reports",
+	"icon": "bi-graph-up",
+	"table": "em_comments",
+	"version": "1.0.0",
+	"virtual": true,
+	"statuses": [],
+	"fields": [],
+	"description": "Virtual module — rendered entirely by module.js from /reports/stats. The table value is unused."
+}

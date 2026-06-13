@@ -1,0 +1,446 @@
+﻿WARNING: The WordPress standard uses 1 deprecated sniff
+-------------------------------------------------------------------------------
+-  Generic.Functions.CallTimePassByReference
+   This sniff has been deprecated since v3.12.1 and will be removed in v4.0.0.
+
+Deprecated sniffs are still run, but will stop working at some point in the
+future.
+
+
+FILE: C:\Server\wpemanager\gcpanel\admin\views\companies.php
+--------------------------------------------------------------------------------
+FOUND 2 ERRORS AND 4 WARNINGS AFFECTING 5 LINES
+--------------------------------------------------------------------------------
+ 14 | WARNING | Processing form data without nonce verification.
+ 16 | ERROR   | Use Yoda Condition checks, you must.
+ 16 | WARNING | Processing form data without nonce verification.
+ 26 | WARNING | Processing form data without nonce verification.
+ 27 | WARNING | Processing form data without nonce verification.
+ 50 | ERROR   | Overriding WordPress globals is prohibited. Found assignment to
+    |         | $type
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\admin\views\modules.php
+----------------------------------------------------------------------
+FOUND 0 ERRORS AND 4 WARNINGS AFFECTING 4 LINES
+----------------------------------------------------------------------
+ 16 | WARNING | Processing form data without nonce verification.
+ 17 | WARNING | Processing form data without nonce verification.
+ 19 | WARNING | Processing form data without nonce verification.
+ 20 | WARNING | Processing form data without nonce verification.
+----------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\admin\views\users.php
+--------------------------------------------------------------------------------
+FOUND 1 ERROR AND 2 WARNINGS AFFECTING 2 LINES
+--------------------------------------------------------------------------------
+ 28 | WARNING | Processing form data without nonce verification.
+ 28 | WARNING | Processing form data without nonce verification.
+ 57 | ERROR   | Capabilities should be used instead of roles. Found
+    |         | "administrator" in function call to user_can()
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\gcpanel.php
+----------------------------------------------------------------------
+FOUND 1 ERROR AFFECTING 1 LINE
+----------------------------------------------------------------------
+ 14 | ERROR | Missing @package tag in file comment
+----------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-admin.php
+--------------------------------------------------------------------------------
+FOUND 26 ERRORS AND 8 WARNINGS AFFECTING 33 LINES
+--------------------------------------------------------------------------------
+  13 | ERROR   | Missing doc comment for class GCP_Admin
+  15 | ERROR   | Missing member variable doc comment
+  17 | ERROR   | Missing doc comment for function instance()
+  24 | ERROR   | Missing doc comment for function __construct()
+  38 | ERROR   | Missing doc comment for function assets()
+  54 | ERROR   | Missing doc comment for function menu()
+  58 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | add_menu_page(). Please check the spelling of the capability.
+     |         | If this is a custom capability, please verify the capability
+     |         | is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  64 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | add_submenu_page(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  65 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | add_submenu_page(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  66 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | add_submenu_page(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  67 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | add_submenu_page(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  70 | ERROR   | Missing doc comment for function register_settings()
+ 117 | ERROR   | You must use "/**" style comments for a function comment
+ 121 | ERROR   | Missing doc comment for function render_users()
+ 125 | ERROR   | Missing doc comment for function render_companies()
+ 129 | ERROR   | Missing doc comment for function render_modules()
+ 136 | ERROR   | Comment closer must be on a new line
+ 138 | ERROR   | You must use "/**" style comments for a function comment
+ 140 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 162 | ERROR   | Missing doc comment for function delete_company()
+ 164 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 178 | ERROR   | Comment closer must be on a new line
+ 180 | ERROR   | You must use "/**" style comments for a function comment
+ 182 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 186 | ERROR   | $_POST['user_id'] not unslashed before sanitization. Use
+     |         | wp_unslash() or similar
+ 186 | ERROR   | Detected usage of a non-sanitized input variable:
+     |         | $_POST['user_id']
+ 193 | ERROR   | Capabilities should be used instead of roles. Found
+     |         | "administrator" in function call to user_can()
+ 208 | ERROR   | Missing doc comment for function user_columns()
+ 213 | ERROR   | Missing doc comment for function user_column_value()
+ 230 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 235 | ERROR   | Missing doc comment for function company_name()
+ 247 | ERROR   | Comment closer must be on a new line
+ 249 | ERROR   | You must use "/**" style comments for a function comment
+ 251 | ERROR   | Detected usage of a non-sanitized input variable:
+     |         | $_FILES['module']
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-api.php
+--------------------------------------------------------------------------------
+FOUND 30 ERRORS AND 11 WARNINGS AFFECTING 39 LINES
+--------------------------------------------------------------------------------
+  24 | ERROR   | Missing doc comment for class GCP_Api
+  28 | ERROR   | Missing doc comment for function register_routes()
+  46 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  51 | WARNING | Found unknown capability "gcp_create" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  63 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  68 | WARNING | Found unknown capability "gcp_update" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  85 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  90 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 101 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 121 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 131 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 141 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 149 | ERROR   | Comment closer must be on a new line
+ 151 | ERROR   | You must use "/**" style comments for a function comment
+ 162 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 175 | ERROR   | Comment closer must be on a new line
+ 177 | ERROR   | You must use "/**" style comments for a function comment
+ 185 | ERROR   | Missing doc comment for function list_records()
+ 198 | WARNING | Variable assignment found within a condition. Did you mean to
+     |         | do a comparison ?
+ 198 | ERROR   | Assignments must be the first block of code on a line
+ 202 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 214 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 215 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 216 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 231 | ERROR   | Missing doc comment for function get_record()
+ 244 | ERROR   | Missing doc comment for function create_record()
+ 255 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 273 | ERROR   | Missing doc comment for function update_record()
+ 291 | ERROR   | Missing doc comment for function delete_record()
+ 316 | ERROR   | Doc comment for parameter "$module" missing
+ 316 | ERROR   | Doc comment for parameter "$input" missing
+ 366 | ERROR   | Comment closer must be on a new line
+ 368 | ERROR   | You must use "/**" style comments for a function comment
+ 389 | ERROR   | Missing doc comment for function create_comment()
+ 419 | ERROR   | Comment closer must be on a new line
+ 421 | ERROR   | You must use "/**" style comments for a function comment
+ 457 | ERROR   | Comment closer must be on a new line
+ 459 | ERROR   | You must use "/**" style comments for a function comment
+ 489 | ERROR   | Comment closer must be on a new line
+ 491 | ERROR   | You must use "/**" style comments for a function comment
+ 503 | ERROR   | Missing doc comment for function uninstall_module()
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-auth.php
+--------------------------------------------------------------------------------
+FOUND 19 ERRORS AND 4 WARNINGS AFFECTING 21 LINES
+--------------------------------------------------------------------------------
+  15 | ERROR   | Missing doc comment for class GCP_Auth
+  17 | ERROR   | Missing member variable doc comment
+  19 | ERROR   | Missing doc comment for function instance()
+  26 | ERROR   | Missing doc comment for function __construct()
+  70 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+  73 | WARNING | Found unknown capability "gcp_read" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  94 | ERROR   | Missing doc comment for function process_login()
+  96 | ERROR   | Processing form data without nonce verification.
+  98 | ERROR   | Processing form data without nonce verification.
+ 108 | ERROR   | Missing doc comment for function process_register()
+ 113 | ERROR   | Processing form data without nonce verification.
+ 114 | ERROR   | Processing form data without nonce verification.
+ 115 | ERROR   | Processing form data without nonce verification.
+ 130 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 149 | ERROR   | Missing doc comment for function redirect_with()
+ 150 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+ 154 | ERROR   | Doc comment for parameter "$file" missing
+ 154 | ERROR   | Doc comment for parameter "$vars" missing
+ 162 | WARNING | file_get_contents() is discouraged. Use wp_remote_get() for
+     |         | remote URLs instead.
+ 180 | WARNING | Processing form data without nonce verification.
+ 180 | WARNING | Processing form data without nonce verification.
+ 187 | ERROR   | Missing doc comment for function login_form()
+ 204 | ERROR   | Missing doc comment for function register_form()
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-installer.php
+--------------------------------------------------------------------------------
+FOUND 4 ERRORS AND 3 WARNINGS AFFECTING 7 LINES
+--------------------------------------------------------------------------------
+  20 | ERROR   | Missing doc comment for class GCP_Installer
+  31 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+  66 | WARNING | file_get_contents() is discouraged. Use wp_remote_get() for
+     |         | remote URLs instead.
+ 100 | WARNING | Found unknown capability "gcp_manage" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 120 | ERROR   | Doc comment for parameter "$dir" missing
+ 131 | ERROR   | Doc comment for parameter "$def" missing
+ 150 | ERROR   | Doc comment for parameter "$dir" missing
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-modules.php
+--------------------------------------------------------------------------------
+FOUND 11 ERRORS AND 2 WARNINGS AFFECTING 12 LINES
+--------------------------------------------------------------------------------
+  23 | ERROR   | Missing doc comment for class GCP_Modules
+  25 | ERROR   | Missing member variable doc comment
+  27 | ERROR   | Missing short description in doc comment
+  30 | ERROR   | Missing short description in doc comment
+  33 | ERROR   | Missing doc comment for function instance()
+  40 | ERROR   | Missing doc comment for function __construct()
+  61 | WARNING | file_get_contents() is discouraged. Use wp_remote_get() for
+     |         | remote URLs instead.
+  72 | ERROR   | Doc comment for parameter "$base_dir" missing
+  72 | ERROR   | Doc comment for parameter "$base_url" missing
+  76 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+  77 | WARNING | file_get_contents() is discouraged. Use wp_remote_get() for
+     |         | remote URLs instead.
+ 163 | ERROR   | Doc comment for parameter "$module" missing
+ 173 | ERROR   | Using short ternaries is not allowed as they are rarely used
+     |         | correctly
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-public.php
+--------------------------------------------------------------------------------
+FOUND 4 ERRORS AND 1 WARNING AFFECTING 5 LINES
+--------------------------------------------------------------------------------
+ 14 | ERROR   | Missing doc comment for class GCP_Public
+ 16 | ERROR   | Missing member variable doc comment
+ 18 | ERROR   | Missing doc comment for function instance()
+ 25 | ERROR   | Missing doc comment for function __construct()
+ 67 | WARNING | Found unknown capability "gcp_read" in function call to
+    |         | current_user_can(). Please check the spelling of the
+    |         | capability. If this is a custom capability, please verify the
+    |         | capability is registered with WordPress via a call to
+    |         | WP_Role(s)->add_cap().
+
+    |         | Custom capabilities can be made known to this sniff by setting
+    |         | the "custom_capabilities" property in the PHPCS ruleset.
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-roles.php
+--------------------------------------------------------------------------------
+FOUND 1 ERROR AND 2 WARNINGS AFFECTING 3 LINES
+--------------------------------------------------------------------------------
+  17 | ERROR   | Missing doc comment for class GCP_Roles
+ 104 | WARNING | Found unknown capability "gcp_delete" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+ 107 | WARNING | Found unknown capability "gcp_create" in function call to
+     |         | current_user_can(). Please check the spelling of the
+     |         | capability. If this is a custom capability, please verify the
+     |         | capability is registered with WordPress via a call to
+     |         | WP_Role(s)->add_cap().
+
+     |         | Custom capabilities can be made known to this sniff by setting
+     |         | the "custom_capabilities" property in the PHPCS ruleset.
+--------------------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\includes\class-gcp-supabase.php
+----------------------------------------------------------------------
+FOUND 13 ERRORS AFFECTING 8 LINES
+----------------------------------------------------------------------
+  13 | ERROR | Missing doc comment for class GCP_Supabase
+  87 | ERROR | Doc comment for parameter "$response" missing
+ 102 | ERROR | Parameter comment must end with a full stop
+ 142 | ERROR | Doc comment for parameter "$table" missing
+ 142 | ERROR | Doc comment for parameter "$id" missing
+ 164 | ERROR | Doc comment for parameter "$table" missing
+ 164 | ERROR | Doc comment for parameter "$data" missing
+ 175 | ERROR | Doc comment for parameter "$table" missing
+ 175 | ERROR | Doc comment for parameter "$id" missing
+ 175 | ERROR | Doc comment for parameter "$data" missing
+ 186 | ERROR | Doc comment for parameter "$table" missing
+ 186 | ERROR | Doc comment for parameter "$id" missing
+ 193 | ERROR | Doc comment for parameter "$ident" missing
+----------------------------------------------------------------------
+
+
+FILE: C:\Server\wpemanager\gcpanel\uninstall.php
+----------------------------------------------------------------------------
+FOUND 1 ERROR AFFECTING 1 LINE
+----------------------------------------------------------------------------
+ 3 | ERROR | Doc comment short description must start with a capital letter
+----------------------------------------------------------------------------
+
+Time: 2.38 secs; Memory: 20MB
+

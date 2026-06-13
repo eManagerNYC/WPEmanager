@@ -1,0 +1,122 @@
+{
+	"id": "commitments",
+	"name": "Commitments (POs)",
+	"section": "cost",
+	"icon": "bi-file-earmark-ruled",
+	"table": "em_commitments",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Issued",
+		"Executed",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "commitment_no",
+			"label": "Commitment #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "commitment_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Subcontract",
+				"Purchase Order"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "vendor",
+			"label": "Vendor / subcontractor",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "csi_division",
+			"label": "CSI division",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			}
+		},
+		{
+			"name": "value",
+			"label": "Commitment value",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "executed_date",
+			"label": "Executed",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "retainage_pct",
+			"label": "Retainage %",
+			"type": "number",
+			"step": "0.1"
+		},
+		{
+			"name": "scope",
+			"label": "Scope",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Issued",
+						"label": "Issue",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued": {
+				"transitions": [
+					{
+						"to": "Executed",
+						"label": "Mark executed",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Executed": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
+}

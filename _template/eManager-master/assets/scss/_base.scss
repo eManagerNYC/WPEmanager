@@ -1,0 +1,256 @@
+/******************************************************************
+
+Stylesheet: BASE
+
+******************************************************************/
+
+/*********************
+GENERAL STYLES
+*********************/
+
+body {
+	//background: $white url(../img/bg_rhythm.gif) repeat center top;
+	background: $gray_light url(../img/grid.png) repeat center top;
+}
+
+::selection { background: $link_color; color: $black !important; text-shadow: none; }
+
+::fullscreen, ::-webkit-full-screen, ::-moz-full-screen {
+    background-color: $white;
+}
+
+hr {
+	display: block;
+	height: 0;
+	border: 0;
+	border-top: 1px solid $gray_light;
+	border-bottom: 1px solid $white;
+	margin: 0 0 1em;
+	padding: 0;
+}
+
+.divider-shadow {
+	background: url('../img/divider-shadow.png') center top no-repeat;
+	background-size: 100%;
+	clear: both;
+	height: 8px;
+	margin: 0 0 $margin;
+	width: 100%;
+}
+
+.Eman_Connect_Button .btn {
+	margin-left: $gutter;
+}
+
+.widgets-after-content {
+	clear: both;
+}
+
+.comment-image img {
+	width: 100%;
+}  
+
+.modal-content {
+	color: $text_color;
+	font-weight: normal;
+	text-align: left;
+}
+
+.modal-header {
+	@extend .cf;
+	.modal-close {
+		float: right;
+	}
+	h3 {
+		clear: none;
+		float: left;
+		margin: 0;
+	}
+}
+
+/*********************
+LAYOUT & GRID STYLES
+*********************/
+
+.wrap {
+	//width: 96%;
+	@extend .cf;
+	margin: 0 auto;
+	max-width: 1300px;
+	padding: 0 $gutter;
+}
+
+.acf-form {
+	margin: 0 auto;
+	max-width: 1024px;
+}
+
+
+/*********************
+LINK STYLES
+*********************/
+
+a {
+	color: $link_color;
+	text-decoration: none;
+
+	&:hover, &:focus {
+		color: $link_hover;
+	}
+
+	/* on click */
+	&:active {
+		color: darken($link_hover, 10%);
+	}
+
+	/* mobile tap color */
+	&:link {
+		-webkit-tap-highlight-color : rgba( $link_color, 0.5 );
+	}
+}
+
+.btn {
+	text-decoration: none;
+}
+
+.modal-body .btn {
+	margin: 0 $gutter;
+	&.btn-docs {
+		float: none;
+		margin: $margin auto 0;
+	}
+}
+
+
+/*********************
+POSTS & CONTENT STYLES
+*********************/
+
+#content {
+	.wrap {
+		background: $white;
+		padding-top: $gutter;
+	}
+}
+
+body.logged-in #content {
+	.wrap {
+		background: $white;
+	}
+}
+
+@include breakpoint(medium)
+{
+	#main {
+		//@include grid_col(large);
+		margin-bottom: 0;
+	}
+}
+
+.hentry {}
+
+.single-title,
+.page-title,
+.entry-title {}
+
+/* post meta */
+.byline {
+	color: $gray;
+	font-style: italic;
+	margin: 0;
+}
+
+.entry-content {}
+
+
+#page-top {
+	background: $white;
+	//border: 1px solid $blue;
+	border-radius: $gutter;
+	bottom: $gutter;
+	line-height: 1 !important;
+	opacity: 0.75;
+	padding: $gutter;
+	position: fixed;
+	right: $gutter;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.settings-nav {
+	@extend .cf;
+	margin-bottom: $gutter;
+}
+
+.header-links {
+	> * {
+		margin-left: $gutter;
+	}
+}
+
+@include breakpoint(medium)
+{
+	.header-links {
+		padding-top: $gutter;
+		text-align:right;
+	}
+}
+
+#eman-project-summary {
+	clear: both;
+}
+
+
+/*********************
+BASE WIDGET STYLES
+*********************/
+
+.widget {
+	@extend .cf;
+	margin-bottom: $gutter;
+}
+
+
+/*********************
+NOTIFICATIONS
+*********************/
+
+.sewn_notifications {
+	z-index: 9999;
+
+	&.show {
+		display: block;
+	}
+
+	& p {
+		background: $brand-info;
+		border-bottom: 1px solid darken($brand-info, 10%);
+		color: $white;
+		margin: 0;
+		padding: $gutter;
+		text-align: center;
+	}
+
+	.sewn_notifications-dismiss {
+		float: right;
+		font-weight: normal;
+		text-decoration: none;
+	}
+
+	p.sewn_notifications-error {
+		background: $brand-danger;
+		border-bottom: 1px solid darken($brand-danger, 10%);
+	}
+}
+
+
+
+/*********************
+NOTIFICATIONS
+*********************/
+
+.export_progress {
+	margin-top: 1em;
+}

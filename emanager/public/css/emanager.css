@@ -1,0 +1,205 @@
+/* ==========================================================================
+   eManager — dashboard app styles (Bootstrap 5 augmentation)
+   ========================================================================== */
+
+.em-app {
+	display: grid;
+	grid-template-areas:
+		"header header"
+		"sidebar navbar"
+		"sidebar main"
+		"sidebar footer";
+	grid-template-columns: 240px 1fr;
+	grid-template-rows: auto auto 1fr auto;
+	min-height: 100vh;
+	background: var(--bs-body-bg);
+}
+
+.em-header  { grid-area: header; }
+.em-navbar  { grid-area: navbar; }
+.em-sidebar { grid-area: sidebar; }
+.em-main    { grid-area: main; padding: 1rem; overflow-x: auto; }
+.em-footer  { grid-area: footer; }
+
+/* Boot spinner */
+.em-boot-spinner {
+	grid-area: main;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 50vh;
+	gap: 1rem;
+	color: var(--bs-secondary-color);
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar
+   -------------------------------------------------------------------------- */
+
+.em-sidebar {
+	min-width: 240px;
+	overflow-y: auto;
+	max-height: calc(100vh - 56px);
+	position: sticky;
+	top: 0;
+}
+
+.em-sidebar .em-section-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	padding: .55rem .9rem;
+	border: 0;
+	background: transparent;
+	color: var(--bs-gray-400);
+	font-size: .8rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	cursor: pointer;
+}
+
+.em-sidebar .em-section-toggle:hover { color: #fff; }
+.em-sidebar .em-section-toggle .bi-chevron-down { margin-left: auto; transition: transform .2s; }
+.em-sidebar .em-section-toggle[aria-expanded="true"] .bi-chevron-down { transform: rotate(180deg); }
+
+.em-sidebar .nav-link {
+	color: var(--bs-gray-300);
+	padding: .35rem .9rem .35rem 2.2rem;
+	font-size: .9rem;
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	border-left: 3px solid transparent;
+}
+
+.em-sidebar .nav-link:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.em-sidebar .nav-link.active {
+	color: #fff;
+	background: rgba(255, 255, 255, .1);
+	border-left-color: var(--bs-primary);
+}
+
+/* Mobile: sidebar slides over content */
+@media (max-width: 991.98px) {
+	.em-app {
+		grid-template-areas:
+			"header"
+			"navbar"
+			"main"
+			"footer";
+		grid-template-columns: 1fr;
+	}
+	.em-sidebar {
+		position: fixed;
+		inset: 56px auto 0 0;
+		z-index: 1040;
+		transform: translateX(-100%);
+		transition: transform .2s ease;
+		max-height: none;
+	}
+	.em-sidebar.show { transform: translateX(0); box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .4); }
+}
+
+/* --------------------------------------------------------------------------
+   Tables (sortable headers)
+   -------------------------------------------------------------------------- */
+
+.em-table th[data-sort] { cursor: pointer; user-select: none; white-space: nowrap; }
+.em-table th[data-sort]::after { content: "↕"; opacity: .3; margin-left: .35rem; font-size: .75em; }
+.em-table th[data-sort].sorted-asc::after  { content: "↑"; opacity: 1; }
+.em-table th[data-sort].sorted-desc::after { content: "↓"; opacity: 1; }
+.em-table tbody tr { cursor: pointer; }
+
+/* Status badges — tone derived from data-status keywords */
+.em-status { text-transform: none; }
+
+/* --------------------------------------------------------------------------
+   Record view
+   -------------------------------------------------------------------------- */
+
+.em-view dt { color: var(--bs-secondary-color); font-weight: 500; }
+.em-view dd { margin-bottom: .75rem; }
+
+.em-comments .em-comment {
+	border-left: 3px solid var(--bs-border-color);
+	padding: .5rem .75rem;
+	margin-bottom: .5rem;
+	background: var(--bs-tertiary-bg);
+	border-radius: 0 .375rem .375rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   Workflow activity timeline
+   -------------------------------------------------------------------------- */
+
+.em-timeline {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.em-timeline-item {
+	position: relative;
+	padding: 0 0 .85rem 1.25rem;
+	border-left: 2px solid var(--bs-border-color);
+}
+
+.em-timeline-item:last-child {
+	border-left-color: transparent;
+	padding-bottom: 0;
+}
+
+.em-timeline-item::before {
+	content: "";
+	position: absolute;
+	left: -5px;
+	top: 3px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--bs-primary);
+}
+
+.em-workflow [data-em="workflow-links"]:empty {
+	display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Signature pad
+   -------------------------------------------------------------------------- */
+
+.em-signature {
+	background: #fff;
+	overflow: hidden;
+}
+
+.em-signature canvas {
+	display: block;
+	width: 100%;
+	touch-action: none; /* keep strokes from scrolling the page on touch */
+	cursor: crosshair;
+}
+
+.em-signature-img {
+	max-height: 90px;
+	max-width: 100%;
+	padding: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Misc
+   -------------------------------------------------------------------------- */
+
+.em-global-search { width: 260px; }
+.em-main .pagination { margin-bottom: 0; }
+
+/* Keep WP theme styles from fighting the app */
+.em-app a { text-decoration: none; }
+
+@media print {
+	.em-header, .em-navbar, .em-sidebar, .em-footer, .em-no-print { display: none !important; }
+	.em-app { grid-template-areas: "main"; grid-template-columns: 1fr; }
+}

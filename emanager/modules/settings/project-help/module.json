@@ -1,0 +1,41 @@
+{
+	"id": "project-help",
+	"name": "Project Help",
+	"section": "settings",
+	"icon": "bi-question-square",
+	"table": "em_project_help",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Published",
+		"Archived"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Topic",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "category",
+			"label": "Category",
+			"type": "select",
+			"options": [
+				"Getting Started",
+				"Modules",
+				"Workflows",
+				"Contacts",
+				"FAQ"
+			],
+			"list": true
+		},
+		{
+			"name": "body",
+			"label": "Help content",
+			"type": "textarea",
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,76 @@
+{
+	"id": "bid-solicitations",
+	"name": "Bid Solicitations (ITB)",
+	"section": "preconstruction",
+	"icon": "bi-megaphone",
+	"table": "em_bid_solicitations",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Issued",
+		"Responses Due",
+		"Under Evaluation",
+		"Awarded",
+		"Cancelled"
+	],
+	"fields": [
+		{
+			"name": "solicitation_no",
+			"label": "Solicitation #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "bid_package",
+			"label": "Bid package",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade / scope",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			}
+		},
+		{
+			"name": "issue_date",
+			"label": "Issued",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "walkthrough_date",
+			"label": "Pre-bid walkthrough",
+			"type": "datetime"
+		},
+		{
+			"name": "due_date",
+			"label": "Responses due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "estimate",
+			"label": "Engineer estimate",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope of work",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"id": "drawings",
+	"name": "Drawings",
+	"section": "engineering",
+	"icon": "bi-bounding-box",
+	"table": "em_drawings",
+	"version": "1.0.0",
+	"statuses": [
+		"Current",
+		"Superseded",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "number",
+			"label": "Drawing number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "discipline",
+			"label": "Discipline",
+			"type": "select",
+			"options": [
+				"Architectural",
+				"Structural",
+				"Civil",
+				"Mechanical",
+				"Electrical",
+				"Plumbing",
+				"Fire Protection",
+				"Landscape",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "revision",
+			"label": "Revision",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "rev_date",
+			"label": "Revision date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Drawing link",
+			"type": "url"
+		}
+	]
+}

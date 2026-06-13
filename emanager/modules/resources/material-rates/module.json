@@ -1,0 +1,48 @@
+{
+	"id": "material-rates",
+	"name": "Material Rates",
+	"section": "resources",
+	"icon": "bi-bricks",
+	"table": "em_material_rates",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "material",
+			"label": "Material",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "unit",
+			"label": "Unit",
+			"type": "text",
+			"required": true,
+			"list": true,
+			"help": "e.g. CY, SF, EA"
+		},
+		{
+			"name": "unit_cost",
+			"label": "Unit cost",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "supplier",
+			"label": "Supplier",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "effective_date",
+			"label": "Effective",
+			"type": "date",
+			"list": true
+		}
+	]
+}

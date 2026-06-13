@@ -1,0 +1,53 @@
+{
+	"id": "attic-stock",
+	"name": "Attic Stock",
+	"section": "closeout",
+	"icon": "bi-archive",
+	"table": "em_attic_stock",
+	"version": "1.0.0",
+	"statuses": [
+		"Required",
+		"Received",
+		"Stored",
+		"Turned Over"
+	],
+	"fields": [
+		{
+			"name": "item",
+			"label": "Item",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "spec_section",
+			"label": "Spec section",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "quantity",
+			"label": "Quantity",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "storage_location",
+			"label": "Storage location",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "received_date",
+			"label": "Received",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

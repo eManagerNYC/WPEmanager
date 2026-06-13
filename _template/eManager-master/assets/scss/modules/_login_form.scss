@@ -1,0 +1,32 @@
+/******************************************************************
+
+Stylesheet: Log In Form Styles
+
+******************************************************************/
+
+.login_form {
+	@extend .m-6of12;
+	background: lighten($blue, 40%);
+	border-radius: 1em;
+	clear: both;
+	float: none !important;
+	margin: 0 auto $margin;
+	padding: $margin $margin 1px $margin;
+	text-align: left;
+
+	.page_title {
+		@extend h3;
+	}
+
+	.login-remember {
+		float: left;
+	}
+
+	.login-submit {
+		@extend .field;
+		@extend .cf;
+		clear: left;
+		//float: right;
+		margin: 0 0 0.5em;
+	}
+}

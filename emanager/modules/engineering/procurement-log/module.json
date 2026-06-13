@@ -1,0 +1,70 @@
+{
+	"id": "procurement-log",
+	"name": "Procurement Log (Long-Lead)",
+	"section": "engineering",
+	"icon": "bi-truck-flatbed",
+	"table": "em_procurement_log",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Ordered",
+		"Ordered",
+		"In Fabrication",
+		"Shipped",
+		"Delivered",
+		"Installed"
+	],
+	"fields": [
+		{
+			"name": "item",
+			"label": "Item / package",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "csi_division",
+			"label": "CSI division",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
+			"name": "supplier",
+			"label": "Supplier / fabricator",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "lead_time_weeks",
+			"label": "Lead time (weeks)",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "order_by",
+			"label": "Order by",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "need_by",
+			"label": "Need on site by",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "submittal_ref",
+			"label": "Submittal reference",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

@@ -1,0 +1,79 @@
+{
+	"id": "daily-reports",
+	"name": "Daily Reports",
+	"section": "field",
+	"icon": "bi-sun",
+	"table": "em_daily_reports",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted",
+		"Approved"
+	],
+	"fields": [
+		{
+			"name": "report_date",
+			"label": "Report date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "superintendent",
+			"label": "Superintendent",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "weather",
+			"label": "Weather summary",
+			"type": "text",
+			"list": true,
+			"help": "Use “Fetch site weather” to auto-fill."
+		},
+		{
+			"name": "temp_high",
+			"label": "High (°F)",
+			"type": "number"
+		},
+		{
+			"name": "temp_low",
+			"label": "Low (°F)",
+			"type": "number"
+		},
+		{
+			"name": "precipitation",
+			"label": "Precipitation (in)",
+			"type": "number",
+			"step": "0.01"
+		},
+		{
+			"name": "manpower",
+			"label": "Total workers on site",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "work_performed",
+			"label": "Work performed",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "delays",
+			"label": "Delays / issues",
+			"type": "textarea"
+		},
+		{
+			"name": "visitors",
+			"label": "Visitors / inspections",
+			"type": "textarea"
+		},
+		{
+			"name": "superintendent_signature",
+			"label": "Superintendent signature",
+			"type": "signature"
+		}
+	]
+}

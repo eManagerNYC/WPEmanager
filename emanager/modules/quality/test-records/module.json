@@ -1,0 +1,81 @@
+{
+	"id": "test-records",
+	"name": "Test Records",
+	"section": "quality",
+	"icon": "bi-thermometer-half",
+	"table": "em_test_records",
+	"version": "1.0.0",
+	"statuses": [
+		"Scheduled",
+		"Passed",
+		"Failed",
+		"Retest Required"
+	],
+	"fields": [
+		{
+			"name": "test_no",
+			"label": "Test #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "test_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Concrete",
+				"Soil / Compaction",
+				"Weld",
+				"Pressure",
+				"Electrical",
+				"Air Balance",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "test_date",
+			"label": "Test date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "result",
+			"label": "Result",
+			"type": "select",
+			"options": [
+				"Pass",
+				"Fail",
+				"Pending"
+			],
+			"list": true
+		},
+		{
+			"name": "reading_value",
+			"label": "Measured value",
+			"type": "text"
+		},
+		{
+			"name": "lab",
+			"label": "Testing agency",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Report link",
+			"type": "url"
+		}
+	]
+}

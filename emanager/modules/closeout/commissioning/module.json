@@ -1,0 +1,129 @@
+{
+	"id": "commissioning",
+	"name": "Commissioning (Cx)",
+	"section": "closeout",
+	"icon": "bi-toggles",
+	"table": "em_commissioning",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Started",
+		"In Progress",
+		"Functional Test",
+		"Issues",
+		"Accepted"
+	],
+	"fields": [
+		{
+			"name": "system",
+			"label": "System",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "equipment_tag",
+			"label": "Equipment tag",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "cx_phase",
+			"label": "Cx phase",
+			"type": "select",
+			"options": [
+				"Design Review",
+				"Construction",
+				"Functional Testing",
+				"Seasonal",
+				"Re-commissioning"
+			],
+			"list": true
+		},
+		{
+			"name": "scheduled_date",
+			"label": "Scheduled",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "responsible",
+			"label": "Cx agent",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "findings",
+			"label": "Findings / issues",
+			"type": "textarea"
+		},
+		{
+			"name": "file_url",
+			"label": "Cx report link",
+			"type": "url"
+		}
+	],
+	"workflow": {
+		"initial": "Not Started",
+		"states": {
+			"Not Started": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Start",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Functional Test",
+						"label": "Functional test",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Functional Test": {
+				"transitions": [
+					{
+						"to": "Accepted",
+						"label": "Accept",
+						"party": [
+							"consultant",
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Issues",
+						"label": "Log issues",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Issues": {
+				"transitions": [
+					{
+						"to": "Functional Test",
+						"label": "Re-test",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Accepted": {
+				"transitions": []
+			}
+		}
+	}
+}

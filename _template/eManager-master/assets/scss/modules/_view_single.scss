@@ -1,0 +1,524 @@
+/******************************************************************
+
+Stylesheet: Main Single View
+
+******************************************************************/
+
+.archive-nav {
+	margin-bottom: $margin;
+	width: 100%;
+	.add-new {
+		float: right;
+	}
+}
+
+.bic-tabs {
+	margin-bottom: $margin;
+
+	.btn {
+		margin-right: $margin;
+	}
+}
+
+.review-update {
+	clear: both;
+	margin-top: 4em;
+
+	.tab-content,
+	.review-bic-only {
+		@extend .cf;
+		border: 1px solid $nav-tabs-border-color;
+		padding: $gutter;
+	}
+	.tab-content {
+		border-top: none;
+		padding-top: none;
+	}
+}
+
+	.entry-content .nav-tabs {
+		margin: 0;
+	}
+	.nav-tabs {
+		margin: 0;
+		a {
+			text-decoration: none;
+		}
+		.active a {
+			font-weight: bold;
+		}
+	}
+
+.copy-previous-form {
+	float: right;
+	margin-bottom: $margin;
+}
+
+.statuses {
+	background: $gray_light;
+	font-size: 0.75em;
+	margin-bottom: $margin;
+	padding: $gutter;
+}
+
+.submission-status {
+	clear: both;
+	text-align: left;
+
+	.label {
+		display: inline-block;
+		float: left;
+		font-size: 90%;
+		font-weight: bold;
+		padding-right: $gutter;
+		text-transform: uppercase;
+		width: 80px;
+	}
+}
+
+#submitted-by {
+	margin-top: $margin;
+}
+
+#submitted-date {
+	margin-bottom: $margin;
+}
+
+#submitted-by,
+#submitted-company {
+	clear: none;
+	float: left;
+	margin-top: 0;
+}
+
+#submitted-by {
+	width: 40%;
+}
+#submitted-company {
+	width: 60%;
+}
+
+@include breakpoint(medium)
+{
+	body.single .entry-content,
+	.em_tables {
+		> h2 {
+			float: left;
+			width: 74%;
+		}
+	}
+
+	.preview_field,
+	.review-update {
+		> h2 {
+			width: 100% !important;
+		}
+	}
+
+	.copy-previous-form,
+	.statuses {
+		float: right;
+	}
+
+	.statuses {
+		width: 26%;
+	}
+}
+
+.submit-area {
+	float: left;
+	input[type="submit"] {
+		margin-right: $gutter;
+	}
+}
+.update-area {
+	float: right;
+
+	a {
+		margin-left: $margin;
+	}
+}
+
+tr.summary-total-row {
+	td {
+		padding-top: $margin;
+	}
+	.first-label {
+		text-align: right;
+	}
+}
+
+#comments-area {
+	clear: both;
+	padding-top: 5em;
+}
+
+.reviewed-to,
+.reviewed-by {
+	margin: 0;
+}
+
+.field-submit {
+	clear: both;
+	width: 100%;
+}
+
+#bottom {
+	td p {
+		margin: 0;
+	}
+}
+
+
+/*********************
+NOC for Owner
+*********************/
+
+.single-em_noc .entry-content > .noc-title {
+	@include grid_col(all);
+	text-align: center;
+}
+
+.letter-body {
+	& h4 {
+		margin-bottom: 0;
+	}
+}
+
+.meta-overview {
+	clear: both;
+	font-size: 0.75em;
+	margin-bottom: $margin;
+	width: 100%;
+
+	& .left-meta,
+	& .right-meta {
+		float: left;
+		padding: $gutter;
+		width: 100%;
+	}
+	& .left-meta {
+		background: $gray_light;
+	}
+	& .right-meta {
+		background: lighten($gray_light, 2%);
+	}
+
+	& dl,
+	& dt,
+	& dd {
+		margin: 0;
+		padding: 0;
+	}
+	& dt,
+	& dd {
+		display: inline-block;
+		float: left;
+	}
+	& dt {
+		clear: left;
+		padding: #{$gutter/2} #{$gutter/2} #{$gutter/2} 0;
+		text-align: left;
+		text-transform: uppercase;
+		width: 33%;
+	}
+	& dd {
+		padding: #{$gutter/2} 0 #{$gutter/2};
+		width: 67%;
+	}
+}
+
+@include breakpoint(medium)
+{
+	.meta-overview {
+		display: flex;
+
+		& .left-meta,
+		& .right-meta {
+			width: 50%;
+		}
+	}
+}
+
+.noc-subject {
+	margin-bottom: $margin;
+	text-align: center;
+}
+
+.man-days {
+	width: 12%;
+}
+
+table {
+	th a {
+		color: #666666;
+		.fa {
+			color: $black;
+		}
+		&:hover {
+			&, .fa {
+				color: #2a9ed4;//#1a5a78;
+			}
+		}
+	}
+
+	.noc_number,
+	.pco_number,
+	.ewo_number {
+		width: 65px;
+	}
+
+	.hidden_column {
+	    display: none !important;
+	}
+}
+
+.em_tables {
+	table {
+		clear: both;
+	}
+}
+
+#poststuff .field,
+.horizontal-field,
+.preview_field {
+	clear: both;
+	margin-bottom: $margin;
+}
+
+.preview_segment {
+	clear: both;
+
+	.preview_field[id*="_markup"] {
+		@include grid_col(9,12,last);
+	}
+}
+
+#acf-field-global_markup {
+	//background: #fcfeff;
+	//border-top: 4px solid #909090;
+	padding-top: 2%;
+}
+
+.group-total {
+	@include grid_col(9,12,last);
+	margin-bottom: 0;
+	padding-right: 0;
+}
+
+.final_total {
+	clear: both;
+	font-size: 2em;
+	padding: 1% 0;
+
+	.group-total {
+		ul {
+			margin: 0;
+		}
+	}
+}
+
+div.summary-total {
+	float: right;
+	margin-top: $margin;
+	text-align: right;
+	width: 100%;
+
+	.total {
+		display: inline-block;
+		font-weight: bold;
+		text-align: right;
+	}
+}
+
+#acf-field-em_tickets_signature,
+#acf-field-signature {
+	& .field_value {
+		& img {
+			max-width: 600px;
+		}
+	}
+}
+
+
+.signature-date {
+	font-size: 0.75em;
+}
+
+
+table.breakdown {
+	width: 100%;
+
+	td, th {
+		padding: 0;
+		text-align: center
+	}
+
+	.first-item {
+		text-align: left;
+		width: 20%;
+	}
+}
+	
+	.single-em_noc table.breakdown .first-item {
+		width: 30%;
+	}
+
+	div.summary-total,
+	table.breakdown,
+	table.breakdown {
+		.equals,
+		.total {
+			text-align: right;
+			width: 12% !important;
+		}
+		.equals {
+			width: 3% !important;
+		}
+	}
+		th.total,
+		td.total {
+			text-align: right;
+			width: 12% !important;
+		}
+
+table.scope {
+	width: 100%;
+
+	td, th {
+		padding: 0 0 $gutter;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	.location {
+		width: 65% !important;
+	}
+
+	&, .scope {
+	}
+}
+
+//#poststuff .field_type-message,
+.preview_field div.field_message {
+	@include grid_col(all);
+	margin-bottom: 0;
+	padding: 0;
+
+	h2 {
+		color: $gray_dark;
+		margin: 0;
+	}
+	.label {
+		display: none !important;
+		height: 0 !important;
+		overflow: hidden !important;
+		visibility: hidden !important;
+		width: 0 !important;
+	}
+}
+
+.divider-before {
+	background: $gray_light;
+	border: none;
+	border-top: 1px solid $gray_light;
+	clear: both;
+	color: $gray_light;
+	height: 0;
+	line-height: 0;
+	margin: $gutter 0;
+}
+ 
+.divider-after {
+	background: $gray;
+	border: 2px solid $gray;
+	clear: both;
+	color: $gray;
+	height: 0;
+	line-height: 2px;
+	margin: 0 0 $gutter 0;
+}
+
+.review {
+	> h4 {
+		margin-bottom: 0;
+	}
+	> img {
+		height: auto;
+		max-width: 600px;
+		width: 100%;
+	}
+	> p {
+		font-size: 0.75em;
+	}
+}
+#acf-field-contractors_and_estimate .field_title {
+	margin-bottom: $gutter;
+}
+
+/** /
+table.breakdown {
+	width: 100%;
+
+	td, th {
+		padding: 0;
+		text-align: center
+	}
+
+	.first-item {
+		text-align: left;
+		width: 20%;
+	}
+}
+	
+	.single-em_noc table.breakdown .first-item {
+		width: 30%;
+	}
+
+	div.summary-total,
+	table.breakdown,
+	table.breakdown {
+		.equals,
+		.total {
+			text-align: right;
+			width: 12% !important;
+		}
+		.equals {
+			width: 3% !important;
+		}
+	}
+		th.total,
+		td.total {
+			text-align: right;
+			width: 12% !important;
+		}
+/**/
+table.scope {
+	width: 100%;
+
+	td, th {
+		padding: 0 0 0.5em;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	.location {
+		width: 65% !important;
+	}
+
+	&, .scope {
+	}
+}
+
+div.summary-total {
+	float: right;
+	margin-top: 1em;
+	text-align: right;
+	width: 100%;
+
+	.total {
+		display: inline-block;
+		font-weight: bold;
+		text-align: right;
+	}
+}

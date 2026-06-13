@@ -1,0 +1,38 @@
+{
+	"id": "locations",
+	"name": "Locations",
+	"section": "resources",
+	"icon": "bi-geo-alt",
+	"table": "em_locations",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "name",
+			"label": "Location name",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "area",
+			"label": "Area / zone",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "level",
+			"label": "Level / floor",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea"
+		}
+	]
+}

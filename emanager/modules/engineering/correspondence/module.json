@@ -1,0 +1,83 @@
+{
+	"id": "correspondence",
+	"name": "Correspondence",
+	"section": "engineering",
+	"icon": "bi-mailbox",
+	"table": "em_correspondence",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Sent",
+		"Received",
+		"Actioned",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "ref_no",
+			"label": "Reference #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "corr_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Letter",
+				"Notice",
+				"Email",
+				"Memo",
+				"Directive",
+				"Claim"
+			],
+			"list": true
+		},
+		{
+			"name": "flow",
+			"label": "Direction",
+			"type": "select",
+			"options": [
+				"Incoming",
+				"Outgoing"
+			],
+			"list": true
+		},
+		{
+			"name": "from_party",
+			"label": "From",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "to_party",
+			"label": "To",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "date_sent",
+			"label": "Date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "body",
+			"label": "Body / summary",
+			"type": "textarea"
+		},
+		{
+			"name": "file_url",
+			"label": "Attachment link",
+			"type": "url"
+		}
+	]
+}

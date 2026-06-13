@@ -1,0 +1,66 @@
+/******************************************************************
+
+Stylesheet: Button Colors
+
+******************************************************************/
+
+.black{
+	@include button-variant(#fff, #313131, #000);
+}
+.blue{
+	@include button-variant(#fff, #00437f, #00142c);
+}
+.brown{
+	@include button-variant(#fff, #6b3c02, #2a1401);
+}
+.dark_blue{
+	@include button-variant(#fff, #153f5a, #051927);
+}
+.dark_brown{
+	@include button-variant(#fff, #572f05, #372e25);
+}
+.dark_green{
+	@include button-variant(#fff, #485a21, #202b03);
+}
+.green{
+	@include button-variant(#fff, #74941f, #364709);
+}
+.mauve{
+	@include button-variant(#fff, #7b726c, #2b2725);
+}
+.orange{
+	@include button-variant(#fff, #ff9624, #9b5911);
+}
+.pearl{
+	@include button-variant(#fff, #bca89d, #625751);
+}
+.pink{
+	@include button-variant(#fff, #de2e81, #5c0d32);
+}
+.purple{
+	@include button-variant(#fff, #78498e, #0f0514);
+}
+.red{
+	@include button-variant(#fff, #a7170c, #220100);
+}
+.slate_grey{
+	@include button-variant(#fff, #7f8d9c, #1e2227);
+}
+.silver{
+	@include button-variant(#fff, #b5b5b5, #333);
+}
+.steel_blue{
+	@include button-variant(#fff, #aec3d5, #373e45);
+}
+.teal{
+	@include button-variant(#fff, #03b5cc, #002f36);
+}
+.yellow{
+	@include button-variant(#fff, #ffcf2d, #aa891a);
+}
+.wheat{
+	@include button-variant(#fff, #b4ad8b, #403d2f);
+}
+.white {
+	@include button-variant(#000, #fff, #333);
+}

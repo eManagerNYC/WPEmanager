@@ -1,0 +1,149 @@
+{
+	"id": "issues",
+	"name": "Issues",
+	"section": "engineering",
+	"icon": "bi-exclamation-circle",
+	"table": "em_issues",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Assigned",
+		"In Review",
+		"Resolved",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "issue_no",
+			"label": "Issue #",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "issue_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Design",
+				"Field",
+				"Quality",
+				"Safety",
+				"Coordination",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "priority",
+			"label": "Priority",
+			"type": "select",
+			"options": [
+				"Low",
+				"Medium",
+				"High",
+				"Critical"
+			],
+			"list": true
+		},
+		{
+			"name": "location",
+			"label": "Location",
+			"type": "select",
+			"lookup": {
+				"module": "locations",
+				"value": "name",
+				"label": "name"
+			}
+		},
+		{
+			"name": "assigned_to",
+			"label": "Assigned to",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "due_date",
+			"label": "Due",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "resolution",
+			"label": "Resolution",
+			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Assigned",
+						"label": "Assign",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Assigned": {
+				"transitions": [
+					{
+						"to": "In Review",
+						"label": "Submit for review",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"In Review": {
+				"transitions": [
+					{
+						"to": "Resolved",
+						"label": "Resolve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Assigned",
+						"label": "Reopen",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Resolved": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
+}

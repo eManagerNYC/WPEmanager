@@ -1,0 +1,58 @@
+{
+	"id": "letters-of-intent",
+	"name": "Letters of Intent",
+	"section": "contracts",
+	"icon": "bi-envelope-paper",
+	"table": "em_letters_of_intent",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Issued",
+		"Accepted",
+		"Superseded"
+	],
+	"fields": [
+		{
+			"name": "loi_no",
+			"label": "LOI number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "not_to_exceed",
+			"label": "Not-to-exceed amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "issued_date",
+			"label": "Issued",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "expiration_date",
+			"label": "Expires",
+			"type": "date"
+		},
+		{
+			"name": "terms",
+			"label": "Terms",
+			"type": "textarea"
+		}
+	]
+}

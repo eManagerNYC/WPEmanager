@@ -1,0 +1,125 @@
+{
+	"id": "cors",
+	"name": "Change Order Requests (COR/AL)",
+	"section": "change-management",
+	"icon": "bi-envelope-paper-heart",
+	"table": "em_cors",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Submitted to Owner",
+		"Revise",
+		"Approved",
+		"Executed"
+	],
+	"fields": [
+		{
+			"name": "cor_no",
+			"label": "COR / AL number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "letter_type",
+			"label": "Letter type",
+			"type": "select",
+			"options": [
+				"COR (Change Order Request)",
+				"AL (Approval Letter)"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "scope",
+			"label": "Scope summary",
+			"type": "textarea"
+		},
+		{
+			"name": "owner_comments",
+			"label": "Owner comments",
+			"type": "textarea"
+		},
+		{
+			"name": "cover_url",
+			"label": "Cover letter link",
+			"type": "url"
+		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted to Owner",
+						"label": "Submit to owner",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted to Owner": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Revise",
+						"label": "Return for revision",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Revise": {
+				"transitions": [
+					{
+						"to": "Submitted to Owner",
+						"label": "Resubmit",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Executed",
+						"label": "Mark executed",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Executed": {
+				"transitions": []
+			}
+		}
+	}
+}

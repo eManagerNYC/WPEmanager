@@ -1,0 +1,65 @@
+{
+	"id": "approval-letters",
+	"name": "Approval Letters & Directives",
+	"section": "cost",
+	"icon": "bi-file-earmark-medical",
+	"table": "em_approval_letters",
+	"version": "1.0.0",
+	"statuses": [
+		"Draft",
+		"Issued",
+		"Acknowledged",
+		"Superseded"
+	],
+	"fields": [
+		{
+			"name": "letter_no",
+			"label": "Letter number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "letter_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Approval Letter",
+				"Construction Change Directive",
+				"Field Directive",
+				"Notice to Proceed"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "issued_to",
+			"label": "Issued to",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "issued_date",
+			"label": "Issued",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount (if applicable)",
+			"type": "currency"
+		},
+		{
+			"name": "body",
+			"label": "Letter body",
+			"type": "textarea"
+		}
+	]
+}

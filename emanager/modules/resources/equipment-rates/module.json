@@ -1,0 +1,57 @@
+{
+	"id": "equipment-rates",
+	"name": "Equipment Rates",
+	"section": "resources",
+	"icon": "bi-truck",
+	"table": "em_equipment_rates",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Inactive"
+	],
+	"fields": [
+		{
+			"name": "equipment",
+			"label": "Equipment",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "rate_basis",
+			"label": "Rate basis",
+			"type": "select",
+			"options": [
+				"Hourly",
+				"Daily",
+				"Weekly",
+				"Monthly"
+			],
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "rate",
+			"label": "Rate",
+			"type": "currency",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "operated",
+			"label": "Operated (with operator)",
+			"type": "checkbox"
+		},
+		{
+			"name": "vendor",
+			"label": "Vendor",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "effective_date",
+			"label": "Effective",
+			"type": "date"
+		}
+	]
+}

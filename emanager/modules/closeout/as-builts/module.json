@@ -1,0 +1,68 @@
+{
+	"id": "as-builts",
+	"name": "As-Builts / Record Drawings",
+	"section": "closeout",
+	"icon": "bi-pencil-square",
+	"table": "em_as_builts",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Started",
+		"In Progress",
+		"Submitted",
+		"Accepted",
+		"Superseded"
+	],
+	"fields": [
+		{
+			"name": "drawing_no",
+			"label": "Drawing #",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "discipline",
+			"label": "Discipline",
+			"type": "select",
+			"options": [
+				"Architectural",
+				"Structural",
+				"Civil",
+				"Mechanical",
+				"Electrical",
+				"Plumbing",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Responsible trade",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "submitted_date",
+			"label": "Submitted",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "file_url",
+			"label": "Record set link",
+			"type": "url"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

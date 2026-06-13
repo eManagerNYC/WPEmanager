@@ -1,0 +1,32 @@
+<div class="em-auth-wrap d-flex align-items-center justify-content-center">
+	<div class="card em-auth-card shadow-sm">
+		<div class="card-body p-4">
+			<h1 class="h4 mb-1 text-center"><i class="bi bi-buildings me-2" aria-hidden="true"></i>Create account</h1>
+			<p class="text-secondary text-center mb-4">New accounts start as Viewer until an administrator assigns a role.</p>
+			{{banner}}
+			<form method="post" novalidate>
+				{{nonce}}
+				<div class="mb-3">
+					<label class="form-label" for="em-name">Full name</label>
+					<input class="form-control" type="text" id="em-name" name="em_name" required autocomplete="name" autofocus />
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="em-email">Email</label>
+					<input class="form-control" type="email" id="em-email" name="em_email" required autocomplete="email" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="em-company">Company</label>
+					<input class="form-control" type="text" id="em-company" name="em_company" autocomplete="organization" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="em-password">Password <small class="text-secondary">(10+ characters)</small></label>
+					<input class="form-control" type="password" id="em-password" name="em_password" required minlength="10" autocomplete="new-password" />
+				</div>
+				<button class="btn btn-primary w-100" type="submit">Register</button>
+			</form>
+			<div class="text-center mt-3 small">
+				<a href="{{login_url}}">Already have an account? Sign in</a>
+			</div>
+		</div>
+	</div>
+</div>

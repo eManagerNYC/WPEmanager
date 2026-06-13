@@ -1,0 +1,25 @@
+.acf-input-wrap {
+	position: relative;
+}
+
+.customize_register_clear {
+	font-size: 2em;
+	position: absolute;
+	right: 0.25em;
+	text-decoration: none;
+	top: -0.25em;
+	z-index: 50;
+}
+
+.customize_register_links {
+	padding-top: 1em;
+}
+.customize_register_links a {
+	margin-right: 1em;
+}
+
+.customize_register_spinner {
+	position: absolute;
+	right: 0.35em;
+	top: 0.35em;
+}

@@ -1,0 +1,56 @@
+{
+	"id": "specifications",
+	"name": "Specifications",
+	"section": "engineering",
+	"icon": "bi-card-checklist",
+	"table": "em_specifications",
+	"version": "1.0.0",
+	"statuses": [
+		"Current",
+		"Superseded",
+		"Void"
+	],
+	"fields": [
+		{
+			"name": "section_no",
+			"label": "Spec section",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "division",
+			"label": "CSI division",
+			"type": "select",
+			"lookup": {
+				"module": "csi-divisions",
+				"value": "number",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
+			"name": "revision",
+			"label": "Revision",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "issue_date",
+			"label": "Issue date",
+			"type": "date"
+		},
+		{
+			"name": "file_url",
+			"label": "Document link",
+			"type": "url"
+		}
+	]
+}

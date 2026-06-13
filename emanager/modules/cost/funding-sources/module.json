@@ -1,0 +1,52 @@
+{
+	"id": "funding-sources",
+	"name": "Funding Sources",
+	"section": "cost",
+	"icon": "bi-bank",
+	"table": "em_funding_sources",
+	"version": "1.0.0",
+	"statuses": [
+		"Active",
+		"Exhausted",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "source_name",
+			"label": "Source",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "funding_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Owner Equity",
+				"Construction Loan",
+				"Grant",
+				"Bond",
+				"Public Appropriation",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "amount",
+			"label": "Amount",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "reference",
+			"label": "Reference",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

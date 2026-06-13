@@ -1,0 +1,108 @@
+/*********************
+
+FILTERS
+
+*********************/
+
+.filter-label {
+	color: $white;
+	font-weight: normal;
+	text-align: center;
+	line-height: 2.25em !important;
+	text-transform: uppercase;
+}
+
+#table-export {
+//	float: right;
+	margin: 0 0 $gutter;
+	text-align: left;
+	width: 100%;
+	a {
+		margin-left: $gutter;
+	}
+}
+
+#filter-submit {
+	padding: $gutter 0 $gutter 0 !important;
+	button {
+		margin-left: $margin;
+	}
+}
+
+#filter-clear {
+	padding-top: $gutter !important;
+}
+
+#add-button {
+	margin: 0;
+	padding: 0;
+	text-align: right;
+}
+
+#search,
+#filters {
+	&#search,
+	.wrap,
+	.filter-submit,
+	.filter-clear {
+		background: $gray !important;
+		border-radius: $gutter;
+		padding: $gutter $gutter 0;
+	}
+
+    .acf-input-prepend {
+        line-height: 1em !important;
+        float: left;
+    }
+    .acf-is-prepended {
+        width: 90%;
+        margin-left: 1.5ex;
+    }
+	
+	&#filters {
+		width: 100%;
+		.wrap {
+			border-radius: 0 0 $gutter $gutter;
+			margin: 0 0 $margin;
+			padding-top: 0.6em;
+		}
+	}
+	&#search {
+		border-radius: $gutter $gutter 0 0;
+		clear: both;
+	}
+
+	@include breakpoint(medium)
+	{
+		.wrap {
+			border-radius: 0 $gutter $gutter $gutter !important;
+		}
+		&#search {
+			clear: none;
+		}
+	}
+
+	input[type="text"],
+	input[type="password"],
+	input[type="datetime"],
+	input[type="datetime-local"],
+	input[type="date"],
+	input[type="month"],
+	input[type="time"],
+	input[type="week"],
+	input[type="number"],
+	input[type="email"],
+	input[type="url"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="color"],
+	select,
+	textarea {
+		background-color: $white;
+		font-size: 0.75em;
+		height: 3em;
+		line-height: 1;
+		margin-bottom: $gutter;
+		padding: 0.25em 0.5em !important;
+	}
+}

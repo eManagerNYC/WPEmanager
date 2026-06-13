@@ -1,0 +1,60 @@
+{
+	"id": "bim-models",
+	"name": "3D Models",
+	"section": "bim",
+	"icon": "bi-box",
+	"table": "em_bim_models",
+	"version": "1.0.0",
+	"statuses": [
+		"Current",
+		"Superseded",
+		"Archived"
+	],
+	"fields": [
+		{
+			"name": "title",
+			"label": "Model title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "discipline",
+			"label": "Discipline",
+			"type": "select",
+			"options": [
+				"Architectural",
+				"Structural",
+				"MEP",
+				"Civil",
+				"Federated",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "version",
+			"label": "Version",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "model_date",
+			"label": "Model date",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "ifc_url",
+			"label": "IFC file URL",
+			"type": "url",
+			"required": true,
+			"help": "Direct link to an .ifc file (e.g. a WordPress Media Library URL)."
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

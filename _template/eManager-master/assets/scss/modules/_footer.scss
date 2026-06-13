@@ -1,0 +1,93 @@
+/******************************************************************
+
+Stylesheet: Footer
+
+******************************************************************/
+
+#footer {
+	clear: both;
+	background: $black url(../img/concrete.png) repeat center top;
+	color: $gray_light;
+
+	.copyright {
+		@include grid_col(all);
+		clear: both;
+		font-size: 0.75em;
+		text-align: center;
+		&, a {
+			color: $gray;
+		}
+		a:hover {
+			color: $link_hover;
+		}
+	}
+
+	a[data-toggle="modal"] {
+		background: none !important;
+		color: $white;
+		&:hover {
+			background: $link_hover !important;
+		}
+	}
+
+	.widgets {
+		clear: both;
+		text-align: center;
+		width: 100%;
+	}
+
+	.widget {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.queries {
+		font-size: small;
+		text-align: left;
+	}
+}
+
+.footer-terms {
+	text-align: center;
+	> li {
+		font-weight: normal;
+		margin-bottom: $margin;
+	}
+	.modal-header {
+		h3 {
+			text-align: center;
+		}
+	}
+}
+
+@include breakpoint(medium)
+{
+	#inner-footer {
+		padding-top: $gutter;
+	}
+
+	.footer-terms {
+		.terms {
+			text-align: left;
+		}
+		.privacy {
+			text-align: center;
+		}
+		li:last-child {
+			@include lastcol;
+			font-size: 0.75em;
+			text-align: right;
+		}
+	}
+}
+.footer-about {
+	clear: both;
+	text-align: center;
+
+	a {
+		color: lighten($link_color, 40%);
+		&:hover {
+			color: $link_hover;
+		}
+	}
+}

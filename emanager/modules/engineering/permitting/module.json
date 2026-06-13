@@ -1,0 +1,64 @@
+{
+	"id": "permitting",
+	"name": "Permitting",
+	"section": "engineering",
+	"icon": "bi-patch-check",
+	"table": "em_permitting",
+	"version": "1.0.0",
+	"statuses": [
+		"Not Applied",
+		"Applied",
+		"Under Review",
+		"Issued",
+		"Expired",
+		"Closed"
+	],
+	"fields": [
+		{
+			"name": "permit_no",
+			"label": "Permit number",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "title",
+			"label": "Permit title",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "authority",
+			"label": "Issuing authority",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "applied_date",
+			"label": "Applied",
+			"type": "date"
+		},
+		{
+			"name": "issued_date",
+			"label": "Issued",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "expires",
+			"label": "Expires",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "fee",
+			"label": "Fee",
+			"type": "currency"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

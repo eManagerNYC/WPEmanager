@@ -1,0 +1,70 @@
+{
+	"id": "waste-diversion",
+	"name": "Waste Diversion",
+	"section": "sustainability",
+	"icon": "bi-recycle",
+	"table": "em_waste_diversion",
+	"version": "1.0.0",
+	"statuses": [
+		"Logged"
+	],
+	"fields": [
+		{
+			"name": "log_date",
+			"label": "Date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "material",
+			"label": "Material",
+			"type": "select",
+			"options": [
+				"Concrete",
+				"Metal",
+				"Wood",
+				"Cardboard",
+				"Drywall",
+				"Mixed C&D",
+				"Hazardous",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "weight_tons",
+			"label": "Weight (tons)",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "disposal_method",
+			"label": "Method",
+			"type": "select",
+			"options": [
+				"Recycled",
+				"Reused",
+				"Donated",
+				"Landfill"
+			],
+			"list": true
+		},
+		{
+			"name": "hauler",
+			"label": "Hauler",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "ticket_no",
+			"label": "Ticket #",
+			"type": "text"
+		},
+		{
+			"name": "notes",
+			"label": "Notes",
+			"type": "textarea"
+		}
+	]
+}

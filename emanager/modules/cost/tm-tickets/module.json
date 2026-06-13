@@ -1,0 +1,71 @@
+{
+	"id": "tm-tickets",
+	"name": "Time & Materials Tickets",
+	"section": "cost",
+	"icon": "bi-stopwatch",
+	"table": "em_tm_tickets",
+	"version": "1.0.0",
+	"statuses": [
+		"Open",
+		"Submitted",
+		"Approved",
+		"Rejected",
+		"Invoiced"
+	],
+	"fields": [
+		{
+			"name": "ticket_no",
+			"label": "Ticket number",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "work_date",
+			"label": "Work date",
+			"type": "date",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "company",
+			"label": "Company",
+			"type": "text",
+			"required": true,
+			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Work description",
+			"type": "textarea",
+			"required": true
+		},
+		{
+			"name": "labor_hours",
+			"label": "Labor hours",
+			"type": "number",
+			"list": true
+		},
+		{
+			"name": "material_cost",
+			"label": "Material cost",
+			"type": "currency"
+		},
+		{
+			"name": "equipment_cost",
+			"label": "Equipment cost",
+			"type": "currency"
+		},
+		{
+			"name": "total",
+			"label": "Ticket total",
+			"type": "currency",
+			"list": true
+		},
+		{
+			"name": "authorized_signature",
+			"label": "Authorized by (signature)",
+			"type": "signature"
+		}
+	]
+}
