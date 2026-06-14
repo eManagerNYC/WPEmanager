@@ -28,8 +28,26 @@
 			"list": true
 		},
 		{
+			"name": "permit_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Building",
+				"Foundation",
+				"Electrical",
+				"Plumbing",
+				"Mechanical",
+				"Demolition",
+				"Grading",
+				"Right-of-Way",
+				"Occupancy",
+				"Other"
+			],
+			"list": true
+		},
+		{
 			"name": "authority",
-			"label": "Issuing authority",
+			"label": "Issuing authority (AHJ)",
 			"type": "text",
 			"list": true
 		},
@@ -60,5 +78,81 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Not Applied",
+		"states": {
+			"Not Applied": {
+				"transitions": [
+					{
+						"to": "Applied",
+						"label": "Submit application",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Applied": {
+				"transitions": [
+					{
+						"to": "Under Review",
+						"label": "In AHJ review",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Issued",
+						"label": "Issued",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Review": {
+				"transitions": [
+					{
+						"to": "Issued",
+						"label": "Issued",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Applied",
+						"label": "Resubmit (comments)",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close / final",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Expired",
+						"label": "Expired",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Expired": {
+				"transitions": []
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
 }

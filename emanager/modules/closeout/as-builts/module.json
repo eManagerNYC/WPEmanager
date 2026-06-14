@@ -9,8 +9,7 @@
 		"Not Started",
 		"In Progress",
 		"Submitted",
-		"Accepted",
-		"Superseded"
+		"Accepted"
 	],
 	"fields": [
 		{
@@ -64,5 +63,57 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Not Started",
+		"states": {
+			"Not Started": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Start markup",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Accepted",
+						"label": "Accept",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "In Progress",
+						"label": "Return for correction",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Accepted": {
+				"transitions": []
+			}
+		}
+	}
 }

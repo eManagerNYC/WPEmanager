@@ -1,14 +1,14 @@
 {
 	"id": "punchlist",
-	"name": "Punchlist",
+	"name": "Punch List",
 	"section": "field",
 	"icon": "bi-list-check",
 	"table": "em_punchlist",
 	"version": "1.0.0",
 	"statuses": [
 		"Open",
+		"Work Required",
 		"Ready for Review",
-		"Complete",
 		"Verified"
 	],
 	"fields": [
@@ -19,17 +19,17 @@
 			"list": true
 		},
 		{
-			"name": "description",
-			"label": "Description",
-			"type": "textarea",
-			"required": true
-		},
-		{
 			"name": "title",
 			"label": "Title",
 			"type": "text",
 			"required": true,
 			"list": true
+		},
+		{
+			"name": "description",
+			"label": "Description",
+			"type": "textarea",
+			"required": true
 		},
 		{
 			"name": "location",
@@ -49,15 +49,88 @@
 			"list": true
 		},
 		{
+			"name": "ball_in_court",
+			"label": "Ball in court",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "priority",
+			"label": "Priority",
+			"type": "select",
+			"options": [
+				"Low",
+				"Normal",
+				"High"
+			],
+			"list": true
+		},
+		{
 			"name": "due_date",
 			"label": "Due",
 			"type": "date",
 			"list": true
 		},
 		{
+			"name": "backcharge",
+			"label": "Backcharge amount",
+			"type": "currency"
+		},
+		{
 			"name": "photo_url",
 			"label": "Photo link",
 			"type": "url"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Work Required",
+						"label": "Assign to trade",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Work Required": {
+				"transitions": [
+					{
+						"to": "Ready for Review",
+						"label": "Mark ready for review",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Ready for Review": {
+				"transitions": [
+					{
+						"to": "Verified",
+						"label": "Verify & close",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Work Required",
+						"label": "Reject — rework",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Verified": {
+				"transitions": []
+			}
+		}
+	}
 }

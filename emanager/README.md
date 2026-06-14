@@ -49,6 +49,54 @@ logs an **inspection** and an **NCR**, the PM answers two **RFIs**, accounting r
 monthly **G702/G703 pay application**, and the **cost summary** shows budget vs. committed
 vs. actual vs. forecast — every step stamped to an activity timeline.
 
+## Workflow diagrams
+
+**Change-order chain** — records hand off across modules, each step gated by the acting party's role:
+
+```mermaid
+flowchart LR
+    RFI[RFI / Field condition] --> PCO[PCO Request]
+    PCO -->|GC submits| NOC[Notification of Change]
+    NOC -->|Owner returns: P&P / PO / DNP| DIR[Scope / PCO Directive]
+    DIR -->|Pricing Only| PROP[Subcontractor Proposal]
+    DIR -->|Proceed & Pricing| TIX[eTicket T&M]
+    PROP --> COR[Change Order Request / AL]
+    COR -->|Owner approves| EXE[Executed change order]
+    TIX --> INV[Billing]
+```
+
+**RFI lifecycle** (ball-in-court):
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Open: GC submits
+    Open --> Answered: Consultant responds
+    Open --> Void: GC voids
+    Answered --> Closed: GC accepts
+    Answered --> Open: GC reopens / clarifies
+    Closed --> [*]
+```
+
+**Submittal review** (CSI disposition):
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Submitted: Subcontractor submits
+    Submitted --> GC_Review: GC begins review
+    GC_Review --> AE_Review: GC forwards to A/E
+    GC_Review --> Draft: returned to sub
+    AE_Review --> Returned: A/E disposition
+    Returned --> Closed: Approved / As Noted
+    Returned --> Draft: Revise & Resubmit
+    Closed --> [*]
+```
+
+Every transition is gated by party role (GC · Owner · Owner's Rep · Consultant · Subcontractor)
+and written to the record's activity timeline. See [docs/IMPROVEMENT-PLAN.md](docs/IMPROVEMENT-PLAN.md)
+for the roadmap of bespoke build-outs across the remaining sections.
+
 Implements the system described in provisional patent 514712205 ("PHP application built on
 top of WordPress using a theme and set of plugins"), modernised as a standalone plugin.
 
@@ -177,7 +225,7 @@ never stalls.
 | Section | Modules |
 |---|---|
 | Preconstruction | Qualified Bidders · Bid Packages · Bid Manual · Prequalification *(workflow)* · Bid Solicitations (ITB) · Bid Submissions (leveling) · Estimates · Value Engineering *(workflow)* |
-| Engineering | RFIs *(workflow)* · Submittals · Drawings · Specifications · File Explorer · Permitting · Meetings · Transmittals · Issues *(workflow)* · Action Items *(workflow)* · Correspondence · Design Reviews *(workflow)* · Procurement Log (long-lead / JIT) |
+| Engineering | RFIs *(ball-in-court workflow + aging KPIs, links to Change Events)* · Submittals *(Sub→GC→A/E review with dispositions + lead-time KPIs)* · Drawings & Specifications *(revision control)* · File Explorer · Permitting *(workflow)* · Meetings *(agenda→minutes, spawn action items)* · Transmittals *(workflow)* · Issues *(workflow)* · Action Items *(workflow)* · Correspondence · Design Reviews *(workflow)* · Procurement Log (long-lead / JIT) |
 | **Change Management** | **PCO Requests · Notifications of Change · Supplemental Scope Info · Scope/PCO Directives · Subcontractor Proposals · Change Order Requests (COR/AL) · eTickets · Daily Construction Reports** — all workflow-driven and linked |
 | Field | Daily Reports (weather) · Schedule *(Gantt chart)* · **Linear / Takt Schedule (Line-of-Balance chart)** · Photo Library · Checklists · Punchlist · Pull Planning · Timesheets *(workflow)* · Crews · Production Quantities · Manpower Log · Deliveries · Visitor Log · Equipment Log · Site Logistics |
 | Quality | Inspections *(workflow)* · Non-Conformance Reports *(workflow)* · Deficiencies/Defects · Test Records |

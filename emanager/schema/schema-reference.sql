@@ -158,13 +158,23 @@ CREATE TABLE em_rfis (
   updated_at datetime DEFAULT NULL,
   `number` varchar(191) DEFAULT NULL,
   `subject` varchar(191) DEFAULT NULL,
+  `discipline` varchar(191) DEFAULT NULL,
+  `priority` varchar(191) DEFAULT NULL,
   `question` text DEFAULT NULL,
-  `answer` text DEFAULT NULL,
+  `ball_in_court` varchar(191) DEFAULT NULL,
   `assigned_to` varchar(191) DEFAULT NULL,
+  `date_submitted` date DEFAULT NULL,
   `date_required` date DEFAULT NULL,
   `drawing_ref` varchar(191) DEFAULT NULL,
+  `answer` text DEFAULT NULL,
+  `responded_by` varchar(191) DEFAULT NULL,
+  `response_date` date DEFAULT NULL,
   `cost_impact` tinyint(1) DEFAULT NULL,
+  `cost_impact_amount` decimal(20,4) DEFAULT NULL,
   `schedule_impact` tinyint(1) DEFAULT NULL,
+  `schedule_impact_days` decimal(20,4) DEFAULT NULL,
+  `distribution` text DEFAULT NULL,
+  `file_url` varchar(191) DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
   KEY created_at (created_at),
@@ -173,7 +183,10 @@ CREATE TABLE em_rfis (
   KEY linked (linked_module,linked_id),
   KEY `idx_number` (`number`),
   KEY `idx_subject` (`subject`),
-  KEY `idx_assigned_to` (`assigned_to`),
+  KEY `idx_discipline` (`discipline`),
+  KEY `idx_priority` (`priority`),
+  KEY `idx_ball_in_court` (`ball_in_court`),
+  KEY `idx_date_submitted` (`date_submitted`),
   KEY `idx_date_required` (`date_required`)
 );
 
@@ -191,13 +204,19 @@ CREATE TABLE em_submittals (
   created_at datetime DEFAULT NULL,
   updated_at datetime DEFAULT NULL,
   `number` varchar(191) DEFAULT NULL,
+  `revision` varchar(191) DEFAULT NULL,
+  `submittal_type` varchar(191) DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
   `spec_section` varchar(191) DEFAULT NULL,
   `subcontractor` varchar(191) DEFAULT NULL,
-  `submit_by` date DEFAULT NULL,
+  `ball_in_court` varchar(191) DEFAULT NULL,
+  `reviewer` varchar(191) DEFAULT NULL,
+  `lead_time_days` decimal(20,4) DEFAULT NULL,
   `required_on_site` date DEFAULT NULL,
+  `date_received` date DEFAULT NULL,
+  `date_returned` date DEFAULT NULL,
+  `reviewer_notes` text DEFAULT NULL,
   `file_url` varchar(191) DEFAULT NULL,
-  `notes` text DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
   KEY created_at (created_at),
@@ -205,10 +224,14 @@ CREATE TABLE em_submittals (
   KEY project_status (project_id,status),
   KEY linked (linked_module,linked_id),
   KEY `idx_number` (`number`),
+  KEY `idx_revision` (`revision`),
+  KEY `idx_submittal_type` (`submittal_type`),
   KEY `idx_title` (`title`),
   KEY `idx_spec_section` (`spec_section`),
   KEY `idx_subcontractor` (`subcontractor`),
-  KEY `idx_required_on_site` (`required_on_site`)
+  KEY `idx_ball_in_court` (`ball_in_court`),
+  KEY `idx_required_on_site` (`required_on_site`),
+  KEY `idx_date_returned` (`date_returned`)
 );
 
 -- Drawings (engineering)
@@ -227,6 +250,7 @@ CREATE TABLE em_drawings (
   `number` varchar(191) DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
   `discipline` varchar(191) DEFAULT NULL,
+  `set_type` varchar(191) DEFAULT NULL,
   `revision` varchar(191) DEFAULT NULL,
   `rev_date` date DEFAULT NULL,
   `file_url` varchar(191) DEFAULT NULL,
@@ -239,6 +263,7 @@ CREATE TABLE em_drawings (
   KEY `idx_number` (`number`),
   KEY `idx_title` (`title`),
   KEY `idx_discipline` (`discipline`),
+  KEY `idx_set_type` (`set_type`),
   KEY `idx_revision` (`revision`),
   KEY `idx_rev_date` (`rev_date`)
 );
@@ -271,7 +296,8 @@ CREATE TABLE em_specifications (
   KEY `idx_section_no` (`section_no`),
   KEY `idx_title` (`title`),
   KEY `idx_division` (`division`),
-  KEY `idx_revision` (`revision`)
+  KEY `idx_revision` (`revision`),
+  KEY `idx_issue_date` (`issue_date`)
 );
 
 -- File Explorer (engineering)
@@ -319,6 +345,7 @@ CREATE TABLE em_permitting (
   updated_at datetime DEFAULT NULL,
   `permit_no` varchar(191) DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
+  `permit_type` varchar(191) DEFAULT NULL,
   `authority` varchar(191) DEFAULT NULL,
   `applied_date` date DEFAULT NULL,
   `issued_date` date DEFAULT NULL,
@@ -333,6 +360,7 @@ CREATE TABLE em_permitting (
   KEY linked (linked_module,linked_id),
   KEY `idx_permit_no` (`permit_no`),
   KEY `idx_title` (`title`),
+  KEY `idx_permit_type` (`permit_type`),
   KEY `idx_authority` (`authority`),
   KEY `idx_issued_date` (`issued_date`),
   KEY `idx_expires` (`expires`)
@@ -352,12 +380,14 @@ CREATE TABLE em_meetings (
   created_at datetime DEFAULT NULL,
   updated_at datetime DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
+  `meeting_no` varchar(191) DEFAULT NULL,
   `meeting_type` varchar(191) DEFAULT NULL,
   `meeting_date` datetime DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `attendees` text DEFAULT NULL,
   `agenda` text DEFAULT NULL,
   `minutes` text DEFAULT NULL,
+  `next_meeting` datetime DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
   KEY created_at (created_at),
@@ -365,6 +395,7 @@ CREATE TABLE em_meetings (
   KEY project_status (project_id,status),
   KEY linked (linked_module,linked_id),
   KEY `idx_title` (`title`),
+  KEY `idx_meeting_no` (`meeting_no`),
   KEY `idx_meeting_type` (`meeting_type`),
   KEY `idx_meeting_date` (`meeting_date`)
 );
@@ -385,6 +416,7 @@ CREATE TABLE em_transmittals (
   `number` varchar(191) DEFAULT NULL,
   `to_company` varchar(191) DEFAULT NULL,
   `attention` varchar(191) DEFAULT NULL,
+  `purpose` varchar(191) DEFAULT NULL,
   `sent_date` date DEFAULT NULL,
   `via` varchar(191) DEFAULT NULL,
   `contents` text DEFAULT NULL,
@@ -397,6 +429,7 @@ CREATE TABLE em_transmittals (
   KEY linked (linked_module,linked_id),
   KEY `idx_number` (`number`),
   KEY `idx_to_company` (`to_company`),
+  KEY `idx_purpose` (`purpose`),
   KEY `idx_sent_date` (`sent_date`),
   KEY `idx_via` (`via`)
 );
@@ -422,7 +455,10 @@ CREATE TABLE em_daily_reports (
   `precipitation` decimal(20,4) DEFAULT NULL,
   `manpower` decimal(20,4) DEFAULT NULL,
   `work_performed` text DEFAULT NULL,
+  `deliveries` text DEFAULT NULL,
+  `equipment_on_site` text DEFAULT NULL,
   `delays` text DEFAULT NULL,
+  `safety_notes` text DEFAULT NULL,
   `visitors` text DEFAULT NULL,
   `superintendent_signature` mediumtext DEFAULT NULL,
   PRIMARY KEY  (id),
@@ -452,8 +488,10 @@ CREATE TABLE em_photo_library (
   updated_at datetime DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
   `photo_url` varchar(191) DEFAULT NULL,
+  `album` varchar(191) DEFAULT NULL,
   `taken_on` date DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
+  `trade` varchar(191) DEFAULT NULL,
   `tags` varchar(191) DEFAULT NULL,
   `description` text DEFAULT NULL,
   PRIMARY KEY  (id),
@@ -463,8 +501,10 @@ CREATE TABLE em_photo_library (
   KEY project_status (project_id,status),
   KEY linked (linked_module,linked_id),
   KEY `idx_title` (`title`),
+  KEY `idx_album` (`album`),
   KEY `idx_taken_on` (`taken_on`),
-  KEY `idx_location` (`location`)
+  KEY `idx_location` (`location`),
+  KEY `idx_trade` (`trade`)
 );
 
 -- Schedule (field)
@@ -516,6 +556,7 @@ CREATE TABLE em_checklists (
   `title` varchar(191) DEFAULT NULL,
   `checklist_type` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
+  `responsible` varchar(191) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `items` text DEFAULT NULL,
   `results` text DEFAULT NULL,
@@ -528,10 +569,11 @@ CREATE TABLE em_checklists (
   KEY `idx_title` (`title`),
   KEY `idx_checklist_type` (`checklist_type`),
   KEY `idx_location` (`location`),
+  KEY `idx_responsible` (`responsible`),
   KEY `idx_due_date` (`due_date`)
 );
 
--- Punchlist (field)
+-- Punch List (field)
 CREATE TABLE em_punchlist (
   id bigint(20) unsigned NOT NULL auto_increment,
   project_id varchar(191) DEFAULT NULL,
@@ -545,11 +587,14 @@ CREATE TABLE em_punchlist (
   created_at datetime DEFAULT NULL,
   updated_at datetime DEFAULT NULL,
   `item_no` varchar(191) DEFAULT NULL,
-  `description` text DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `responsible` varchar(191) DEFAULT NULL,
+  `ball_in_court` varchar(191) DEFAULT NULL,
+  `priority` varchar(191) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
+  `backcharge` decimal(20,4) DEFAULT NULL,
   `photo_url` varchar(191) DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
@@ -561,6 +606,8 @@ CREATE TABLE em_punchlist (
   KEY `idx_title` (`title`),
   KEY `idx_location` (`location`),
   KEY `idx_responsible` (`responsible`),
+  KEY `idx_ball_in_court` (`ball_in_court`),
+  KEY `idx_priority` (`priority`),
   KEY `idx_due_date` (`due_date`)
 );
 
@@ -626,7 +673,8 @@ CREATE TABLE em_observations (
   KEY `idx_title` (`title`),
   KEY `idx_observation_type` (`observation_type`),
   KEY `idx_severity` (`severity`),
-  KEY `idx_observed_on` (`observed_on`)
+  KEY `idx_observed_on` (`observed_on`),
+  KEY `idx_company_observed` (`company_observed`)
 );
 
 -- Pre-Task Plans (PTPs) (safety)
@@ -1025,6 +1073,7 @@ CREATE TABLE em_direct_costs (
   KEY `idx_cost_type` (`cost_type`),
   KEY `idx_vendor` (`vendor`),
   KEY `idx_reference_no` (`reference_no`),
+  KEY `idx_cost_code` (`cost_code`),
   KEY `idx_cost_date` (`cost_date`),
   KEY `idx_amount` (`amount`)
 );
@@ -1059,6 +1108,7 @@ CREATE TABLE em_potential_changes (
   KEY `idx_title` (`title`),
   KEY `idx_reason` (`reason`),
   KEY `idx_rom_estimate` (`rom_estimate`),
+  KEY `idx_cost_code` (`cost_code`),
   KEY `idx_identified_date` (`identified_date`)
 );
 
@@ -1078,6 +1128,7 @@ CREATE TABLE em_change_orders (
   `co_no` varchar(191) DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
   `co_type` varchar(191) DEFAULT NULL,
+  `cost_code` varchar(191) DEFAULT NULL,
   `amount` decimal(20,4) DEFAULT NULL,
   `time_extension_days` decimal(20,4) DEFAULT NULL,
   `executed_date` date DEFAULT NULL,
@@ -1091,6 +1142,7 @@ CREATE TABLE em_change_orders (
   KEY `idx_co_no` (`co_no`),
   KEY `idx_title` (`title`),
   KEY `idx_co_type` (`co_type`),
+  KEY `idx_cost_code` (`cost_code`),
   KEY `idx_amount` (`amount`),
   KEY `idx_executed_date` (`executed_date`)
 );
@@ -1209,7 +1261,8 @@ CREATE TABLE em_coordination_issues (
   updated_at datetime DEFAULT NULL,
   `issue_no` varchar(191) DEFAULT NULL,
   `title` varchar(191) DEFAULT NULL,
-  `trades_involved` varchar(191) DEFAULT NULL,
+  `clash_type` varchar(191) DEFAULT NULL,
+  `models_involved` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `priority` varchar(191) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
@@ -1223,9 +1276,11 @@ CREATE TABLE em_coordination_issues (
   KEY linked (linked_module,linked_id),
   KEY `idx_issue_no` (`issue_no`),
   KEY `idx_title` (`title`),
-  KEY `idx_trades_involved` (`trades_involved`),
+  KEY `idx_clash_type` (`clash_type`),
+  KEY `idx_models_involved` (`models_involved`),
   KEY `idx_location` (`location`),
-  KEY `idx_priority` (`priority`)
+  KEY `idx_priority` (`priority`),
+  KEY `idx_due_date` (`due_date`)
 );
 
 -- PCO Requests (PCOR) (change-management)
@@ -1870,7 +1925,8 @@ CREATE TABLE em_bid_submissions (
   KEY `idx_bid_package` (`bid_package`),
   KEY `idx_base_bid` (`base_bid`),
   KEY `idx_alternates_total` (`alternates_total`),
-  KEY `idx_submitted_date` (`submitted_date`)
+  KEY `idx_submitted_date` (`submitted_date`),
+  KEY `idx_score` (`score`)
 );
 
 -- Estimates (preconstruction)
@@ -2095,7 +2151,9 @@ CREATE TABLE em_inspections (
   `inspection_type` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `inspector` varchar(191) DEFAULT NULL,
+  `trade` varchar(191) DEFAULT NULL,
   `scheduled_date` date DEFAULT NULL,
+  `completed_date` date DEFAULT NULL,
   `checklist` text DEFAULT NULL,
   `findings` text DEFAULT NULL,
   `inspector_signature` mediumtext DEFAULT NULL,
@@ -2110,7 +2168,9 @@ CREATE TABLE em_inspections (
   KEY `idx_inspection_type` (`inspection_type`),
   KEY `idx_location` (`location`),
   KEY `idx_inspector` (`inspector`),
-  KEY `idx_scheduled_date` (`scheduled_date`)
+  KEY `idx_trade` (`trade`),
+  KEY `idx_scheduled_date` (`scheduled_date`),
+  KEY `idx_completed_date` (`completed_date`)
 );
 
 -- Non-Conformance Reports (quality)
@@ -2131,9 +2191,11 @@ CREATE TABLE em_non_conformance (
   `spec_section` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `responsible` varchar(191) DEFAULT NULL,
+  `severity` varchar(191) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `root_cause` text DEFAULT NULL,
   `corrective_action` text DEFAULT NULL,
+  `preventive_action` text DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
@@ -2146,6 +2208,7 @@ CREATE TABLE em_non_conformance (
   KEY `idx_spec_section` (`spec_section`),
   KEY `idx_location` (`location`),
   KEY `idx_responsible` (`responsible`),
+  KEY `idx_severity` (`severity`),
   KEY `idx_due_date` (`due_date`)
 );
 
@@ -2166,6 +2229,7 @@ CREATE TABLE em_deficiencies (
   `title` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `trade` varchar(191) DEFAULT NULL,
+  `ball_in_court` varchar(191) DEFAULT NULL,
   `severity` varchar(191) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `due_date` date DEFAULT NULL,
@@ -2180,6 +2244,7 @@ CREATE TABLE em_deficiencies (
   KEY `idx_title` (`title`),
   KEY `idx_location` (`location`),
   KEY `idx_trade` (`trade`),
+  KEY `idx_ball_in_court` (`ball_in_court`),
   KEY `idx_severity` (`severity`),
   KEY `idx_due_date` (`due_date`)
 );
@@ -2201,8 +2266,8 @@ CREATE TABLE em_test_records (
   `test_type` varchar(191) DEFAULT NULL,
   `location` varchar(191) DEFAULT NULL,
   `test_date` date DEFAULT NULL,
-  `result` varchar(191) DEFAULT NULL,
   `reading_value` varchar(191) DEFAULT NULL,
+  `spec_requirement` varchar(191) DEFAULT NULL,
   `lab` varchar(191) DEFAULT NULL,
   `file_url` varchar(191) DEFAULT NULL,
   PRIMARY KEY  (id),
@@ -2214,7 +2279,6 @@ CREATE TABLE em_test_records (
   KEY `idx_test_no` (`test_no`),
   KEY `idx_test_type` (`test_type`),
   KEY `idx_test_date` (`test_date`),
-  KEY `idx_result` (`result`),
   KEY `idx_lab` (`lab`)
 );
 
@@ -2239,10 +2303,15 @@ CREATE TABLE em_incidents (
   `location` varchar(191) DEFAULT NULL,
   `company_involved` varchar(191) DEFAULT NULL,
   `injured_party` varchar(191) DEFAULT NULL,
+  `body_part` varchar(191) DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `root_cause_method` varchar(191) DEFAULT NULL,
   `root_cause` text DEFAULT NULL,
   `corrective_action` text DEFAULT NULL,
+  `lost_days` decimal(20,4) DEFAULT NULL,
+  `restricted_days` decimal(20,4) DEFAULT NULL,
   `osha_recordable` tinyint(1) DEFAULT NULL,
+  `reported_to_osha` tinyint(1) DEFAULT NULL,
   PRIMARY KEY  (id),
   KEY status (status),
   KEY created_at (created_at),
@@ -2574,6 +2643,7 @@ CREATE TABLE em_commitments (
   `commitment_type` varchar(191) DEFAULT NULL,
   `vendor` varchar(191) DEFAULT NULL,
   `csi_division` varchar(191) DEFAULT NULL,
+  `cost_code` varchar(191) DEFAULT NULL,
   `value` decimal(20,4) DEFAULT NULL,
   `executed_date` date DEFAULT NULL,
   `retainage_pct` decimal(20,4) DEFAULT NULL,
@@ -2588,6 +2658,7 @@ CREATE TABLE em_commitments (
   KEY `idx_title` (`title`),
   KEY `idx_commitment_type` (`commitment_type`),
   KEY `idx_vendor` (`vendor`),
+  KEY `idx_cost_code` (`cost_code`),
   KEY `idx_value` (`value`),
   KEY `idx_executed_date` (`executed_date`)
 );

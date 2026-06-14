@@ -32,17 +32,36 @@ const LOOKUP_LOCATION = { lookup: { module: 'locations', value: 'name', label: '
 const LOOKUP_COSTCODE = { lookup: { module: 'cost-codes', value: 'code', label: 'title' } };
 const LOOKUP_CSI = { lookup: { module: 'csi-divisions', value: 'number', label: 'title' } };
 
+// Reusable Resources workflows: active/inactive toggle, and rate versioning.
+const WF_ACTIVE = wf( {
+	'Active': [ { to: 'Inactive', label: 'Deactivate', party: [ 'gc' ] } ],
+	'Inactive': [ { to: 'Active', label: 'Reactivate', party: [ 'gc' ] } ],
+} );
+const WF_RATE = wf( {
+	'Active': [ { to: 'Superseded', label: 'Supersede (new rate)', party: [ 'gc' ] } ],
+	'Superseded': [],
+} );
+
 const MODULES = [
 	/* ------------------------------------------------------------------ Preconstruction */
 	{
 		section: 'preconstruction', id: 'qualified-bidders', name: 'Qualified Bidders', icon: 'bi-people',
-		statuses: [ 'Pending Review', 'Qualified', 'Conditionally Qualified', 'Not Qualified' ],
+		workflow: wf( {
+			'Pending Review': [
+				{ to: 'Qualified', label: 'Qualify', party: [ 'gc' ] },
+				{ to: 'Conditionally Qualified', label: 'Qualify w/ conditions', party: [ 'gc' ] },
+				{ to: 'Not Qualified', label: 'Decline', party: [ 'gc' ] },
+			],
+			'Qualified': [],
+			'Conditionally Qualified': [ { to: 'Qualified', label: 'Clear conditions', party: [ 'gc' ] } ],
+			'Not Qualified': [],
+		} ),
 		fields: [
 			f( 'company_name', 'Company name', 'text', { required: true, list: true } ),
-			f( 'trade', 'Trade / scope', 'text', { list: true, ...LOOKUP_CSI, type: 'select' } ),
+			f( 'trade', 'Trade / scope', 'select', { ...LOOKUP_CSI, list: true } ),
 			f( 'contact_name', 'Contact', 'text', { list: true } ),
 			f( 'email', 'Email', 'email' ),
-			f( 'phone', 'Phone' ),
+			f( 'phone', 'Phone', 'text' ),
 			f( 'emr', 'EMR rating', 'number', { step: '0.01' } ),
 			f( 'bonding_capacity', 'Bonding capacity', 'currency', { list: true } ),
 			f( 'notes', 'Notes', 'textarea' ),
@@ -50,7 +69,17 @@ const MODULES = [
 	},
 	{
 		section: 'preconstruction', id: 'bid-packages', name: 'Bid Packages', icon: 'bi-box-seam',
-		statuses: [ 'Draft', 'Out to Bid', 'Bids Received', 'Awarded', 'Closed' ],
+		// Package → out to bid (issue a solicitation) → bids received → awarded.
+		workflow: wf( {
+			'Draft': [ { to: 'Out to Bid', label: 'Issue to bid', party: [ 'gc' ] } ],
+			'Out to Bid': [ { to: 'Bids Received', label: 'Bids received', party: [ 'gc' ] } ],
+			'Bids Received': [ { to: 'Awarded', label: 'Award', party: [ 'gc' ] } ],
+			'Awarded': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
+			'Closed': [],
+		} ),
+		relations: [
+			{ spawn: 'bid-solicitations', label: 'Issue invitation to bid', map: { title: 'title', bid_package: 'number', scope: 'scope', estimate: 'estimate' } },
+		],
 		fields: [
 			f( 'number', 'Package number', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -62,7 +91,11 @@ const MODULES = [
 	},
 	{
 		section: 'preconstruction', id: 'bid-manual', name: 'Bid Manual', icon: 'bi-journal-text',
-		statuses: [ 'Draft', 'Published', 'Superseded' ],
+		workflow: wf( {
+			'Draft': [ { to: 'Published', label: 'Publish', party: [ 'gc' ] } ],
+			'Published': [ { to: 'Superseded', label: 'Supersede', party: [ 'gc' ] } ],
+			'Superseded': [],
+		} ),
 		fields: [
 			f( 'title', 'Document title', 'text', { required: true, list: true } ),
 			f( 'section_no', 'Manual section', 'text', { list: true } ),
@@ -76,50 +109,104 @@ const MODULES = [
 	/* ------------------------------------------------------------------ Engineering */
 	{
 		section: 'engineering', id: 'rfis', name: 'RFIs', icon: 'bi-question-circle',
-		// Patent RFI flow: GC submits, Consultant answers, GC closes.
+		// Ball-in-court RFI lifecycle: GC raises → routed to the consultant for
+		// response → requester reviews → closed. Cost/schedule impact captured,
+		// and an impacted RFI can spawn a Change Event (mirrors the CO chain).
 		workflow: wf( {
 			'Draft': [ { to: 'Open', label: 'Submit RFI', party: [ 'gc' ] } ],
-			'Open': [ { to: 'Answered', label: 'Answer RFI', party: [ 'consultant' ] } ],
+			'Open': [
+				{ to: 'Answered', label: 'Respond', party: [ 'consultant' ] },
+				{ to: 'Void', label: 'Void', party: [ 'gc' ] },
+			],
 			'Answered': [
-				{ to: 'Closed', label: 'Close RFI', party: [ 'gc' ] },
-				{ to: 'Open', label: 'Reopen', party: [ 'gc' ] },
+				{ to: 'Closed', label: 'Accept & close', party: [ 'gc' ] },
+				{ to: 'Open', label: 'Reopen / clarify', party: [ 'gc' ] },
 			],
 			'Closed': [],
 			'Void': [],
 		} ),
+		relations: [
+			{ spawn: 'change-events', label: 'Raise change event', map: { title: 'subject', description: 'question' } },
+		],
 		fields: [
 			f( 'number', 'RFI number', 'text', { required: true, list: true } ),
 			f( 'subject', 'Subject', 'text', { required: true, list: true } ),
+			f( 'discipline', 'Discipline', 'select', { options: [ 'Architectural', 'Structural', 'Civil', 'Mechanical', 'Electrical', 'Plumbing', 'Fire Protection', 'Other' ], list: true } ),
+			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Normal', 'High', 'Critical' ], list: true } ),
 			f( 'question', 'Question', 'textarea', { required: true } ),
-			f( 'answer', 'Answer', 'textarea' ),
-			f( 'assigned_to', 'Assigned to (Consultant)', 'text', { list: true } ),
-			f( 'date_required', 'Answer required by', 'date', { list: true } ),
-			f( 'drawing_ref', 'Drawing reference' ),
-			f( 'cost_impact', 'Cost impact', 'checkbox' ),
-			f( 'schedule_impact', 'Schedule impact', 'checkbox' ),
+			f( 'ball_in_court', 'Ball in court', 'text', { list: true, help: 'Party currently responsible for the next action.' } ),
+			f( 'assigned_to', 'Assigned reviewer (Consultant)', 'text' ),
+			f( 'date_submitted', 'Date submitted', 'date', { list: true } ),
+			f( 'date_required', 'Response required by', 'date', { list: true } ),
+			f( 'drawing_ref', 'Drawing / spec reference', 'text' ),
+			f( 'answer', 'Official response', 'textarea' ),
+			f( 'responded_by', 'Responded by', 'text' ),
+			f( 'response_date', 'Response date', 'date' ),
+			f( 'cost_impact', 'Cost impact?', 'checkbox' ),
+			f( 'cost_impact_amount', 'Estimated cost impact', 'currency' ),
+			f( 'schedule_impact', 'Schedule impact?', 'checkbox' ),
+			f( 'schedule_impact_days', 'Schedule impact (days)', 'number' ),
+			f( 'distribution', 'Distribution', 'textarea' ),
+			f( 'file_url', 'Attachment link', 'url' ),
 		],
 	},
 	{
 		section: 'engineering', id: 'submittals', name: 'Submittals', icon: 'bi-file-earmark-arrow-up',
-		statuses: [ 'Draft', 'Submitted', 'In Review', 'Approved', 'Approved as Noted', 'Revise & Resubmit', 'Rejected' ],
+		// CSI/AIA submittal review: subcontractor submits → GC checks completeness
+		// and forwards → A/E reviews and returns a disposition (Approved / Approved
+		// as Noted / Revise & Resubmit / Rejected). Revise & Resubmit loops back.
+		workflow: wf( {
+			'Draft': [ { to: 'Submitted', label: 'Submit', party: [ 'subcontractor' ] } ],
+			'Submitted': [
+				{ to: 'GC Review', label: 'Begin GC review', party: [ 'gc' ] },
+				{ to: 'Draft', label: 'Return to subcontractor', party: [ 'gc' ] },
+			],
+			'GC Review': [
+				{ to: 'A/E Review', label: 'Forward to A/E', party: [ 'gc' ] },
+				{ to: 'Draft', label: 'Return to subcontractor', party: [ 'gc' ] },
+			],
+			'A/E Review': [
+				{ to: 'Returned', label: 'Return disposition', party: [ 'consultant' ], directions: [ 'Approved', 'Approved as Noted', 'Revise & Resubmit', 'Rejected' ] },
+			],
+			'Returned': [
+				{ to: 'Closed', label: 'Close (approved)', party: [ 'gc' ] },
+				{ to: 'Draft', label: 'Revise & resubmit', party: [ 'gc', 'subcontractor' ] },
+			],
+			'Closed': [],
+		} ),
 		fields: [
 			f( 'number', 'Submittal number', 'text', { required: true, list: true } ),
+			f( 'revision', 'Revision', 'text', { list: true } ),
+			f( 'submittal_type', 'Type', 'select', { options: [ 'Shop Drawing', 'Product Data', 'Sample', 'Mock-up', 'Certificate', 'Test Report', 'O&M Data', 'Closeout' ], list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
 			f( 'subcontractor', 'Subcontractor', 'text', { list: true } ),
-			f( 'submit_by', 'Submit by', 'date' ),
+			f( 'ball_in_court', 'Ball in court', 'text', { list: true } ),
+			f( 'reviewer', 'A/E reviewer', 'text' ),
+			f( 'lead_time_days', 'Lead time (days)', 'number' ),
 			f( 'required_on_site', 'Required on site', 'date', { list: true } ),
+			f( 'date_received', 'Date received', 'date' ),
+			f( 'date_returned', 'Date returned', 'date', { list: true } ),
+			f( 'reviewer_notes', 'Reviewer notes', 'textarea' ),
 			f( 'file_url', 'Document link', 'url' ),
-			f( 'notes', 'Notes', 'textarea' ),
 		],
 	},
 	{
 		section: 'engineering', id: 'drawings', name: 'Drawings', icon: 'bi-bounding-box',
-		statuses: [ 'Current', 'Superseded', 'Void' ],
+		// Revision-controlled drawing register: a new revision supersedes the prior.
+		workflow: wf( {
+			'Current': [
+				{ to: 'Superseded', label: 'Supersede (new revision)', party: [ 'gc', 'consultant' ] },
+				{ to: 'Void', label: 'Void', party: [ 'gc', 'consultant' ] },
+			],
+			'Superseded': [],
+			'Void': [],
+		} ),
 		fields: [
 			f( 'number', 'Drawing number', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'discipline', 'Discipline', 'select', { options: [ 'Architectural', 'Structural', 'Civil', 'Mechanical', 'Electrical', 'Plumbing', 'Fire Protection', 'Landscape', 'Other' ], list: true } ),
+			f( 'set_type', 'Issued set', 'select', { options: [ 'Bid', 'Permit', 'Issued for Construction', 'Construction Documents', 'Addendum', 'ASI / Bulletin', 'As-Built' ], list: true } ),
 			f( 'revision', 'Revision', 'text', { list: true } ),
 			f( 'rev_date', 'Revision date', 'date', { list: true } ),
 			f( 'file_url', 'Drawing link', 'url' ),
@@ -127,13 +214,20 @@ const MODULES = [
 	},
 	{
 		section: 'engineering', id: 'specifications', name: 'Specifications', icon: 'bi-card-checklist',
-		statuses: [ 'Current', 'Superseded', 'Void' ],
+		workflow: wf( {
+			'Current': [
+				{ to: 'Superseded', label: 'Supersede (new revision)', party: [ 'gc', 'consultant' ] },
+				{ to: 'Void', label: 'Void', party: [ 'gc', 'consultant' ] },
+			],
+			'Superseded': [],
+			'Void': [],
+		} ),
 		fields: [
 			f( 'section_no', 'Spec section', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'division', 'CSI division', 'select', { ...LOOKUP_CSI, list: true } ),
 			f( 'revision', 'Revision', 'text', { list: true } ),
-			f( 'issue_date', 'Issue date', 'date' ),
+			f( 'issue_date', 'Issue date', 'date', { list: true } ),
 			f( 'file_url', 'Document link', 'url' ),
 		],
 	},
@@ -151,11 +245,29 @@ const MODULES = [
 	},
 	{
 		section: 'engineering', id: 'permitting', name: 'Permitting', icon: 'bi-patch-check',
-		statuses: [ 'Not Applied', 'Applied', 'Under Review', 'Issued', 'Expired', 'Closed' ],
+		// Authority-having-jurisdiction permit lifecycle from application to close.
+		workflow: wf( {
+			'Not Applied': [ { to: 'Applied', label: 'Submit application', party: [ 'gc' ] } ],
+			'Applied': [
+				{ to: 'Under Review', label: 'In AHJ review', party: [ 'gc' ] },
+				{ to: 'Issued', label: 'Issued', party: [ 'gc' ] },
+			],
+			'Under Review': [
+				{ to: 'Issued', label: 'Issued', party: [ 'gc' ] },
+				{ to: 'Applied', label: 'Resubmit (comments)', party: [ 'gc' ] },
+			],
+			'Issued': [
+				{ to: 'Closed', label: 'Close / final', party: [ 'gc' ] },
+				{ to: 'Expired', label: 'Expired', party: [ 'gc' ] },
+			],
+			'Expired': [],
+			'Closed': [],
+		} ),
 		fields: [
 			f( 'permit_no', 'Permit number', 'text', { list: true } ),
 			f( 'title', 'Permit title', 'text', { required: true, list: true } ),
-			f( 'authority', 'Issuing authority', 'text', { list: true } ),
+			f( 'permit_type', 'Type', 'select', { options: [ 'Building', 'Foundation', 'Electrical', 'Plumbing', 'Mechanical', 'Demolition', 'Grading', 'Right-of-Way', 'Occupancy', 'Other' ], list: true } ),
+			f( 'authority', 'Issuing authority (AHJ)', 'text', { list: true } ),
 			f( 'applied_date', 'Applied', 'date' ),
 			f( 'issued_date', 'Issued', 'date', { list: true } ),
 			f( 'expires', 'Expires', 'date', { list: true } ),
@@ -165,24 +277,40 @@ const MODULES = [
 	},
 	{
 		section: 'engineering', id: 'meetings', name: 'Meeting Agenda / Minutes', icon: 'bi-calendar3',
-		statuses: [ 'Scheduled', 'Agenda Issued', 'Held', 'Minutes Issued' ],
+		// Agenda → held → minutes issued; action items tracked in Action Items.
+		workflow: wf( {
+			'Scheduled': [ { to: 'Agenda Issued', label: 'Issue agenda', party: [ 'gc' ] } ],
+			'Agenda Issued': [ { to: 'Held', label: 'Mark held', party: [ 'gc' ] } ],
+			'Held': [ { to: 'Minutes Issued', label: 'Issue minutes', party: [ 'gc' ] } ],
+			'Minutes Issued': [ { to: 'Held', label: 'Revise minutes', party: [ 'gc' ] } ],
+		} ),
+		relations: [
+			{ spawn: 'action-items', label: 'Create action item', map: { title: 'title', source: 'title' } },
+		],
 		fields: [
 			f( 'title', 'Meeting title', 'text', { required: true, list: true } ),
-			f( 'meeting_type', 'Type', 'select', { options: [ 'OAC', 'Subcontractor', 'Safety', 'Preconstruction', 'Coordination', 'Other' ], list: true } ),
+			f( 'meeting_no', 'Meeting number', 'text', { list: true } ),
+			f( 'meeting_type', 'Type', 'select', { options: [ 'OAC', 'Subcontractor', 'Safety', 'Preconstruction', 'Coordination', 'Progress', 'Other' ], list: true } ),
 			f( 'meeting_date', 'Date & time', 'datetime', { required: true, list: true } ),
 			f( 'location', 'Location', 'select', LOOKUP_LOCATION ),
 			f( 'attendees', 'Attendees', 'textarea' ),
 			f( 'agenda', 'Agenda', 'textarea' ),
 			f( 'minutes', 'Minutes', 'textarea' ),
+			f( 'next_meeting', 'Next meeting', 'datetime' ),
 		],
 	},
 	{
 		section: 'engineering', id: 'transmittals', name: 'Transmittals', icon: 'bi-send',
-		statuses: [ 'Draft', 'Sent', 'Acknowledged' ],
+		workflow: wf( {
+			'Draft': [ { to: 'Sent', label: 'Send', party: [ 'gc', 'consultant' ] } ],
+			'Sent': [ { to: 'Acknowledged', label: 'Acknowledge receipt', party: [ 'gc', 'owner', 'rep', 'consultant', 'subcontractor' ] } ],
+			'Acknowledged': [],
+		} ),
 		fields: [
 			f( 'number', 'Transmittal number', 'text', { required: true, list: true } ),
 			f( 'to_company', 'To', 'text', { required: true, list: true } ),
-			f( 'attention', 'Attention' ),
+			f( 'attention', 'Attention', 'text' ),
+			f( 'purpose', 'Purpose', 'select', { options: [ 'For Approval', 'For Review & Comment', 'For Information', 'For Construction', 'As Requested', 'For Record' ], list: true } ),
 			f( 'sent_date', 'Date sent', 'date', { list: true } ),
 			f( 'via', 'Sent via', 'select', { options: [ 'Email', 'Courier', 'Mail', 'Hand Delivery', 'Portal' ], list: true } ),
 			f( 'contents', 'Contents', 'textarea', { required: true } ),
@@ -193,7 +321,15 @@ const MODULES = [
 	/* ------------------------------------------------------------------ Field */
 	{
 		section: 'field', id: 'daily-reports', name: 'Daily Reports', icon: 'bi-sun',
-		statuses: [ 'Draft', 'Submitted', 'Approved' ],
+		// Superintendent drafts and submits; PM reviews and approves (or returns).
+		workflow: wf( {
+			'Draft': [ { to: 'Submitted', label: 'Submit', party: [ 'gc', 'subcontractor' ] } ],
+			'Submitted': [
+				{ to: 'Approved', label: 'Approve', party: [ 'gc' ] },
+				{ to: 'Draft', label: 'Return for revision', party: [ 'gc' ] },
+			],
+			'Approved': [],
+		} ),
 		fields: [
 			f( 'report_date', 'Report date', 'date', { required: true, list: true } ),
 			f( 'superintendent', 'Superintendent', 'text', { required: true, list: true } ),
@@ -203,7 +339,10 @@ const MODULES = [
 			f( 'precipitation', 'Precipitation (in)', 'number', { step: '0.01' } ),
 			f( 'manpower', 'Total workers on site', 'number', { list: true } ),
 			f( 'work_performed', 'Work performed', 'textarea', { required: true } ),
+			f( 'deliveries', 'Deliveries received', 'textarea' ),
+			f( 'equipment_on_site', 'Equipment on site', 'textarea' ),
 			f( 'delays', 'Delays / issues', 'textarea' ),
+			f( 'safety_notes', 'Safety observations', 'textarea' ),
 			f( 'visitors', 'Visitors / inspections', 'textarea' ),
 			f( 'superintendent_signature', 'Superintendent signature', 'signature' ),
 		],
@@ -214,8 +353,10 @@ const MODULES = [
 		fields: [
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'photo_url', 'Photo link', 'url', { required: true } ),
+			f( 'album', 'Album', 'text', { list: true } ),
 			f( 'taken_on', 'Date taken', 'date', { list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
+			f( 'trade', 'Trade / scope', 'text', { list: true } ),
 			f( 'tags', 'Tags', 'text', { help: 'Comma-separated' } ),
 			f( 'description', 'Description', 'textarea' ),
 		],
@@ -235,26 +376,52 @@ const MODULES = [
 	},
 	{
 		section: 'field', id: 'checklists', name: 'Checklists', icon: 'bi-check2-square',
-		statuses: [ 'Open', 'In Progress', 'Complete', 'Failed' ],
+		// Issued → completed by the crew → reviewed; failed loops for rework.
+		workflow: wf( {
+			'Open': [ { to: 'In Progress', label: 'Start', party: [ 'gc', 'subcontractor' ] } ],
+			'In Progress': [ { to: 'Ready for Review', label: 'Submit for review', party: [ 'gc', 'subcontractor' ] } ],
+			'Ready for Review': [
+				{ to: 'Complete', label: 'Pass / complete', party: [ 'gc', 'consultant' ] },
+				{ to: 'Failed', label: 'Fail', party: [ 'gc', 'consultant' ] },
+			],
+			'Failed': [ { to: 'In Progress', label: 'Rework', party: [ 'gc', 'subcontractor' ] } ],
+			'Complete': [],
+		} ),
 		fields: [
 			f( 'title', 'Checklist title', 'text', { required: true, list: true } ),
-			f( 'checklist_type', 'Type', 'select', { options: [ 'Quality', 'Safety', 'Pre-pour', 'MEP Rough-in', 'Inspection', 'Other' ], list: true } ),
+			f( 'checklist_type', 'Type', 'select', { options: [ 'Quality', 'Safety', 'Pre-pour', 'MEP Rough-in', 'Inspection', 'Commissioning', 'Other' ], list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
+			f( 'responsible', 'Responsible', 'text', { list: true } ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
 			f( 'items', 'Checklist items', 'textarea', { help: 'One item per line' } ),
 			f( 'results', 'Results / notes', 'textarea' ),
 		],
 	},
 	{
-		section: 'field', id: 'punchlist', name: 'Punchlist', icon: 'bi-list-check',
-		statuses: [ 'Open', 'Ready for Review', 'Complete', 'Verified' ],
+		section: 'field', id: 'punchlist', name: 'Punch List', icon: 'bi-list-check',
+		// Procore-style ball-in-court: GC raises → assigned to a trade → work done →
+		// ready for review → final approver verifies (or rejects for rework).
+		workflow: wf( {
+			'Open': [ { to: 'Work Required', label: 'Assign to trade', party: [ 'gc' ] } ],
+			'Work Required': [
+				{ to: 'Ready for Review', label: 'Mark ready for review', party: [ 'subcontractor', 'gc' ] },
+			],
+			'Ready for Review': [
+				{ to: 'Verified', label: 'Verify & close', party: [ 'gc', 'consultant' ] },
+				{ to: 'Work Required', label: 'Reject — rework', party: [ 'gc', 'consultant' ] },
+			],
+			'Verified': [],
+		} ),
 		fields: [
 			f( 'item_no', 'Item number', 'text', { list: true } ),
-			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
+			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
 			f( 'responsible', 'Responsible subcontractor', 'text', { list: true } ),
+			f( 'ball_in_court', 'Ball in court', 'text', { list: true } ),
+			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Normal', 'High' ], list: true } ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
+			f( 'backcharge', 'Backcharge amount', 'currency' ),
 			f( 'photo_url', 'Photo link', 'url' ),
 		],
 	},
@@ -275,14 +442,25 @@ const MODULES = [
 	/* ------------------------------------------------------------------ Safety */
 	{
 		section: 'safety', id: 'observations', name: 'Observations', icon: 'bi-eye',
-		statuses: [ 'Open', 'In Progress', 'Closed' ],
+		// Behavior-based safety: at-risk findings can spawn a tracked corrective action.
+		workflow: wf( {
+			'Open': [
+				{ to: 'In Progress', label: 'Action in progress', party: [ 'gc', 'subcontractor' ] },
+				{ to: 'Closed', label: 'Close (no action)', party: [ 'gc' ] },
+			],
+			'In Progress': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
+			'Closed': [],
+		} ),
+		relations: [
+			{ spawn: 'action-items', label: 'Assign corrective action', map: { title: 'title', description: 'corrective_action' } },
+		],
 		fields: [
 			f( 'title', 'Observation', 'text', { required: true, list: true } ),
 			f( 'observation_type', 'Type', 'select', { options: [ 'Safe Behavior', 'At-Risk Behavior', 'Hazard', 'Near Miss', 'Good Catch' ], list: true } ),
 			f( 'severity', 'Severity', 'select', { options: [ 'Low', 'Medium', 'High', 'Critical' ], list: true } ),
 			f( 'observed_on', 'Date observed', 'date', { list: true } ),
 			f( 'location', 'Location', 'select', LOOKUP_LOCATION ),
-			f( 'company_observed', 'Company observed' ),
+			f( 'company_observed', 'Company observed', 'text', { list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'corrective_action', 'Corrective action', 'textarea' ),
 		],
@@ -443,12 +621,21 @@ const MODULES = [
 	},
 	{
 		section: 'cost', id: 'direct-costs', name: 'Direct Costs', icon: 'bi-cash-stack',
-		statuses: [ 'Pending', 'Approved', 'Paid', 'Disputed' ],
+		// Coded to a budget line; approved then paid (or disputed).
+		workflow: wf( {
+			'Pending': [
+				{ to: 'Approved', label: 'Approve', party: [ 'gc' ] },
+				{ to: 'Disputed', label: 'Dispute', party: [ 'gc' ] },
+			],
+			'Approved': [ { to: 'Paid', label: 'Mark paid', party: [ 'gc' ] } ],
+			'Disputed': [ { to: 'Pending', label: 'Re-submit', party: [ 'gc', 'subcontractor' ] } ],
+			'Paid': [],
+		} ),
 		fields: [
 			f( 'cost_type', 'Type', 'select', { options: [ 'Invoice', 'Certified Payroll', 'Expense' ], required: true, list: true } ),
 			f( 'vendor', 'Vendor / employee', 'text', { required: true, list: true } ),
 			f( 'reference_no', 'Invoice / reference number', 'text', { list: true } ),
-			f( 'cost_code', 'Cost code', 'select', LOOKUP_COSTCODE ),
+			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'cost_date', 'Date', 'date', { list: true } ),
 			f( 'amount', 'Amount', 'currency', { required: true, list: true } ),
 			f( 'description', 'Description', 'textarea' ),
@@ -456,24 +643,48 @@ const MODULES = [
 	},
 	{
 		section: 'cost', id: 'potential-changes', name: 'Potential Changes', icon: 'bi-lightning',
-		statuses: [ 'Identified', 'Pricing', 'Submitted', 'Approved', 'Rejected', 'Converted to CO' ],
+		// PCO pipeline: identified → priced → submitted → approved → becomes a CO.
+		workflow: wf( {
+			'Identified': [ { to: 'Pricing', label: 'Request pricing', party: [ 'gc' ] } ],
+			'Pricing': [ { to: 'Submitted', label: 'Submit to owner', party: [ 'gc' ] } ],
+			'Submitted': [
+				{ to: 'Approved', label: 'Approve', party: [ 'owner', 'rep' ] },
+				{ to: 'Rejected', label: 'Reject', party: [ 'owner', 'rep' ] },
+			],
+			'Approved': [ { to: 'Converted to CO', label: 'Convert to change order', party: [ 'gc' ] } ],
+			'Rejected': [],
+			'Converted to CO': [],
+		} ),
+		relations: [
+			{ spawn: 'change-orders', label: 'Convert to Change Order', map: { title: 'title', amount: 'rom_estimate', description: 'description' } },
+		],
 		fields: [
 			f( 'pco_no', 'PCO number', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'reason', 'Reason', 'select', { options: [ 'Owner Request', 'Design Change', 'Field Condition', 'Code Requirement', 'Allowance', 'Other' ], list: true } ),
 			f( 'rom_estimate', 'ROM estimate', 'currency', { list: true } ),
-			f( 'cost_code', 'Cost code', 'select', LOOKUP_COSTCODE ),
+			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'identified_date', 'Identified', 'date', { list: true } ),
 			f( 'description', 'Description', 'textarea' ),
 		],
 	},
 	{
 		section: 'cost', id: 'change-orders', name: 'Change Orders', icon: 'bi-arrow-repeat',
-		statuses: [ 'Draft', 'Submitted', 'Approved', 'Executed', 'Rejected' ],
+		workflow: wf( {
+			'Draft': [ { to: 'Submitted', label: 'Submit', party: [ 'gc' ] } ],
+			'Submitted': [
+				{ to: 'Approved', label: 'Approve', party: [ 'owner', 'rep' ] },
+				{ to: 'Rejected', label: 'Reject', party: [ 'owner', 'rep' ] },
+			],
+			'Approved': [ { to: 'Executed', label: 'Execute', party: [ 'gc' ] } ],
+			'Rejected': [],
+			'Executed': [],
+		} ),
 		fields: [
 			f( 'co_no', 'CO number', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'co_type', 'Type', 'select', { options: [ 'Owner CO', 'Subcontract CO' ], list: true } ),
+			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'amount', 'Amount', 'currency', { required: true, list: true } ),
 			f( 'time_extension_days', 'Time extension (days)', 'number' ),
 			f( 'executed_date', 'Executed', 'date', { list: true } ),
@@ -482,7 +693,15 @@ const MODULES = [
 	},
 	{
 		section: 'cost', id: 'approval-letters', name: 'Approval Letters & Directives', icon: 'bi-file-earmark-medical',
-		statuses: [ 'Draft', 'Issued', 'Acknowledged', 'Superseded' ],
+		workflow: wf( {
+			'Draft': [ { to: 'Issued', label: 'Issue', party: [ 'gc' ] } ],
+			'Issued': [
+				{ to: 'Acknowledged', label: 'Acknowledge', party: [ 'owner', 'rep', 'subcontractor' ] },
+				{ to: 'Superseded', label: 'Supersede', party: [ 'gc' ] },
+			],
+			'Acknowledged': [],
+			'Superseded': [],
+		} ),
 		fields: [
 			f( 'letter_no', 'Letter number', 'text', { required: true, list: true } ),
 			f( 'letter_type', 'Type', 'select', { options: [ 'Approval Letter', 'Construction Change Directive', 'Field Directive', 'Notice to Proceed' ], required: true, list: true } ),
@@ -495,7 +714,16 @@ const MODULES = [
 	},
 	{
 		section: 'cost', id: 'tm-tickets', name: 'Time & Materials Tickets', icon: 'bi-stopwatch',
-		statuses: [ 'Open', 'Submitted', 'Approved', 'Rejected', 'Invoiced' ],
+		workflow: wf( {
+			'Open': [ { to: 'Submitted', label: 'Submit', party: [ 'subcontractor', 'gc' ] } ],
+			'Submitted': [
+				{ to: 'Approved', label: 'Approve', party: [ 'gc' ] },
+				{ to: 'Rejected', label: 'Reject', party: [ 'gc' ] },
+			],
+			'Approved': [ { to: 'Invoiced', label: 'Mark invoiced', party: [ 'gc', 'subcontractor' ] } ],
+			'Rejected': [ { to: 'Open', label: 'Revise', party: [ 'subcontractor', 'gc' ] } ],
+			'Invoiced': [],
+		} ),
 		fields: [
 			f( 'ticket_no', 'Ticket number', 'text', { required: true, list: true } ),
 			f( 'work_date', 'Work date', 'date', { required: true, list: true } ),
@@ -512,7 +740,15 @@ const MODULES = [
 	/* ------------------------------------------------------------------ BIM */
 	{
 		section: 'bim', id: 'bim-models', name: '3D Models', icon: 'bi-box',
-		statuses: [ 'Current', 'Superseded', 'Archived' ],
+		// Revision-controlled model register; a new version supersedes the prior.
+		workflow: wf( {
+			'Current': [
+				{ to: 'Superseded', label: 'Supersede (new version)', party: [ 'gc', 'consultant' ] },
+				{ to: 'Archived', label: 'Archive', party: [ 'gc' ] },
+			],
+			'Superseded': [ { to: 'Archived', label: 'Archive', party: [ 'gc' ] } ],
+			'Archived': [],
+		} ),
 		fields: [
 			f( 'title', 'Model title', 'text', { required: true, list: true } ),
 			f( 'discipline', 'Discipline', 'select', { options: [ 'Architectural', 'Structural', 'MEP', 'Civil', 'Federated', 'Other' ], list: true } ),
@@ -524,14 +760,27 @@ const MODULES = [
 	},
 	{
 		section: 'bim', id: 'coordination-issues', name: 'Coordination Issues', icon: 'bi-exclamation-diamond',
-		statuses: [ 'Open', 'Assigned', 'Resolved', 'Closed' ],
+		// Clash/coordination issue; if it needs design clarification it becomes an RFI.
+		workflow: wf( {
+			'Open': [ { to: 'Assigned', label: 'Assign', party: [ 'gc' ] } ],
+			'Assigned': [
+				{ to: 'Resolved', label: 'Resolve', party: [ 'gc', 'subcontractor', 'consultant' ] },
+				{ to: 'Open', label: 'Reopen', party: [ 'gc' ] },
+			],
+			'Resolved': [ { to: 'Closed', label: 'Verify & close', party: [ 'gc' ] } ],
+			'Closed': [],
+		} ),
+		relations: [
+			{ spawn: 'rfis', label: 'Raise RFI (needs design input)', map: { subject: 'title', question: 'description', drawing_ref: 'location' } },
+		],
 		fields: [
 			f( 'issue_no', 'Issue number', 'text', { list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
-			f( 'trades_involved', 'Trades involved', 'text', { list: true } ),
+			f( 'clash_type', 'Clash type', 'select', { options: [ 'Hard Clash', 'Clearance', 'Workflow', 'Design', 'Other' ], list: true } ),
+			f( 'models_involved', 'Models / trades involved', 'text', { list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
 			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Medium', 'High', 'Critical' ], list: true } ),
-			f( 'due_date', 'Due', 'date' ),
+			f( 'due_date', 'Due', 'date', { list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'resolution', 'Resolution', 'textarea' ),
 		],
@@ -778,7 +1027,17 @@ const MODULES = [
 	/* ------------------------------------------------------------------ Closeout */
 	{
 		section: 'closeout', id: 'om-manuals', name: 'O&M Manuals', icon: 'bi-book',
-		statuses: [ 'Requested', 'Received', 'Under Review', 'Accepted', 'Transmitted to Owner' ],
+		// Ball-in-court closeout submittal: sub provides → GC reviews → owner accepts.
+		workflow: wf( {
+			'Requested': [ { to: 'Received', label: 'Mark received', party: [ 'subcontractor', 'gc' ] } ],
+			'Received': [ { to: 'Under Review', label: 'Begin review', party: [ 'gc' ] } ],
+			'Under Review': [
+				{ to: 'Accepted', label: 'Accept', party: [ 'gc', 'consultant' ] },
+				{ to: 'Received', label: 'Return to sub', party: [ 'gc' ] },
+			],
+			'Accepted': [ { to: 'Transmitted to Owner', label: 'Transmit to owner', party: [ 'gc' ] } ],
+			'Transmitted to Owner': [],
+		} ),
 		fields: [
 			f( 'title', 'Manual title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
@@ -790,7 +1049,13 @@ const MODULES = [
 	},
 	{
 		section: 'closeout', id: 'warranties', name: 'Warranties', icon: 'bi-patch-check-fill',
-		statuses: [ 'Requested', 'Received', 'Active', 'Expired' ],
+		// Warranty register; period typically starts at substantial completion.
+		workflow: wf( {
+			'Requested': [ { to: 'Received', label: 'Received', party: [ 'subcontractor', 'gc' ] } ],
+			'Received': [ { to: 'Active', label: 'Activate (period starts)', party: [ 'gc' ] } ],
+			'Active': [ { to: 'Expired', label: 'Expire', party: [ 'gc' ] } ],
+			'Expired': [],
+		} ),
 		fields: [
 			f( 'item', 'Warranted item / system', 'text', { required: true, list: true } ),
 			f( 'company', 'Warrantor', 'text', { required: true, list: true } ),
@@ -803,7 +1068,12 @@ const MODULES = [
 	},
 	{
 		section: 'closeout', id: 'attic-stock', name: 'Attic Stock', icon: 'bi-archive',
-		statuses: [ 'Required', 'Received', 'Stored', 'Turned Over' ],
+		workflow: wf( {
+			'Required': [ { to: 'Received', label: 'Received', party: [ 'subcontractor', 'gc' ] } ],
+			'Received': [ { to: 'Stored', label: 'Stored on site', party: [ 'gc' ] } ],
+			'Stored': [ { to: 'Turned Over', label: 'Turn over to owner', party: [ 'gc', 'owner', 'rep' ] } ],
+			'Turned Over': [],
+		} ),
 		fields: [
 			f( 'item', 'Item', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
@@ -817,7 +1087,7 @@ const MODULES = [
 	/* ------------------------------------------------------------------ Resources (relational lookups) */
 	{
 		section: 'resources', id: 'locations', name: 'Locations', icon: 'bi-geo-alt',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_ACTIVE,
 		fields: [
 			f( 'name', 'Location name', 'text', { required: true, list: true } ),
 			f( 'area', 'Area / zone', 'text', { list: true } ),
@@ -827,7 +1097,7 @@ const MODULES = [
 	},
 	{
 		section: 'resources', id: 'csi-divisions', name: 'CSI Divisions', icon: 'bi-list-ol',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_ACTIVE,
 		fields: [
 			f( 'number', 'Division number', 'text', { required: true, list: true } ),
 			f( 'title', 'Division title', 'text', { required: true, list: true } ),
@@ -836,7 +1106,7 @@ const MODULES = [
 	},
 	{
 		section: 'resources', id: 'cost-codes', name: 'Cost Codes', icon: 'bi-upc',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_ACTIVE,
 		fields: [
 			f( 'code', 'Cost code', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -846,7 +1116,7 @@ const MODULES = [
 	},
 	{
 		section: 'resources', id: 'labor-rates', name: 'Labor Rates', icon: 'bi-person-workspace',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_RATE,
 		fields: [
 			f( 'classification', 'Classification', 'text', { required: true, list: true } ),
 			f( 'trade', 'Trade', 'text', { list: true } ),
@@ -858,7 +1128,7 @@ const MODULES = [
 	},
 	{
 		section: 'resources', id: 'material-rates', name: 'Material Rates', icon: 'bi-bricks',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_RATE,
 		fields: [
 			f( 'material', 'Material', 'text', { required: true, list: true } ),
 			f( 'unit', 'Unit', 'text', { required: true, list: true, help: 'e.g. CY, SF, EA' } ),
@@ -869,7 +1139,7 @@ const MODULES = [
 	},
 	{
 		section: 'resources', id: 'equipment-rates', name: 'Equipment Rates', icon: 'bi-truck',
-		statuses: [ 'Active', 'Inactive' ],
+		workflow: WF_RATE,
 		fields: [
 			f( 'equipment', 'Equipment', 'text', { required: true, list: true } ),
 			f( 'rate_basis', 'Rate basis', 'select', { options: [ 'Hourly', 'Daily', 'Weekly', 'Monthly' ], required: true, list: true } ),
@@ -919,7 +1189,21 @@ const MODULES = [
 	},
 	{
 		section: 'preconstruction', id: 'bid-solicitations', name: 'Bid Solicitations (ITB)', icon: 'bi-megaphone',
-		statuses: [ 'Draft', 'Issued', 'Responses Due', 'Under Evaluation', 'Awarded', 'Cancelled' ],
+		// Invitation to bid → collect submissions → evaluate → award.
+		workflow: wf( {
+			'Draft': [ { to: 'Issued', label: 'Issue ITB', party: [ 'gc' ] } ],
+			'Issued': [ { to: 'Responses Due', label: 'Close to responses', party: [ 'gc' ] } ],
+			'Responses Due': [ { to: 'Under Evaluation', label: 'Begin evaluation', party: [ 'gc' ] } ],
+			'Under Evaluation': [
+				{ to: 'Awarded', label: 'Award', party: [ 'gc' ] },
+				{ to: 'Cancelled', label: 'Cancel', party: [ 'gc' ] },
+			],
+			'Awarded': [],
+			'Cancelled': [],
+		} ),
+		relations: [
+			{ spawn: 'bid-submissions', label: 'Add bidder', map: { bid_package: 'bid_package' } },
+		],
 		fields: [
 			f( 'solicitation_no', 'Solicitation #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -934,7 +1218,27 @@ const MODULES = [
 	},
 	{
 		section: 'preconstruction', id: 'bid-submissions', name: 'Bid Submissions (Leveling)', icon: 'bi-bar-chart-steps',
-		statuses: [ 'Invited', 'Declined', 'Submitted', 'Shortlisted', 'Awarded', 'Not Awarded' ],
+		// Leveling pipeline; the awarded bid converts to a subcontract commitment.
+		workflow: wf( {
+			'Invited': [
+				{ to: 'Submitted', label: 'Bid received', party: [ 'gc', 'subcontractor' ] },
+				{ to: 'Declined', label: 'No bid', party: [ 'gc', 'subcontractor' ] },
+			],
+			'Submitted': [
+				{ to: 'Shortlisted', label: 'Shortlist', party: [ 'gc' ] },
+				{ to: 'Not Awarded', label: 'Not awarded', party: [ 'gc' ] },
+			],
+			'Shortlisted': [
+				{ to: 'Awarded', label: 'Award', party: [ 'gc' ] },
+				{ to: 'Not Awarded', label: 'Not awarded', party: [ 'gc' ] },
+			],
+			'Awarded': [],
+			'Not Awarded': [],
+			'Declined': [],
+		} ),
+		relations: [
+			{ spawn: 'commitments', label: 'Award → create subcontract', map: { vendor: 'bidder', value: 'base_bid', title: 'bid_package' } },
+		],
 		fields: [
 			f( 'bidder', 'Bidder', 'text', { required: true, list: true } ),
 			f( 'bid_package', 'Bid package', 'text', { required: true, list: true } ),
@@ -943,12 +1247,23 @@ const MODULES = [
 			f( 'submitted_date', 'Submitted', 'date', { list: true } ),
 			f( 'inclusions', 'Inclusions', 'textarea' ),
 			f( 'exclusions', 'Exclusions / qualifications', 'textarea' ),
-			f( 'score', 'Evaluation score', 'number' ),
+			f( 'score', 'Evaluation score', 'number', { list: true } ),
 		],
 	},
 	{
 		section: 'preconstruction', id: 'estimates', name: 'Estimates', icon: 'bi-calculator',
-		statuses: [ 'Conceptual', 'Schematic', 'Design Development', 'GMP', 'Final', 'Superseded' ],
+		// Estimate matures by phase; the final/GMP estimate seeds the budget.
+		workflow: wf( {
+			'Conceptual': [ { to: 'Schematic', label: 'Advance to SD', party: [ 'gc' ] } ],
+			'Schematic': [ { to: 'Design Development', label: 'Advance to DD', party: [ 'gc' ] } ],
+			'Design Development': [ { to: 'GMP', label: 'Advance to GMP', party: [ 'gc' ] } ],
+			'GMP': [ { to: 'Final', label: 'Finalize', party: [ 'gc' ] } ],
+			'Final': [ { to: 'Superseded', label: 'Supersede', party: [ 'gc' ] } ],
+			'Superseded': [],
+		} ),
+		relations: [
+			{ spawn: 'budget-forecast', label: 'Seed budget line', map: { description: 'title', cost_code: 'csi_division', original_budget: 'total' } },
+		],
 		fields: [
 			f( 'estimate_no', 'Estimate #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -1086,22 +1401,33 @@ const MODULES = [
 			'Passed': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
 			'Closed': [],
 		} ),
+		relations: [
+			{ spawn: 'deficiencies', label: 'Log deficiency from finding', map: { title: 'title', description: 'findings', location: 'location' } },
+			{ spawn: 'non-conformance', label: 'Raise NCR', map: { title: 'title', description: 'findings', location: 'location' } },
+		],
 		fields: [
 			f( 'inspection_no', 'Inspection #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'inspection_type', 'Type', 'select', { options: [ 'Quality', 'Owner', 'AHJ / Code', 'Commissioning', 'Pre-pour', 'MEP Rough-in', 'Final', 'Other' ], list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
 			f( 'inspector', 'Inspector', 'text', { list: true } ),
+			f( 'trade', 'Trade / scope', 'text', { list: true } ),
 			f( 'scheduled_date', 'Scheduled', 'date', { list: true } ),
+			f( 'completed_date', 'Completed', 'date', { list: true } ),
 			f( 'checklist', 'Checklist items', 'textarea' ),
-			f( 'findings', 'Findings', 'textarea' ),
+			f( 'findings', 'Findings / deficiencies', 'textarea' ),
 			f( 'inspector_signature', 'Inspector signature', 'signature' ),
 		],
 	},
 	{
 		section: 'quality', id: 'non-conformance', name: 'Non-Conformance Reports', icon: 'bi-x-octagon',
+		// QA assesses & dispositions (Rework/Repair/Use-as-is/Scrap) → corrective &
+		// preventive action → verification before close (per ISO/QMS practice).
 		workflow: wf( {
-			'Open': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ] } ],
+			'Open': [
+				{ to: 'Dispositioned', label: 'Disposition', party: [ 'gc', 'consultant' ], directions: [ 'Rework', 'Repair', 'Use-as-is', 'Scrap' ] },
+			],
+			'Dispositioned': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ] } ],
 			'Corrective Action': [ { to: 'Verification', label: 'Submit for verification', party: [ 'gc', 'subcontractor' ] } ],
 			'Verification': [
 				{ to: 'Closed', label: 'Verify & close', party: [ 'gc', 'consultant' ] },
@@ -1109,26 +1435,41 @@ const MODULES = [
 			],
 			'Closed': [],
 		} ),
+		relations: [
+			{ spawn: 'action-items', label: 'Assign corrective action', map: { title: 'title', description: 'corrective_action' } },
+		],
 		fields: [
 			f( 'ncr_no', 'NCR #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
 			f( 'responsible', 'Responsible party', 'text', { list: true } ),
+			f( 'severity', 'Severity', 'select', { options: [ 'Minor', 'Major', 'Critical' ], list: true } ),
 			f( 'description', 'Description of non-conformance', 'textarea', { required: true } ),
-			f( 'root_cause', 'Root cause', 'textarea' ),
+			f( 'root_cause', 'Root cause analysis', 'textarea' ),
 			f( 'corrective_action', 'Corrective action', 'textarea' ),
+			f( 'preventive_action', 'Preventive action', 'textarea' ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
 		],
 	},
 	{
 		section: 'quality', id: 'deficiencies', name: 'Deficiencies / Defects', icon: 'bi-tools',
-		statuses: [ 'Open', 'In Progress', 'Ready for Review', 'Closed' ],
+		// Ball-in-court rework loop, like the punch list.
+		workflow: wf( {
+			'Open': [ { to: 'Work Required', label: 'Assign to trade', party: [ 'gc' ] } ],
+			'Work Required': [ { to: 'Ready for Review', label: 'Mark ready', party: [ 'subcontractor', 'gc' ] } ],
+			'Ready for Review': [
+				{ to: 'Closed', label: 'Verify & close', party: [ 'gc', 'consultant' ] },
+				{ to: 'Work Required', label: 'Reject — rework', party: [ 'gc', 'consultant' ] },
+			],
+			'Closed': [],
+		} ),
 		fields: [
 			f( 'defect_no', 'Defect #', 'text', { list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
 			f( 'trade', 'Trade', 'text', { list: true } ),
+			f( 'ball_in_court', 'Ball in court', 'text', { list: true } ),
 			f( 'severity', 'Severity', 'select', { options: [ 'Minor', 'Major', 'Critical' ], list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
@@ -1137,14 +1478,25 @@ const MODULES = [
 	},
 	{
 		section: 'quality', id: 'test-records', name: 'Test Records', icon: 'bi-thermometer-half',
-		statuses: [ 'Scheduled', 'Passed', 'Failed', 'Retest Required' ],
+		workflow: wf( {
+			'Scheduled': [
+				{ to: 'Passed', label: 'Record pass', party: [ 'gc', 'consultant' ] },
+				{ to: 'Failed', label: 'Record fail', party: [ 'gc', 'consultant' ] },
+			],
+			'Failed': [ { to: 'Retest', label: 'Schedule retest', party: [ 'gc' ] } ],
+			'Retest': [
+				{ to: 'Passed', label: 'Record pass', party: [ 'gc', 'consultant' ] },
+				{ to: 'Failed', label: 'Record fail', party: [ 'gc', 'consultant' ] },
+			],
+			'Passed': [],
+		} ),
 		fields: [
 			f( 'test_no', 'Test #', 'text', { required: true, list: true } ),
 			f( 'test_type', 'Type', 'select', { options: [ 'Concrete', 'Soil / Compaction', 'Weld', 'Pressure', 'Electrical', 'Air Balance', 'Other' ], list: true } ),
 			f( 'location', 'Location', 'select', LOOKUP_LOCATION ),
 			f( 'test_date', 'Test date', 'date', { list: true } ),
-			f( 'result', 'Result', 'select', { options: [ 'Pass', 'Fail', 'Pending' ], list: true } ),
 			f( 'reading_value', 'Measured value', 'text' ),
+			f( 'spec_requirement', 'Spec requirement', 'text' ),
 			f( 'lab', 'Testing agency', 'text', { list: true } ),
 			f( 'file_url', 'Report link', 'url' ),
 		],
@@ -1153,12 +1505,17 @@ const MODULES = [
 	/* -------- Safety (expand) -------- */
 	{
 		section: 'safety', id: 'incidents', name: 'Incidents', icon: 'bi-bandaid',
+		// OSHA-style investigation: report → investigate (root cause) → corrective
+		// action → close, with recordability and lost/restricted-day capture.
 		workflow: wf( {
 			'Reported': [ { to: 'Investigating', label: 'Begin investigation', party: [ 'gc' ] } ],
 			'Investigating': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ] } ],
 			'Corrective Action': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
 			'Closed': [],
 		} ),
+		relations: [
+			{ spawn: 'action-items', label: 'Assign corrective action', map: { title: 'title', description: 'corrective_action' } },
+		],
 		fields: [
 			f( 'incident_no', 'Incident #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -1168,15 +1525,27 @@ const MODULES = [
 			f( 'location', 'Location', 'select', LOOKUP_LOCATION ),
 			f( 'company_involved', 'Company involved', 'text', { list: true } ),
 			f( 'injured_party', 'Injured / affected party', 'text' ),
+			f( 'body_part', 'Body part / nature of injury', 'text' ),
 			f( 'description', 'What happened', 'textarea', { required: true } ),
+			f( 'root_cause_method', 'RCA method', 'select', { options: [ '5 Whys', 'Fishbone', 'Fault Tree', 'Other' ] } ),
 			f( 'root_cause', 'Root cause', 'textarea' ),
 			f( 'corrective_action', 'Corrective action', 'textarea' ),
+			f( 'lost_days', 'Lost days', 'number' ),
+			f( 'restricted_days', 'Restricted days', 'number' ),
 			f( 'osha_recordable', 'OSHA recordable', 'checkbox' ),
+			f( 'reported_to_osha', 'Reported to OSHA', 'checkbox' ),
 		],
 	},
 	{
 		section: 'safety', id: 'safety-violations', name: 'Safety Violations', icon: 'bi-cone',
-		statuses: [ 'Open', 'Corrected', 'Closed' ],
+		workflow: wf( {
+			'Open': [ { to: 'Corrected', label: 'Mark corrected', party: [ 'gc', 'subcontractor' ] } ],
+			'Corrected': [
+				{ to: 'Closed', label: 'Verify & close', party: [ 'gc' ] },
+				{ to: 'Open', label: 'Reopen', party: [ 'gc' ] },
+			],
+			'Closed': [],
+		} ),
 		fields: [
 			f( 'violation_no', 'Violation #', 'text', { list: true } ),
 			f( 'company', 'Company', 'text', { required: true, list: true } ),
@@ -1310,18 +1679,23 @@ const MODULES = [
 	/* -------- Cost / Financials (full model) -------- */
 	{
 		section: 'cost', id: 'commitments', name: 'Commitments (POs)', icon: 'bi-file-earmark-ruled',
+		// Coded to a budget line; once executed, invoices are billed against it.
 		workflow: wf( {
 			'Draft': [ { to: 'Issued', label: 'Issue', party: [ 'gc' ] } ],
 			'Issued': [ { to: 'Executed', label: 'Mark executed', party: [ 'gc' ] } ],
 			'Executed': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
 			'Closed': [],
 		} ),
+		relations: [
+			{ spawn: 'subcontractor-invoices', label: 'Bill against this commitment', map: { subcontractor: 'vendor', commitment_no: 'commitment_no' } },
+		],
 		fields: [
 			f( 'commitment_no', 'Commitment #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'commitment_type', 'Type', 'select', { options: [ 'Subcontract', 'Purchase Order' ], required: true, list: true } ),
 			f( 'vendor', 'Vendor / subcontractor', 'text', { required: true, list: true } ),
 			f( 'csi_division', 'CSI division', 'select', LOOKUP_CSI ),
+			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'value', 'Commitment value', 'currency', { list: true } ),
 			f( 'executed_date', 'Executed', 'date', { list: true } ),
 			f( 'retainage_pct', 'Retainage %', 'number', { step: '0.1' } ),
@@ -1488,6 +1862,10 @@ const MODULES = [
 			'Issues': [ { to: 'Functional Test', label: 'Re-test', party: [ 'gc' ] } ],
 			'Accepted': [],
 		} ),
+		relations: [
+			{ spawn: 'deficiencies', label: 'Log Cx issue as deficiency', map: { title: 'system', description: 'findings' } },
+			{ spawn: 'action-items', label: 'Assign Cx action', map: { title: 'system', description: 'findings' } },
+		],
 		fields: [
 			f( 'system', 'System', 'text', { required: true, list: true } ),
 			f( 'equipment_tag', 'Equipment tag', 'text', { list: true } ),
@@ -1500,7 +1878,16 @@ const MODULES = [
 	},
 	{
 		section: 'closeout', id: 'as-builts', name: 'As-Builts / Record Drawings', icon: 'bi-pencil-square',
-		statuses: [ 'Not Started', 'In Progress', 'Submitted', 'Accepted', 'Superseded' ],
+		// Ball-in-court: trade marks up → submits → GC/consultant accepts.
+		workflow: wf( {
+			'Not Started': [ { to: 'In Progress', label: 'Start markup', party: [ 'subcontractor', 'gc' ] } ],
+			'In Progress': [ { to: 'Submitted', label: 'Submit', party: [ 'subcontractor', 'gc' ] } ],
+			'Submitted': [
+				{ to: 'Accepted', label: 'Accept', party: [ 'gc', 'consultant' ] },
+				{ to: 'In Progress', label: 'Return for correction', party: [ 'gc', 'consultant' ] },
+			],
+			'Accepted': [],
+		} ),
 		fields: [
 			f( 'drawing_no', 'Drawing #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
@@ -1513,7 +1900,10 @@ const MODULES = [
 	},
 	{
 		section: 'closeout', id: 'training-records', name: 'Owner Training', icon: 'bi-easel',
-		statuses: [ 'Scheduled', 'Completed' ],
+		workflow: wf( {
+			'Scheduled': [ { to: 'Completed', label: 'Mark completed', party: [ 'gc', 'subcontractor' ] } ],
+			'Completed': [],
+		} ),
 		fields: [
 			f( 'system', 'System', 'text', { required: true, list: true } ),
 			f( 'title', 'Session title', 'text', { required: true, list: true } ),
@@ -1526,11 +1916,15 @@ const MODULES = [
 	},
 	{
 		section: 'closeout', id: 'completion-certificates', name: 'Completion Certificates', icon: 'bi-patch-check',
+		// Executing a completion certificate triggers the warranty period.
 		workflow: wf( {
 			'Draft': [ { to: 'Issued', label: 'Issue', party: [ 'gc', 'consultant' ] } ],
 			'Issued': [ { to: 'Executed', label: 'Execute', party: [ 'owner', 'rep' ] } ],
 			'Executed': [],
 		} ),
+		relations: [
+			{ spawn: 'warranties', label: 'Start warranty (period begins)', map: { item: 'description', start_date: 'issue_date' } },
+		],
 		fields: [
 			f( 'cert_no', 'Certificate #', 'text', { required: true, list: true } ),
 			f( 'cert_type', 'Type', 'select', { options: [ 'Substantial Completion', 'Final Completion', 'Partial Occupancy', 'Temporary CO', 'Certificate of Occupancy' ], required: true, list: true } ),
@@ -1543,6 +1937,9 @@ const MODULES = [
 	{
 		section: 'closeout', id: 'asset-register', name: 'Asset Register', icon: 'bi-hdd-stack',
 		statuses: [ 'Active', 'Under Warranty', 'Decommissioned' ],
+		relations: [
+			{ spawn: 'warranties', label: 'Register warranty', map: { item: 'asset_name', company: 'manufacturer', end_date: 'warranty_end' } },
+		],
 		fields: [
 			f( 'asset_tag', 'Asset tag', 'text', { required: true, list: true } ),
 			f( 'asset_name', 'Asset name', 'text', { required: true, list: true } ),

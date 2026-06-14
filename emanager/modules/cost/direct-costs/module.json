@@ -8,8 +8,8 @@
 	"statuses": [
 		"Pending",
 		"Approved",
-		"Paid",
-		"Disputed"
+		"Disputed",
+		"Paid"
 	],
 	"fields": [
 		{
@@ -39,13 +39,14 @@
 		},
 		{
 			"name": "cost_code",
-			"label": "Cost code",
+			"label": "Cost code (budget line)",
 			"type": "select",
 			"lookup": {
 				"module": "cost-codes",
 				"value": "code",
 				"label": "title"
-			}
+			},
+			"list": true
 		},
 		{
 			"name": "cost_date",
@@ -65,5 +66,54 @@
 			"label": "Description",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Pending",
+		"states": {
+			"Pending": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Disputed",
+						"label": "Dispute",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Paid",
+						"label": "Mark paid",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Disputed": {
+				"transitions": [
+					{
+						"to": "Pending",
+						"label": "Re-submit",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Paid": {
+				"transitions": []
+			}
+		}
+	}
 }

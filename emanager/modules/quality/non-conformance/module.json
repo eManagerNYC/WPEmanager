@@ -7,6 +7,7 @@
 	"version": "1.0.0",
 	"statuses": [
 		"Open",
+		"Dispositioned",
 		"Corrective Action",
 		"Verification",
 		"Closed"
@@ -50,6 +51,17 @@
 			"list": true
 		},
 		{
+			"name": "severity",
+			"label": "Severity",
+			"type": "select",
+			"options": [
+				"Minor",
+				"Major",
+				"Critical"
+			],
+			"list": true
+		},
+		{
 			"name": "description",
 			"label": "Description of non-conformance",
 			"type": "textarea",
@@ -57,12 +69,17 @@
 		},
 		{
 			"name": "root_cause",
-			"label": "Root cause",
+			"label": "Root cause analysis",
 			"type": "textarea"
 		},
 		{
 			"name": "corrective_action",
 			"label": "Corrective action",
+			"type": "textarea"
+		},
+		{
+			"name": "preventive_action",
+			"label": "Preventive action",
 			"type": "textarea"
 		},
 		{
@@ -76,6 +93,24 @@
 		"initial": "Open",
 		"states": {
 			"Open": {
+				"transitions": [
+					{
+						"to": "Dispositioned",
+						"label": "Disposition",
+						"party": [
+							"gc",
+							"consultant"
+						],
+						"directions": [
+							"Rework",
+							"Repair",
+							"Use-as-is",
+							"Scrap"
+						]
+					}
+				]
+			},
+			"Dispositioned": {
 				"transitions": [
 					{
 						"to": "Corrective Action",
@@ -122,5 +157,15 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "action-items",
+			"label": "Assign corrective action",
+			"map": {
+				"title": "title",
+				"description": "corrective_action"
+			}
+		}
+	]
 }

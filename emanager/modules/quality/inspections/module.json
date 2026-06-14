@@ -62,8 +62,20 @@
 			"list": true
 		},
 		{
+			"name": "trade",
+			"label": "Trade / scope",
+			"type": "text",
+			"list": true
+		},
+		{
 			"name": "scheduled_date",
 			"label": "Scheduled",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "completed_date",
+			"label": "Completed",
 			"type": "date",
 			"list": true
 		},
@@ -74,7 +86,7 @@
 		},
 		{
 			"name": "findings",
-			"label": "Findings",
+			"label": "Findings / deficiencies",
 			"type": "textarea"
 		},
 		{
@@ -164,5 +176,25 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "deficiencies",
+			"label": "Log deficiency from finding",
+			"map": {
+				"title": "title",
+				"description": "findings",
+				"location": "location"
+			}
+		},
+		{
+			"spawn": "non-conformance",
+			"label": "Raise NCR",
+			"map": {
+				"title": "title",
+				"description": "findings",
+				"location": "location"
+			}
+		}
+	]
 }

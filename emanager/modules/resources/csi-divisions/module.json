@@ -29,5 +29,32 @@
 			"label": "Description",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Active",
+		"states": {
+			"Active": {
+				"transitions": [
+					{
+						"to": "Inactive",
+						"label": "Deactivate",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Inactive": {
+				"transitions": [
+					{
+						"to": "Active",
+						"label": "Reactivate",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			}
+		}
+	}
 }

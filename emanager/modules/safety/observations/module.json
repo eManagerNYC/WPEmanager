@@ -62,7 +62,8 @@
 		{
 			"name": "company_observed",
 			"label": "Company observed",
-			"type": "text"
+			"type": "text",
+			"list": true
 		},
 		{
 			"name": "description",
@@ -74,6 +75,54 @@
 			"name": "corrective_action",
 			"label": "Corrective action",
 			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "In Progress",
+						"label": "Action in progress",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					},
+					{
+						"to": "Closed",
+						"label": "Close (no action)",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"In Progress": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "action-items",
+			"label": "Assign corrective action",
+			"map": {
+				"title": "title",
+				"description": "corrective_action"
+			}
 		}
 	]
 }

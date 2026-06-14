@@ -48,5 +48,66 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Requested",
+		"states": {
+			"Requested": {
+				"transitions": [
+					{
+						"to": "Received",
+						"label": "Mark received",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Received": {
+				"transitions": [
+					{
+						"to": "Under Review",
+						"label": "Begin review",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Review": {
+				"transitions": [
+					{
+						"to": "Accepted",
+						"label": "Accept",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Received",
+						"label": "Return to sub",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Accepted": {
+				"transitions": [
+					{
+						"to": "Transmitted to Owner",
+						"label": "Transmit to owner",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Transmitted to Owner": {
+				"transitions": []
+			}
+		}
+	}
 }

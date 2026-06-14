@@ -72,5 +72,43 @@
 			"label": "Fine / back-charge",
 			"type": "currency"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Corrected",
+						"label": "Mark corrected",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Corrected": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Verify & close",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Open",
+						"label": "Reopen",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -7,7 +7,7 @@
 	"version": "1.0.0",
 	"statuses": [
 		"Open",
-		"In Progress",
+		"Work Required",
 		"Ready for Review",
 		"Closed"
 	],
@@ -43,6 +43,12 @@
 			"list": true
 		},
 		{
+			"name": "ball_in_court",
+			"label": "Ball in court",
+			"type": "text",
+			"list": true
+		},
+		{
 			"name": "severity",
 			"label": "Severity",
 			"type": "select",
@@ -70,5 +76,56 @@
 			"label": "Photo link",
 			"type": "url"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Work Required",
+						"label": "Assign to trade",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Work Required": {
+				"transitions": [
+					{
+						"to": "Ready for Review",
+						"label": "Mark ready",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Ready for Review": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Verify & close",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Work Required",
+						"label": "Reject — rework",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -61,5 +61,47 @@
 			"label": "Letter body",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Issued",
+						"label": "Issue",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued": {
+				"transitions": [
+					{
+						"to": "Acknowledged",
+						"label": "Acknowledge",
+						"party": [
+							"owner",
+							"rep",
+							"subcontractor"
+						]
+					},
+					{
+						"to": "Superseded",
+						"label": "Supersede",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Acknowledged": {
+				"transitions": []
+			},
+			"Superseded": {
+				"transitions": []
+			}
+		}
+	}
 }

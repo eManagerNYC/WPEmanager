@@ -24,6 +24,12 @@
 			"required": true
 		},
 		{
+			"name": "album",
+			"label": "Album",
+			"type": "text",
+			"list": true
+		},
+		{
 			"name": "taken_on",
 			"label": "Date taken",
 			"type": "date",
@@ -38,6 +44,12 @@
 				"value": "name",
 				"label": "name"
 			},
+			"list": true
+		},
+		{
+			"name": "trade",
+			"label": "Trade / scope",
+			"type": "text",
 			"list": true
 		},
 		{

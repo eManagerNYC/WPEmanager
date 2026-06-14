@@ -67,5 +67,67 @@
 			"label": "Authorized by (signature)",
 			"type": "signature"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Invoiced",
+						"label": "Mark invoiced",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": [
+					{
+						"to": "Open",
+						"label": "Revise",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Invoiced": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -7,9 +7,9 @@
 	"version": "1.0.0",
 	"statuses": [
 		"Scheduled",
-		"Passed",
 		"Failed",
-		"Retest Required"
+		"Retest",
+		"Passed"
 	],
 	"fields": [
 		{
@@ -51,19 +51,13 @@
 			"list": true
 		},
 		{
-			"name": "result",
-			"label": "Result",
-			"type": "select",
-			"options": [
-				"Pass",
-				"Fail",
-				"Pending"
-			],
-			"list": true
-		},
-		{
 			"name": "reading_value",
 			"label": "Measured value",
+			"type": "text"
+		},
+		{
+			"name": "spec_requirement",
+			"label": "Spec requirement",
 			"type": "text"
 		},
 		{
@@ -77,5 +71,64 @@
 			"label": "Report link",
 			"type": "url"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Scheduled",
+		"states": {
+			"Scheduled": {
+				"transitions": [
+					{
+						"to": "Passed",
+						"label": "Record pass",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Failed",
+						"label": "Record fail",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Failed": {
+				"transitions": [
+					{
+						"to": "Retest",
+						"label": "Schedule retest",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Retest": {
+				"transitions": [
+					{
+						"to": "Passed",
+						"label": "Record pass",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Failed",
+						"label": "Record fail",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Passed": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -8,11 +8,10 @@
 	"statuses": [
 		"Draft",
 		"Submitted",
-		"In Review",
-		"Approved",
-		"Approved as Noted",
-		"Revise & Resubmit",
-		"Rejected"
+		"GC Review",
+		"A/E Review",
+		"Returned",
+		"Closed"
 	],
 	"fields": [
 		{
@@ -20,6 +19,28 @@
 			"label": "Submittal number",
 			"type": "text",
 			"required": true,
+			"list": true
+		},
+		{
+			"name": "revision",
+			"label": "Revision",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "submittal_type",
+			"label": "Type",
+			"type": "select",
+			"options": [
+				"Shop Drawing",
+				"Product Data",
+				"Sample",
+				"Mock-up",
+				"Certificate",
+				"Test Report",
+				"O&M Data",
+				"Closeout"
+			],
 			"list": true
 		},
 		{
@@ -42,9 +63,20 @@
 			"list": true
 		},
 		{
-			"name": "submit_by",
-			"label": "Submit by",
-			"type": "date"
+			"name": "ball_in_court",
+			"label": "Ball in court",
+			"type": "text",
+			"list": true
+		},
+		{
+			"name": "reviewer",
+			"label": "A/E reviewer",
+			"type": "text"
+		},
+		{
+			"name": "lead_time_days",
+			"label": "Lead time (days)",
+			"type": "number"
 		},
 		{
 			"name": "required_on_site",
@@ -53,14 +85,116 @@
 			"list": true
 		},
 		{
+			"name": "date_received",
+			"label": "Date received",
+			"type": "date"
+		},
+		{
+			"name": "date_returned",
+			"label": "Date returned",
+			"type": "date",
+			"list": true
+		},
+		{
+			"name": "reviewer_notes",
+			"label": "Reviewer notes",
+			"type": "textarea"
+		},
+		{
 			"name": "file_url",
 			"label": "Document link",
 			"type": "url"
-		},
-		{
-			"name": "notes",
-			"label": "Notes",
-			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "GC Review",
+						"label": "Begin GC review",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Draft",
+						"label": "Return to subcontractor",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"GC Review": {
+				"transitions": [
+					{
+						"to": "A/E Review",
+						"label": "Forward to A/E",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Draft",
+						"label": "Return to subcontractor",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"A/E Review": {
+				"transitions": [
+					{
+						"to": "Returned",
+						"label": "Return disposition",
+						"party": [
+							"consultant"
+						],
+						"directions": [
+							"Approved",
+							"Approved as Noted",
+							"Revise & Resubmit",
+							"Rejected"
+						]
+					}
+				]
+			},
+			"Returned": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close (approved)",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Draft",
+						"label": "Revise & resubmit",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -86,5 +86,15 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "warranties",
+			"label": "Start warranty (period begins)",
+			"map": {
+				"item": "description",
+				"start_date": "issue_date"
+			}
+		}
+	]
 }

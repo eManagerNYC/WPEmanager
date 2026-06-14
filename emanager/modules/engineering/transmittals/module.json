@@ -31,6 +31,20 @@
 			"type": "text"
 		},
 		{
+			"name": "purpose",
+			"label": "Purpose",
+			"type": "select",
+			"options": [
+				"For Approval",
+				"For Review & Comment",
+				"For Information",
+				"For Construction",
+				"As Requested",
+				"For Record"
+			],
+			"list": true
+		},
+		{
 			"name": "sent_date",
 			"label": "Date sent",
 			"type": "date",
@@ -60,5 +74,40 @@
 			"label": "Remarks",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Sent",
+						"label": "Send",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Sent": {
+				"transitions": [
+					{
+						"to": "Acknowledged",
+						"label": "Acknowledge receipt",
+						"party": [
+							"gc",
+							"owner",
+							"rep",
+							"consultant",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Acknowledged": {
+				"transitions": []
+			}
+		}
+	}
 }

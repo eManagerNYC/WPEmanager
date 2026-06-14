@@ -4,7 +4,7 @@ Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 3.2.1
+Stable tag: 3.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,37 @@ Data never leaves your server. The only optional outbound call is the Open-Meteo
 5. Reports module with project statistics
 
 == Changelog ==
+
+= 3.9.0 =
+* Bespoke build-out of Resources & BIM (final section batch): Coordination Issues now spawn an RFI when design input is needed; 3D Models gain revision control (Current → Superseded → Archived); rate tables (Labor/Material/Equipment) support versioning (Active → Superseded) and Locations/CSI Divisions/Cost Codes get active/inactive workflows. All 14 sections are now bespoke — role-gated workflows with cross-module linking throughout.
+
+= 3.8.0 =
+* Bespoke build-out of Preconstruction/Procurement: Qualified Bidders & Bid Manual (workflows); Bid Packages → issue Invitation to Bid; Bid Solicitations → add bidders; Bid Submissions (leveling pipeline with low/high/spread KPIs) → award converts to a subcontract Commitment; Estimates mature by phase and seed a Budget line (estimate→budget hand-off)
+
+= 3.7.0 =
+* Bespoke build-out of Closeout/Handover: O&M Manuals, As-Builts, Attic Stock and Owner Training (ball-in-court / submit workflows); Completion Certificates now start a Warranty (period-begin trigger); Commissioning issues spawn a Deficiency or Action Item; Asset Register registers Warranties; Warranties list shows active / expiring-≤90-days / expired KPIs
+
+= 3.6.0 =
+* Bespoke build-out of Cost/Financials: Potential Changes (Identified→Pricing→Submitted→Approved→Converted, one-click convert to Change Order), Change Orders (owner-approval workflow, budget cost-code), Direct Costs (approve→pay workflow, coded to budget line), Approval Letters and T&M Tickets (workflows), Commitments (coded to budget line, bill-against-commitment → Subcontractor Invoice)
+
+= 3.5.0 =
+* Bespoke build-out of Quality & Safety: Inspections (failed finding → Deficiency or NCR, pass-rate KPIs), Non-Conformance Reports (disposition Rework/Repair/Use-as-is/Scrap → corrective + preventive action → verification, corrective-action hand-off), Deficiencies (ball-in-court rework loop), Test Records (pass/fail/retest workflow), Incidents (OSHA recordable/lost-time fields, RCA, corrective-action hand-off, safety KPIs), Safety Violations & Observations (workflows; at-risk observation → corrective action)
+
+= 3.4.0 =
+* Bespoke build-out of the Field section: Daily Reports (submit → approve workflow, expanded sub-logs), Punch List (Procore-style ball-in-court: Open → Work Required → Ready for Review → Verified, with priority, backcharge and open/overdue KPIs), Checklists (issue → complete → review workflow), Photo Library (thumbnail gallery view with album/tag search)
+* Added a workflow-diagram section to the README and an IMPROVEMENT-PLAN roadmap
+* Fix: rebuilding tables (and the admin "Rebuild tables" action) now re-scans modules from disk so newly-added module fields are reliably created on upgrade
+
+= 3.3.0 =
+* Built out the Engineering / document-control modules into full bespoke workflows (grounded in industry RFI and CSI submittal practice), matching the depth of the change-order chain:
+* RFIs: ball-in-court lifecycle (Draft → Open → Answered → Closed), discipline/priority, cost & schedule impact, distribution, and one-click "raise Change Event" linking; list shows open/overdue/avg-age KPIs
+* Submittals: subcontractor → GC → A/E review with dispositions (Approved / Approved as Noted / Revise & Resubmit / Rejected), spec section, type, and required-on-site aging KPIs
+* Drawings & Specifications: revision-control workflow (Current → Superseded) with issued-set tracking
+* Permitting, Meetings (agenda → minutes, spawn action items) and Transmittals: role-gated workflows
+* Fix (upgrade safety): module tables now reliably gain newly-added fields on upgrade via an explicit column-sync (dbDelta does not add backticked columns); object caching added to single-row reads
+
+= 3.2.1 =
+* WordPress.org submission readiness: passes Plugin Check with zero errors; bundled all libraries locally; gated the optional IFC 3D viewer off by default; added LICENSE.txt and a bundled-library manifest; fixed plugin headers (Plugin URI, Tested up to)
 
 = 3.2.0 =
 * AIA G702/G703: new Schedule of Values module (auto-computed continuation-sheet columns) and a Pay Applications builder that rolls the SOV into a G702 Application & Certificate for Payment (retainage, previous certificates, current payment due, balance to finish) with a formatted G702 + G703 PDF export

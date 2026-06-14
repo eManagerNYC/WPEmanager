@@ -72,5 +72,76 @@
 			"label": "Scope of work",
 			"type": "textarea"
 		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Issued",
+						"label": "Issue ITB",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Issued": {
+				"transitions": [
+					{
+						"to": "Responses Due",
+						"label": "Close to responses",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Responses Due": {
+				"transitions": [
+					{
+						"to": "Under Evaluation",
+						"label": "Begin evaluation",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Under Evaluation": {
+				"transitions": [
+					{
+						"to": "Awarded",
+						"label": "Award",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Cancelled",
+						"label": "Cancel",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Awarded": {
+				"transitions": []
+			},
+			"Cancelled": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "bid-submissions",
+			"label": "Add bidder",
+			"map": {
+				"bid_package": "bid_package"
+			}
+		}
 	]
 }

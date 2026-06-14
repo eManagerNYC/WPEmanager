@@ -46,5 +46,35 @@
 			"label": "Summary",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Published",
+						"label": "Publish",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Published": {
+				"transitions": [
+					{
+						"to": "Superseded",
+						"label": "Supersede",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Superseded": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -61,8 +61,23 @@
 			"required": true
 		},
 		{
+			"name": "deliveries",
+			"label": "Deliveries received",
+			"type": "textarea"
+		},
+		{
+			"name": "equipment_on_site",
+			"label": "Equipment on site",
+			"type": "textarea"
+		},
+		{
 			"name": "delays",
 			"label": "Delays / issues",
+			"type": "textarea"
+		},
+		{
+			"name": "safety_notes",
+			"label": "Safety observations",
 			"type": "textarea"
 		},
 		{
@@ -75,5 +90,43 @@
 			"label": "Superintendent signature",
 			"type": "signature"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Draft",
+						"label": "Return for revision",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": []
+			}
+		}
+	}
 }

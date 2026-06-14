@@ -56,5 +56,43 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Current",
+		"states": {
+			"Current": {
+				"transitions": [
+					{
+						"to": "Superseded",
+						"label": "Supersede (new version)",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Archived",
+						"label": "Archive",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Superseded": {
+				"transitions": [
+					{
+						"to": "Archived",
+						"label": "Archive",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Archived": {
+				"transitions": []
+			}
+		}
+	}
 }

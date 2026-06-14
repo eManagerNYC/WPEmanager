@@ -171,7 +171,7 @@ class EM_DB {
 		}
 
 		$physical = self::real( $table );
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name is a whitelisted identifier; id is bound via prepare(); result is cached below.
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery -- custom plugin table; table name is a whitelisted identifier, id bound via prepare(), result cached below (NoCaching satisfied).
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$physical}` WHERE id = %d", $id ), ARRAY_A );
 		if ( $wpdb->last_error ) {
 			return new WP_Error( 'em_db_error', $wpdb->last_error, array( 'status' => 500 ) );
@@ -464,6 +464,57 @@ class EM_DB {
 
 		$sql = "CREATE TABLE {$physical} (\n\t" . implode( ",\n\t", $lines ) . "\n) {$charset};";
 		dbDelta( $sql );
+
+		// dbDelta reliably CREATES tables but does not reliably ADD columns to an
+		// existing table when field names are backticked. Sync columns explicitly
+		// so plugin upgrades (and module updates) add any newly declared fields.
+		self::sync_module_columns( $module );
+	}
+
+	/**
+	 * Add any module fields missing from an existing table (upgrade-safe ALTER).
+	 *
+	 * @param array $module Module definition.
+	 */
+	public static function sync_module_columns( $module ) {
+		global $wpdb;
+		$physical = self::real( $module['table'] );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- table name whitelisted; reading the table's own column list.
+		$existing = $wpdb->get_col( "SHOW COLUMNS FROM `{$physical}`" );
+		if ( empty( $existing ) ) {
+			return;
+		}
+		$existing = array_map( 'strtolower', $existing );
+
+		// Desired columns: common columns + per-field columns.
+		$desired = array(
+			'project_id'      => 'varchar(191)',
+			'company_id'      => 'varchar(191)',
+			'status'          => 'varchar(191)',
+			'direction'       => 'varchar(32)',
+			'linked_module'   => 'varchar(191)',
+			'linked_id'       => 'bigint(20) unsigned',
+			'created_by'      => 'varchar(20)',
+			'created_by_name' => 'varchar(191)',
+			'created_at'      => 'datetime',
+			'updated_at'      => 'datetime',
+		);
+		foreach ( (array) ( $module['fields'] ?? array() ) as $field ) {
+			$name = self::safe_ident( $field['name'] ?? '' );
+			if ( '' !== $name && ! isset( $desired[ $name ] ) && 'id' !== $name ) {
+				$desired[ $name ] = self::column_type( $field['type'] ?? 'text' );
+			}
+		}
+
+		foreach ( $desired as $col => $type ) {
+			if ( in_array( $col, $existing, true ) ) {
+				continue;
+			}
+			// $col is whitelisted by safe_ident()/literal; $type is from a fixed map.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- identifiers whitelisted; ALTER cannot use placeholders.
+			$wpdb->query( "ALTER TABLE `{$physical}` ADD COLUMN `{$col}` {$type} DEFAULT NULL" );
+		}
 	}
 
 	/**

@@ -28,42 +28,112 @@
 			"list": true
 		},
 		{
+			"name": "discipline",
+			"label": "Discipline",
+			"type": "select",
+			"options": [
+				"Architectural",
+				"Structural",
+				"Civil",
+				"Mechanical",
+				"Electrical",
+				"Plumbing",
+				"Fire Protection",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "priority",
+			"label": "Priority",
+			"type": "select",
+			"options": [
+				"Low",
+				"Normal",
+				"High",
+				"Critical"
+			],
+			"list": true
+		},
+		{
 			"name": "question",
 			"label": "Question",
 			"type": "textarea",
 			"required": true
 		},
 		{
-			"name": "answer",
-			"label": "Answer",
-			"type": "textarea"
+			"name": "ball_in_court",
+			"label": "Ball in court",
+			"type": "text",
+			"list": true,
+			"help": "Party currently responsible for the next action."
 		},
 		{
 			"name": "assigned_to",
-			"label": "Assigned to (Consultant)",
-			"type": "text",
+			"label": "Assigned reviewer (Consultant)",
+			"type": "text"
+		},
+		{
+			"name": "date_submitted",
+			"label": "Date submitted",
+			"type": "date",
 			"list": true
 		},
 		{
 			"name": "date_required",
-			"label": "Answer required by",
+			"label": "Response required by",
 			"type": "date",
 			"list": true
 		},
 		{
 			"name": "drawing_ref",
-			"label": "Drawing reference",
+			"label": "Drawing / spec reference",
 			"type": "text"
 		},
 		{
+			"name": "answer",
+			"label": "Official response",
+			"type": "textarea"
+		},
+		{
+			"name": "responded_by",
+			"label": "Responded by",
+			"type": "text"
+		},
+		{
+			"name": "response_date",
+			"label": "Response date",
+			"type": "date"
+		},
+		{
 			"name": "cost_impact",
-			"label": "Cost impact",
+			"label": "Cost impact?",
 			"type": "checkbox"
 		},
 		{
+			"name": "cost_impact_amount",
+			"label": "Estimated cost impact",
+			"type": "currency"
+		},
+		{
 			"name": "schedule_impact",
-			"label": "Schedule impact",
+			"label": "Schedule impact?",
 			"type": "checkbox"
+		},
+		{
+			"name": "schedule_impact_days",
+			"label": "Schedule impact (days)",
+			"type": "number"
+		},
+		{
+			"name": "distribution",
+			"label": "Distribution",
+			"type": "textarea"
+		},
+		{
+			"name": "file_url",
+			"label": "Attachment link",
+			"type": "url"
 		}
 	],
 	"workflow": {
@@ -84,9 +154,16 @@
 				"transitions": [
 					{
 						"to": "Answered",
-						"label": "Answer RFI",
+						"label": "Respond",
 						"party": [
 							"consultant"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc"
 						]
 					}
 				]
@@ -95,14 +172,14 @@
 				"transitions": [
 					{
 						"to": "Closed",
-						"label": "Close RFI",
+						"label": "Accept & close",
 						"party": [
 							"gc"
 						]
 					},
 					{
 						"to": "Open",
-						"label": "Reopen",
+						"label": "Reopen / clarify",
 						"party": [
 							"gc"
 						]
@@ -116,5 +193,15 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "change-events",
+			"label": "Raise change event",
+			"map": {
+				"title": "subject",
+				"description": "question"
+			}
+		}
+	]
 }

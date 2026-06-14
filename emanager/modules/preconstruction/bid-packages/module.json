@@ -54,5 +54,69 @@
 			"label": "Scope description",
 			"type": "textarea"
 		}
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Out to Bid",
+						"label": "Issue to bid",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Out to Bid": {
+				"transitions": [
+					{
+						"to": "Bids Received",
+						"label": "Bids received",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Bids Received": {
+				"transitions": [
+					{
+						"to": "Awarded",
+						"label": "Award",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Awarded": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "bid-solicitations",
+			"label": "Issue invitation to bid",
+			"map": {
+				"title": "title",
+				"bid_package": "number",
+				"scope": "scope",
+				"estimate": "estimate"
+			}
+		}
 	]
 }

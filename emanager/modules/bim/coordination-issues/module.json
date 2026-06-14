@@ -26,8 +26,21 @@
 			"list": true
 		},
 		{
-			"name": "trades_involved",
-			"label": "Trades involved",
+			"name": "clash_type",
+			"label": "Clash type",
+			"type": "select",
+			"options": [
+				"Hard Clash",
+				"Clearance",
+				"Workflow",
+				"Design",
+				"Other"
+			],
+			"list": true
+		},
+		{
+			"name": "models_involved",
+			"label": "Models / trades involved",
 			"type": "text",
 			"list": true
 		},
@@ -57,7 +70,8 @@
 		{
 			"name": "due_date",
 			"label": "Due",
-			"type": "date"
+			"type": "date",
+			"list": true
 		},
 		{
 			"name": "description",
@@ -69,6 +83,67 @@
 			"name": "resolution",
 			"label": "Resolution",
 			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Open",
+		"states": {
+			"Open": {
+				"transitions": [
+					{
+						"to": "Assigned",
+						"label": "Assign",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Assigned": {
+				"transitions": [
+					{
+						"to": "Resolved",
+						"label": "Resolve",
+						"party": [
+							"gc",
+							"subcontractor",
+							"consultant"
+						]
+					},
+					{
+						"to": "Open",
+						"label": "Reopen",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Resolved": {
+				"transitions": [
+					{
+						"to": "Closed",
+						"label": "Verify & close",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Closed": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "rfis",
+			"label": "Raise RFI (needs design input)",
+			"map": {
+				"subject": "title",
+				"question": "description",
+				"drawing_ref": "location"
+			}
 		}
 	]
 }

@@ -65,5 +65,79 @@
 			"label": "Basis / assumptions",
 			"type": "textarea"
 		}
+	],
+	"workflow": {
+		"initial": "Conceptual",
+		"states": {
+			"Conceptual": {
+				"transitions": [
+					{
+						"to": "Schematic",
+						"label": "Advance to SD",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Schematic": {
+				"transitions": [
+					{
+						"to": "Design Development",
+						"label": "Advance to DD",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Design Development": {
+				"transitions": [
+					{
+						"to": "GMP",
+						"label": "Advance to GMP",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"GMP": {
+				"transitions": [
+					{
+						"to": "Final",
+						"label": "Finalize",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Final": {
+				"transitions": [
+					{
+						"to": "Superseded",
+						"label": "Supersede",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Superseded": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "budget-forecast",
+			"label": "Seed budget line",
+			"map": {
+				"description": "title",
+				"cost_code": "csi_division",
+				"original_budget": "total"
+			}
+		}
 	]
 }

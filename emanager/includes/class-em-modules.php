@@ -113,10 +113,14 @@ class EM_Modules {
 
 	/**
 	 * Clear the scanned-registry cache (called on module install/uninstall and
-	 * plugin activation).
+	 * plugin activation). Also resets the in-memory singleton so the next
+	 * instance() call re-scans from disk — otherwise a registry built earlier in
+	 * the same request (e.g. on plugins_loaded) would keep serving stale module
+	 * definitions, and a table rebuild would miss newly-declared fields.
 	 */
 	public static function flush_cache() {
 		delete_transient( self::CACHE_KEY );
+		self::$instance = null;
 	}
 
 	/**

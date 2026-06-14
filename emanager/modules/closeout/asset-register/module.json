@@ -83,5 +83,16 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
+	],
+	"relations": [
+		{
+			"spawn": "warranties",
+			"label": "Register warranty",
+			"map": {
+				"item": "asset_name",
+				"company": "manufacturer",
+				"end_date": "warranty_end"
+			}
+		}
 	]
 }

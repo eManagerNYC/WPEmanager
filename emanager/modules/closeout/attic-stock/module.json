@@ -49,5 +49,49 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Required",
+		"states": {
+			"Required": {
+				"transitions": [
+					{
+						"to": "Received",
+						"label": "Received",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Received": {
+				"transitions": [
+					{
+						"to": "Stored",
+						"label": "Stored on site",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Stored": {
+				"transitions": [
+					{
+						"to": "Turned Over",
+						"label": "Turn over to owner",
+						"party": [
+							"gc",
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Turned Over": {
+				"transitions": []
+			}
+		}
+	}
 }

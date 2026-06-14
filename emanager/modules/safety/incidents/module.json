@@ -82,10 +82,26 @@
 			"type": "text"
 		},
 		{
+			"name": "body_part",
+			"label": "Body part / nature of injury",
+			"type": "text"
+		},
+		{
 			"name": "description",
 			"label": "What happened",
 			"type": "textarea",
 			"required": true
+		},
+		{
+			"name": "root_cause_method",
+			"label": "RCA method",
+			"type": "select",
+			"options": [
+				"5 Whys",
+				"Fishbone",
+				"Fault Tree",
+				"Other"
+			]
 		},
 		{
 			"name": "root_cause",
@@ -98,8 +114,23 @@
 			"type": "textarea"
 		},
 		{
+			"name": "lost_days",
+			"label": "Lost days",
+			"type": "number"
+		},
+		{
+			"name": "restricted_days",
+			"label": "Restricted days",
+			"type": "number"
+		},
+		{
 			"name": "osha_recordable",
 			"label": "OSHA recordable",
+			"type": "checkbox"
+		},
+		{
+			"name": "reported_to_osha",
+			"label": "Reported to OSHA",
 			"type": "checkbox"
 		}
 	],
@@ -143,5 +174,15 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "action-items",
+			"label": "Assign corrective action",
+			"map": {
+				"title": "title",
+				"description": "corrective_action"
+			}
+		}
+	]
 }

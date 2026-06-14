@@ -125,5 +125,23 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "deficiencies",
+			"label": "Log Cx issue as deficiency",
+			"map": {
+				"title": "system",
+				"description": "findings"
+			}
+		},
+		{
+			"spawn": "action-items",
+			"label": "Assign Cx action",
+			"map": {
+				"title": "system",
+				"description": "findings"
+			}
+		}
+	]
 }

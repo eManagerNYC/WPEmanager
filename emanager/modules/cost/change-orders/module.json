@@ -9,8 +9,8 @@
 		"Draft",
 		"Submitted",
 		"Approved",
-		"Executed",
-		"Rejected"
+		"Rejected",
+		"Executed"
 	],
 	"fields": [
 		{
@@ -38,6 +38,17 @@
 			"list": true
 		},
 		{
+			"name": "cost_code",
+			"label": "Cost code (budget line)",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
 			"name": "amount",
 			"label": "Amount",
 			"type": "currency",
@@ -60,5 +71,58 @@
 			"label": "Description",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Draft",
+		"states": {
+			"Draft": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Executed",
+						"label": "Execute",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": []
+			},
+			"Executed": {
+				"transitions": []
+			}
+		}
+	}
 }

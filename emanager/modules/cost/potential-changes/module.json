@@ -50,13 +50,14 @@
 		},
 		{
 			"name": "cost_code",
-			"label": "Cost code",
+			"label": "Cost code (budget line)",
 			"type": "select",
 			"lookup": {
 				"module": "cost-codes",
 				"value": "code",
 				"label": "title"
-			}
+			},
+			"list": true
 		},
 		{
 			"name": "identified_date",
@@ -68,6 +69,81 @@
 			"name": "description",
 			"label": "Description",
 			"type": "textarea"
+		}
+	],
+	"workflow": {
+		"initial": "Identified",
+		"states": {
+			"Identified": {
+				"transitions": [
+					{
+						"to": "Pricing",
+						"label": "Request pricing",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Pricing": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Submit to owner",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Approved",
+						"label": "Approve",
+						"party": [
+							"owner",
+							"rep"
+						]
+					},
+					{
+						"to": "Rejected",
+						"label": "Reject",
+						"party": [
+							"owner",
+							"rep"
+						]
+					}
+				]
+			},
+			"Approved": {
+				"transitions": [
+					{
+						"to": "Converted to CO",
+						"label": "Convert to change order",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Rejected": {
+				"transitions": []
+			},
+			"Converted to CO": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "change-orders",
+			"label": "Convert to Change Order",
+			"map": {
+				"title": "title",
+				"amount": "rom_estimate",
+				"description": "description"
+			}
 		}
 	]
 }

@@ -7,11 +7,11 @@
 	"version": "1.0.0",
 	"statuses": [
 		"Invited",
-		"Declined",
 		"Submitted",
 		"Shortlisted",
 		"Awarded",
-		"Not Awarded"
+		"Not Awarded",
+		"Declined"
 	],
 	"fields": [
 		{
@@ -59,7 +59,89 @@
 		{
 			"name": "score",
 			"label": "Evaluation score",
-			"type": "number"
+			"type": "number",
+			"list": true
+		}
+	],
+	"workflow": {
+		"initial": "Invited",
+		"states": {
+			"Invited": {
+				"transitions": [
+					{
+						"to": "Submitted",
+						"label": "Bid received",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					},
+					{
+						"to": "Declined",
+						"label": "No bid",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Submitted": {
+				"transitions": [
+					{
+						"to": "Shortlisted",
+						"label": "Shortlist",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Not Awarded",
+						"label": "Not awarded",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Shortlisted": {
+				"transitions": [
+					{
+						"to": "Awarded",
+						"label": "Award",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Not Awarded",
+						"label": "Not awarded",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Awarded": {
+				"transitions": []
+			},
+			"Not Awarded": {
+				"transitions": []
+			},
+			"Declined": {
+				"transitions": []
+			}
+		}
+	},
+	"relations": [
+		{
+			"spawn": "commitments",
+			"label": "Award → create subcontract",
+			"map": {
+				"vendor": "bidder",
+				"value": "base_bid",
+				"title": "bid_package"
+			}
 		}
 	]
 }

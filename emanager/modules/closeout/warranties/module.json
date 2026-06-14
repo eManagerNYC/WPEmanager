@@ -55,5 +55,47 @@
 			"label": "Terms",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Requested",
+		"states": {
+			"Requested": {
+				"transitions": [
+					{
+						"to": "Received",
+						"label": "Received",
+						"party": [
+							"subcontractor",
+							"gc"
+						]
+					}
+				]
+			},
+			"Received": {
+				"transitions": [
+					{
+						"to": "Active",
+						"label": "Activate (period starts)",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Active": {
+				"transitions": [
+					{
+						"to": "Expired",
+						"label": "Expire",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Expired": {
+				"transitions": []
+			}
+		}
+	}
 }

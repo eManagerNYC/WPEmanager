@@ -45,12 +45,44 @@
 		{
 			"name": "issue_date",
 			"label": "Issue date",
-			"type": "date"
+			"type": "date",
+			"list": true
 		},
 		{
 			"name": "file_url",
 			"label": "Document link",
 			"type": "url"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Current",
+		"states": {
+			"Current": {
+				"transitions": [
+					{
+						"to": "Superseded",
+						"label": "Supersede (new revision)",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Superseded": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	}
 }

@@ -55,6 +55,17 @@
 			}
 		},
 		{
+			"name": "cost_code",
+			"label": "Cost code (budget line)",
+			"type": "select",
+			"lookup": {
+				"module": "cost-codes",
+				"value": "code",
+				"label": "title"
+			},
+			"list": true
+		},
+		{
 			"name": "value",
 			"label": "Commitment value",
 			"type": "currency",
@@ -118,5 +129,15 @@
 				"transitions": []
 			}
 		}
-	}
+	},
+	"relations": [
+		{
+			"spawn": "subcontractor-invoices",
+			"label": "Bill against this commitment",
+			"map": {
+				"subcontractor": "vendor",
+				"commitment_no": "commitment_no"
+			}
+		}
+	]
 }

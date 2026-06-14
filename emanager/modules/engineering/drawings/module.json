@@ -43,6 +43,21 @@
 			"list": true
 		},
 		{
+			"name": "set_type",
+			"label": "Issued set",
+			"type": "select",
+			"options": [
+				"Bid",
+				"Permit",
+				"Issued for Construction",
+				"Construction Documents",
+				"Addendum",
+				"ASI / Bulletin",
+				"As-Built"
+			],
+			"list": true
+		},
+		{
 			"name": "revision",
 			"label": "Revision",
 			"type": "text",
@@ -59,5 +74,36 @@
 			"label": "Drawing link",
 			"type": "url"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Current",
+		"states": {
+			"Current": {
+				"transitions": [
+					{
+						"to": "Superseded",
+						"label": "Supersede (new revision)",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					},
+					{
+						"to": "Void",
+						"label": "Void",
+						"party": [
+							"gc",
+							"consultant"
+						]
+					}
+				]
+			},
+			"Superseded": {
+				"transitions": []
+			},
+			"Void": {
+				"transitions": []
+			}
+		}
+	}
 }

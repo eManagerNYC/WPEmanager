@@ -23,12 +23,12 @@
 			"name": "trade",
 			"label": "Trade / scope",
 			"type": "select",
-			"list": true,
 			"lookup": {
 				"module": "csi-divisions",
 				"value": "number",
 				"label": "title"
-			}
+			},
+			"list": true
 		},
 		{
 			"name": "contact_name",
@@ -63,5 +63,52 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Pending Review",
+		"states": {
+			"Pending Review": {
+				"transitions": [
+					{
+						"to": "Qualified",
+						"label": "Qualify",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Conditionally Qualified",
+						"label": "Qualify w/ conditions",
+						"party": [
+							"gc"
+						]
+					},
+					{
+						"to": "Not Qualified",
+						"label": "Decline",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Qualified": {
+				"transitions": []
+			},
+			"Conditionally Qualified": {
+				"transitions": [
+					{
+						"to": "Qualified",
+						"label": "Clear conditions",
+						"party": [
+							"gc"
+						]
+					}
+				]
+			},
+			"Not Qualified": {
+				"transitions": []
+			}
+		}
+	}
 }

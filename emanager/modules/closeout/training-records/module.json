@@ -51,5 +51,25 @@
 			"label": "Notes",
 			"type": "textarea"
 		}
-	]
+	],
+	"workflow": {
+		"initial": "Scheduled",
+		"states": {
+			"Scheduled": {
+				"transitions": [
+					{
+						"to": "Completed",
+						"label": "Mark completed",
+						"party": [
+							"gc",
+							"subcontractor"
+						]
+					}
+				]
+			},
+			"Completed": {
+				"transitions": []
+			}
+		}
+	}
 }
