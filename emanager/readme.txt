@@ -4,7 +4,7 @@ Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 3.9.0
+Stable tag: 3.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ Create a folder with a `module.json` manifest describing the fields and statuses
 
 eManager captures drawn signatures with a timestamp and the signing user's identity, which suits day-to-day field workflows (pre-task plans, T&M tickets, orientations, lien waiver routing). It is not a qualified e-signature service (ESIGN/eIDAS certification, audit trails, certificates). For legally critical executions, use a dedicated e-signature provider and attach the executed document URL to the record.
 
+= Does the plugin send email? =
+
+When enabled (default on), eManager sends workflow notification emails through WordPress's standard wp_mail() to the record owner and the next responsible party. Turn it off globally under eManager → Settings, or per user under eManager → Users. No email is sent to any third party.
+
 = Which external services does the plugin call? =
 
 Data never leaves your server. The only optional outbound call is the Open-Meteo weather API, server-side, and only when a user fetches site weather in Daily Reports (no API key, no personal data sent). The optional BIM viewer loads the three.js/web-ifc 3D engine in the browser from the jsDelivr CDN only when a user opens a 3D model record.
@@ -98,6 +102,15 @@ Data never leaves your server. The only optional outbound call is the Open-Meteo
 5. Reports module with project statistics
 
 == Changelog ==
+
+= 3.12.0 =
+* Email notifications: when a record advances through its workflow, eManager emails the record owner and whoever now holds the ball-in-court (the party roles able to act on the new status). Opt-out per user (eManager → Users) and a global on/off toggle (eManager → Settings). Filterable recipients and message body for developers.
+
+= 3.11.0 =
+* Transition data-gating: a workflow step can now require fields be filled before it fires (server-enforced). RFIs can't be Answered without a response, Change Orders can't be submitted without an amount, NCRs need a corrective action, Incidents need a root cause, and more. Blocked actions are flagged in the workflow UI with the fields still needed.
+
+= 3.10.0 =
+* Related Records panel: every record view now shows the record it was spawned from (parent) and the records spawned from it (children) as clickable links, making the full cross-module chain navigable — RFI→Change Event, PCO→Change Order, Bid→Commitment→Invoice, Inspection→Deficiency, Completion→Warranty, and more
 
 = 3.9.0 =
 * Bespoke build-out of Resources & BIM (final section batch): Coordination Issues now spawn an RFI when design input is needed; 3D Models gain revision control (Current → Superseded → Archived); rate tables (Labor/Material/Equipment) support versioning (Active → Superseded) and Locations/CSI Divisions/Cost Codes get active/inactive workflows. All 14 sections are now bespoke — role-gated workflows with cross-module linking throughout.

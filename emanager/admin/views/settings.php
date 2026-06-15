@@ -46,6 +46,20 @@ foreach ( EM_Modules::instance()->all() as $em_m ) {
 	<form method="post" action="options.php">
 		<?php settings_fields( 'em_settings' ); ?>
 
+		<h2 class="title"><?php esc_html_e( 'Notifications', 'emanager' ); ?></h2>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Email notifications', 'emanager' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="em_notifications" value="1" <?php checked( '0' !== (string) get_option( 'em_notifications', '1' ) ); ?> />
+						<?php esc_html_e( 'Email the record owner and the next responsible party when a record advances through its workflow.', 'emanager' ); ?>
+					</label>
+					<p class="description"><?php esc_html_e( 'Individual users can opt out under eManager → Users.', 'emanager' ); ?></p>
+				</td>
+			</tr>
+		</table>
+
 		<h2 class="title"><?php esc_html_e( 'Project information', 'emanager' ); ?></h2>
 		<table class="form-table" role="presentation">
 			<tr>

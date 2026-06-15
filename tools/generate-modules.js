@@ -115,7 +115,7 @@ const MODULES = [
 		workflow: wf( {
 			'Draft': [ { to: 'Open', label: 'Submit RFI', party: [ 'gc' ] } ],
 			'Open': [
-				{ to: 'Answered', label: 'Respond', party: [ 'consultant' ] },
+				{ to: 'Answered', label: 'Respond', party: [ 'consultant' ], requires: [ 'answer' ] },
 				{ to: 'Void', label: 'Void', party: [ 'gc' ] },
 			],
 			'Answered': [
@@ -646,7 +646,7 @@ const MODULES = [
 		// PCO pipeline: identified → priced → submitted → approved → becomes a CO.
 		workflow: wf( {
 			'Identified': [ { to: 'Pricing', label: 'Request pricing', party: [ 'gc' ] } ],
-			'Pricing': [ { to: 'Submitted', label: 'Submit to owner', party: [ 'gc' ] } ],
+			'Pricing': [ { to: 'Submitted', label: 'Submit to owner', party: [ 'gc' ], requires: [ 'rom_estimate' ] } ],
 			'Submitted': [
 				{ to: 'Approved', label: 'Approve', party: [ 'owner', 'rep' ] },
 				{ to: 'Rejected', label: 'Reject', party: [ 'owner', 'rep' ] },
@@ -671,7 +671,7 @@ const MODULES = [
 	{
 		section: 'cost', id: 'change-orders', name: 'Change Orders', icon: 'bi-arrow-repeat',
 		workflow: wf( {
-			'Draft': [ { to: 'Submitted', label: 'Submit', party: [ 'gc' ] } ],
+			'Draft': [ { to: 'Submitted', label: 'Submit', party: [ 'gc' ], requires: [ 'amount' ] } ],
 			'Submitted': [
 				{ to: 'Approved', label: 'Approve', party: [ 'owner', 'rep' ] },
 				{ to: 'Rejected', label: 'Reject', party: [ 'owner', 'rep' ] },
@@ -1428,7 +1428,7 @@ const MODULES = [
 				{ to: 'Dispositioned', label: 'Disposition', party: [ 'gc', 'consultant' ], directions: [ 'Rework', 'Repair', 'Use-as-is', 'Scrap' ] },
 			],
 			'Dispositioned': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ] } ],
-			'Corrective Action': [ { to: 'Verification', label: 'Submit for verification', party: [ 'gc', 'subcontractor' ] } ],
+			'Corrective Action': [ { to: 'Verification', label: 'Submit for verification', party: [ 'gc', 'subcontractor' ], requires: [ 'corrective_action' ] } ],
 			'Verification': [
 				{ to: 'Closed', label: 'Verify & close', party: [ 'gc', 'consultant' ] },
 				{ to: 'Corrective Action', label: 'Reject — redo', party: [ 'gc', 'consultant' ] },
@@ -1509,7 +1509,7 @@ const MODULES = [
 		// action → close, with recordability and lost/restricted-day capture.
 		workflow: wf( {
 			'Reported': [ { to: 'Investigating', label: 'Begin investigation', party: [ 'gc' ] } ],
-			'Investigating': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ] } ],
+			'Investigating': [ { to: 'Corrective Action', label: 'Assign corrective action', party: [ 'gc' ], requires: [ 'root_cause' ] } ],
 			'Corrective Action': [ { to: 'Closed', label: 'Close', party: [ 'gc' ] } ],
 			'Closed': [],
 		} ),
@@ -1754,7 +1754,7 @@ const MODULES = [
 		workflow: wf( {
 			'Received': [ { to: 'Under Review', label: 'Begin review', party: [ 'gc' ] } ],
 			'Under Review': [
-				{ to: 'Approved', label: 'Approve', party: [ 'gc' ] },
+				{ to: 'Approved', label: 'Approve', party: [ 'gc' ], requires: [ 'approved_amount' ] },
 				{ to: 'Rejected', label: 'Reject', party: [ 'gc' ] },
 			],
 			'Approved': [ { to: 'Paid', label: 'Mark paid', party: [ 'gc' ] } ],

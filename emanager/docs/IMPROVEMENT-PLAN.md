@@ -20,10 +20,10 @@ Bring every section to the depth of the change-order chain and the Engineering b
 
 ## B. Cross-cutting workflow improvements
 
-1. ⬜ **Transition data gating** — let a transition declare `requires: [fields]` (e.g. RFI
+1. ✅ **Transition data gating** — let a transition declare `requires: [fields]` (e.g. RFI
    can't go to *Answered* without an answer; COR can't be *Approved* without an amount).
    Enforce in `EM_Api::transition_record()`; surface required fields in the workflow UI.
-2. ⬜ **Notifications** — implement `wp_mail` on `em_record_transitioned` / assignment, with
+2. ✅ **Notifications** — implement `wp_mail` on `em_record_transitioned` / assignment, with
    per-user opt-in and a digest option. (Hook exists; no sender yet — biggest feature gap.)
 3. ⬜ **Ball-in-court as first-class** — derive the responsible party from the workflow +
    party roles; add a global "In my court" cross-module queue on the dashboard home.
@@ -32,8 +32,8 @@ Bring every section to the depth of the change-order chain and the Engineering b
 
 ## C. Module / data improvements
 
-6. ⬜ **Related Records panel** — surface `linked_module`/`linked_id` on the record view
-   (parent + spawned children) so the chain is navigable. *(Data already stored; UI missing.)*
+6. ✅ **Related Records panel** — surfaces `linked_module`/`linked_id` on the record view
+   (parent + spawned children) as clickable links so the chain is navigable.
 7. ⬜ **Real attachments** — Media Library / upload integration to replace paste-a-URL fields.
 8. ⬜ **Auto-numbering** — per-module/project sequential numbers (RFI-001…) instead of manual.
 9. ⬜ **First-class lookups** — make `subcontractor`, `assigned_to`, `vendor` etc. lookups to

@@ -155,6 +155,9 @@
 						"label": "Assign corrective action",
 						"party": [
 							"gc"
+						],
+						"requires": [
+							"root_cause"
 						]
 					}
 				]

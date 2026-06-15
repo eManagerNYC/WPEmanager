@@ -82,6 +82,9 @@
 						"label": "Submit",
 						"party": [
 							"gc"
+						],
+						"requires": [
+							"amount"
 						]
 					}
 				]

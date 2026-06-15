@@ -26,6 +26,8 @@
 				workflowLinks: container.querySelector( '[data-em="workflow-links"]' ),
 				activityCard: container.querySelector( '[data-em="activity-card"]' ),
 				activity: container.querySelector( '[data-em="activity"]' ),
+				linksCard: container.querySelector( '[data-em="links-card"]' ),
+				links: container.querySelector( '[data-em="links"]' ),
 			};
 
 			let record;
@@ -51,6 +53,9 @@
 				const created = record.created_at ? new Date( record.created_at ).toLocaleString() : '—';
 				refs.meta.textContent = `Created ${ created } by ${ record.created_by_name || 'unknown' }`;
 			}
+
+			// Related records (parent + spawned children).
+			this.renderLinks( refs, record._links );
 
 			// Actions.
 			if ( refs.back ) refs.back.addEventListener( 'click', () => { location.hash = `#/${ module.section }/${ module.id }`; } );
@@ -113,6 +118,40 @@
 		},
 
 		/**
+		 * Render the related-records panel: the parent this record was spawned
+		 * from, and any children spawned from it — each clickable.
+		 *
+		 * @param {Object} refs  View refs.
+		 * @param {Object} links { parent, children } from the API.
+		 */
+		renderLinks( refs, links ) {
+			if ( ! refs.linksCard || ! links ) return;
+			const parent = links.parent;
+			const children = links.children || [];
+			if ( ! parent && ! children.length ) return; // Leave hidden.
+
+			const chip = ( rel ) => `
+				<a class="d-flex align-items-center gap-2 text-body text-decoration-none border rounded px-2 py-1 mb-1"
+					href="#/${ rel.section }/${ rel.module }/view/${ rel.id }">
+					<span class="badge text-bg-secondary">${ EM.tpl.esc( rel.name ) }</span>
+					<span class="flex-grow-1 text-truncate">${ EM.tpl.esc( rel.title ) }</span>
+					${ rel.status ? EM.tpl.statusBadge( rel.status ) : '' }
+					<i class="bi bi-chevron-right text-secondary" aria-hidden="true"></i>
+				</a>`;
+
+			let html = '';
+			if ( parent ) {
+				html += `<div class="small text-secondary mb-1">Spawned from</div>${ chip( parent ) }`;
+			}
+			if ( children.length ) {
+				html += `<div class="small text-secondary mb-1 mt-2">Spawned records (${ children.length })</div>` +
+					children.map( ( c ) => chip( c ) ).join( '' );
+			}
+			refs.links.innerHTML = html;
+			refs.linksCard.classList.remove( 'd-none' );
+		},
+
+		/**
 		 * Render workflow transition buttons (role-gated) + record-linking
 		 * ("convert to…") buttons, driven by the server's _transitions list.
 		 */
@@ -129,13 +168,29 @@
 			} else {
 				refs.workflowActions.innerHTML = '';
 				transitions.forEach( ( t ) => {
+					// Required fields still empty on this record block the step.
+					const unmet = ( t.requires || [] ).filter( ( name ) => {
+						const v = record[ name ];
+						return v === '' || v === null || v === undefined;
+					} );
+					const labelFor = ( name ) => {
+						const fld = ( module.fields || [] ).find( ( f ) => f.name === name );
+						return fld ? fld.label : name;
+					};
+
 					const btn = document.createElement( 'button' );
 					btn.type = 'button';
-					btn.className = 'btn btn-sm ' + ( t.allowed ? 'btn-primary' : 'btn-outline-secondary' );
-					btn.disabled = ! t.allowed;
-					btn.innerHTML = `<i class="bi bi-arrow-right-circle me-1" aria-hidden="true"></i>${ EM.tpl.esc( t.label || t.to ) }`;
-					if ( ! t.allowed && t.reason ) btn.title = t.reason;
-					if ( t.allowed ) {
+					const blocked = unmet.length > 0;
+					btn.className = 'btn btn-sm ' + ( t.allowed && ! blocked ? 'btn-primary' : 'btn-outline-secondary' );
+					btn.disabled = ! t.allowed || blocked;
+					const flag = blocked ? '<i class="bi bi-exclamation-triangle ms-1" aria-hidden="true"></i>' : '';
+					btn.innerHTML = `<i class="bi bi-arrow-right-circle me-1" aria-hidden="true"></i>${ EM.tpl.esc( t.label || t.to ) }${ flag }`;
+					if ( blocked ) {
+						btn.title = 'Complete first: ' + unmet.map( labelFor ).join( ', ' );
+					} else if ( ! t.allowed && t.reason ) {
+						btn.title = t.reason;
+					}
+					if ( t.allowed && ! blocked ) {
 						btn.addEventListener( 'click', () => this.doTransition( module, id, t ) );
 					}
 					refs.workflowActions.appendChild( btn );

@@ -157,6 +157,9 @@
 						"label": "Respond",
 						"party": [
 							"consultant"
+						],
+						"requires": [
+							"answer"
 						]
 					},
 					{

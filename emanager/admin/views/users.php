@@ -45,6 +45,7 @@ $em_users     = get_users(
 				<th><?php esc_html_e( 'eManager role', 'emanager' ); ?></th>
 				<th><?php esc_html_e( 'Party role', 'emanager' ); ?></th>
 				<th><?php esc_html_e( 'Company', 'emanager' ); ?></th>
+				<th><?php esc_html_e( 'Emails', 'emanager' ); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -98,6 +99,12 @@ $em_users     = get_users(
 							</option>
 						<?php endforeach; ?>
 					</select>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" name="em_email_notify" value="1" <?php checked( '0' !== (string) get_user_meta( $em_user->ID, 'em_email_notify', true ) ); ?> />
+						<?php esc_html_e( 'On', 'emanager' ); ?>
+					</label>
 				</td>
 				<td>
 					<?php wp_nonce_field( 'em_user' ); ?>

@@ -332,7 +332,97 @@ class EM_Api {
 		if ( EM_Workflow::has( $module ) ) {
 			$record['_transitions'] = EM_Workflow::available_transitions( $module, $record['status'] ?? '' );
 		}
+
+		// Related records: the record this was spawned from, and records spawned from it.
+		$record['_links'] = self::build_links( $module, $record );
+
 		return rest_ensure_response( $record );
+	}
+
+	/**
+	 * Display title for a row (first declared field, falling back to id).
+	 *
+	 * @param array $module Module definition.
+	 * @param array $row    Record row.
+	 * @return string
+	 */
+	private static function record_title( $module, $row ) {
+		// Prefer a human title field; fall back to the first field, then the id.
+		foreach ( array( 'title', 'subject', 'name' ) as $key ) {
+			if ( ! empty( $row[ $key ] ) ) {
+				return wp_strip_all_tags( (string) $row[ $key ] );
+			}
+		}
+		$first = $module['fields'][0]['name'] ?? '';
+		$title = $first && ! empty( $row[ $first ] ) ? $row[ $first ] : ( '#' . ( $row['id'] ?? '' ) );
+		return wp_strip_all_tags( (string) $title );
+	}
+
+	/**
+	 * Build the related-records graph for a record: its parent (the record it was
+	 * spawned from) and its children (records spawned from it). Children are only
+	 * searched in this module's declared spawn targets, so it stays cheap.
+	 *
+	 * @param array $module Module definition.
+	 * @param array $record Current record.
+	 * @return array { parent: object|null, children: array }
+	 */
+	private static function build_links( $module, $record ) {
+		$links = array(
+			'parent'   => null,
+			'children' => array(),
+		);
+
+		// Parent — the source record carried in linked_module / linked_id.
+		if ( ! empty( $record['linked_module'] ) && ! empty( $record['linked_id'] ) ) {
+			$parent_mod = EM_Modules::instance()->get( $record['linked_module'] );
+			if ( $parent_mod ) {
+				$parent_row = EM_DB::get( $parent_mod['table'], $record['linked_id'] );
+				if ( ! is_wp_error( $parent_row ) ) {
+					$links['parent'] = array(
+						'module'  => $parent_mod['id'],
+						'section' => $parent_mod['section'],
+						'name'    => $parent_mod['name'],
+						'id'      => $parent_row['id'],
+						'title'   => self::record_title( $parent_mod, $parent_row ),
+						'status'  => $parent_row['status'] ?? '',
+					);
+				}
+			}
+		}
+
+		// Children — records spawned into this module's declared relation targets.
+		foreach ( (array) ( $module['relations'] ?? array() ) as $rel ) {
+			$target = EM_Modules::instance()->get( $rel['spawn'] ?? '' );
+			if ( ! $target ) {
+				continue;
+			}
+			$res = EM_DB::select(
+				$target['table'],
+				array(
+					'filters'  => array(
+						'linked_module' => $module['id'],
+						'linked_id'     => (int) $record['id'],
+					),
+					'per_page' => 50,
+				)
+			);
+			if ( is_wp_error( $res ) ) {
+				continue;
+			}
+			foreach ( $res['data'] as $row ) {
+				$links['children'][] = array(
+					'module'  => $target['id'],
+					'section' => $target['section'],
+					'name'    => $target['name'],
+					'id'      => $row['id'],
+					'title'   => self::record_title( $target, $row ),
+					'status'  => $row['status'] ?? '',
+				);
+			}
+		}
+
+		return $links;
 	}
 
 	/**
@@ -481,6 +571,17 @@ class EM_Api {
 		$cap = $transition['cap'] ?? EM_Workflow::DEFAULT_CAP;
 		if ( ! current_user_can( $cap ) || ! EM_Roles::user_has_party( $transition['party'] ?? array() ) ) {
 			return new WP_Error( 'em_forbidden', __( 'Your role may not perform this step.', 'emanager' ), array( 'status' => 403 ) );
+		}
+
+		// Data gating: required fields must be filled before this step.
+		$missing = EM_Workflow::missing_requirements( $module, $record, $transition );
+		if ( $missing ) {
+			return new WP_Error(
+				'em_missing_fields',
+				/* translators: %s: comma-separated field labels */
+				sprintf( __( 'Complete these fields before this step: %s', 'emanager' ), implode( ', ', $missing ) ),
+				array( 'status' => 422 )
+			);
 		}
 
 		$update = array(

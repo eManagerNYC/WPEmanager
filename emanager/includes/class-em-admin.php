@@ -118,6 +118,15 @@ class EM_Admin {
 				},
 			)
 		);
+		register_setting(
+			'em_settings',
+			'em_notifications',
+			array(
+				'type'              => 'string',
+				'default'           => '1',
+				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+			)
+		);
 	}
 
 	/**
@@ -226,6 +235,7 @@ class EM_Admin {
 		if ( $user ) {
 			update_user_meta( $user_id, 'em_company_id', $company );
 			update_user_meta( $user_id, 'em_party_role', in_array( $party, EM_Roles::PARTY_ROLES, true ) ? $party : '' );
+			update_user_meta( $user_id, 'em_email_notify', isset( $_POST['em_email_notify'] ) ? '1' : '0' );
 		}
 
 		wp_safe_redirect( admin_url( 'admin.php?page=emanager-users&em_msg=saved' ) );

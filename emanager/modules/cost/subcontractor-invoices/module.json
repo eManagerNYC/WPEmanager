@@ -83,6 +83,9 @@
 						"label": "Approve",
 						"party": [
 							"gc"
+						],
+						"requires": [
+							"approved_amount"
 						]
 					},
 					{

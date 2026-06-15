@@ -92,6 +92,9 @@
 						"label": "Submit to owner",
 						"party": [
 							"gc"
+						],
+						"requires": [
+							"rom_estimate"
 						]
 					}
 				]

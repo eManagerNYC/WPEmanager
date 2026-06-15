@@ -108,6 +108,34 @@ class EM_Workflow {
 	}
 
 	/**
+	 * Required fields that are still empty on the record for a transition.
+	 * A transition may declare `"requires": ["answer", ...]`; the step is blocked
+	 * until those fields are filled. Returns the human labels of any missing ones.
+	 *
+	 * @param array $module     Module definition.
+	 * @param array $record     Current record.
+	 * @param array $transition Transition definition.
+	 * @return array Missing field labels (empty when satisfied).
+	 */
+	public static function missing_requirements( $module, $record, $transition ) {
+		$missing = array();
+		foreach ( (array) ( $transition['requires'] ?? array() ) as $name ) {
+			$value = $record[ $name ] ?? '';
+			if ( '' === $value || null === $value ) {
+				$label = $name;
+				foreach ( (array) ( $module['fields'] ?? array() ) as $field ) {
+					if ( ( $field['name'] ?? '' ) === $name ) {
+						$label = $field['label'];
+						break;
+					}
+				}
+				$missing[] = $label;
+			}
+		}
+		return $missing;
+	}
+
+	/**
 	 * Find a specific transition definition (status -> $to) or null.
 	 *
 	 * @param array  $module Module definition.
