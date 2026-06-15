@@ -2,6 +2,12 @@
 	<div class="card-header bg-body">
 		<div class="d-flex flex-wrap align-items-center gap-2">
 			<h2 class="h5 mb-0 me-auto" data-em="list-title">Records</h2>
+			<div class="dropdown" data-em="views">
+				<button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="bi bi-bookmark" aria-hidden="true"></i> Views
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end" data-em="views-menu"></ul>
+			</div>
 			<select class="form-select form-select-sm w-auto" data-em="filter-status" aria-label="Filter by status">
 				<option value="">All statuses</option>
 			</select>
@@ -11,6 +17,11 @@
 				<button type="button" class="btn btn-outline-secondary" data-em="btn-pdf"><i class="bi bi-filetype-pdf" aria-hidden="true"></i> PDF</button>
 			</div>
 			<button type="button" class="btn btn-primary btn-sm" data-em="btn-new"><i class="bi bi-plus-lg" aria-hidden="true"></i> New</button>
+		</div>
+		<div class="d-none align-items-center gap-2 mt-2 em-bulk-bar" data-em="bulk-bar">
+			<span class="small" data-em="bulk-count"></span>
+			<button type="button" class="btn btn-outline-danger btn-sm" data-em="bulk-delete"><i class="bi bi-trash" aria-hidden="true"></i> Delete selected</button>
+			<button type="button" class="btn btn-link btn-sm" data-em="bulk-clear">Clear</button>
 		</div>
 	</div>
 	<div class="table-responsive">

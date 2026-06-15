@@ -38,7 +38,7 @@ Bring every section to the depth of the change-order chain and the Engineering b
 8. ✅ **Auto-numbering** — per-module/project sequential numbers (RFI-001…) instead of manual.
 9. ✅ **First-class lookups** — make `subcontractor`, `assigned_to`, `vendor` etc. lookups to
    Companies/Users instead of free text, for consistent filtering and rollups.
-10. ⬜ **Saved views & bulk actions** on list pages.
+10. ✅ **Saved views & bulk actions** on list pages.
 
 ## D. Platform / quality
 
@@ -46,7 +46,10 @@ Bring every section to the depth of the change-order chain and the Engineering b
 12. ⬜ **Global search** across modules; **project activity feed** (activity is per-record today).
 13. ⬜ **Performance** — lazy-load module definitions on navigation instead of shipping all
     100+ in the boot payload; cache `reports/stats` (one query per module today).
-14. ⬜ **i18n `.pot`**, PHPUnit + JS tests, CI; screenshot assets for the directory listing.
+14. ✅ **i18n `.pot`** (`emanager/languages/emanager.pot`), **PHPUnit unit suite** (workflow,
+    DB helpers, roles, all 102 module.json manifests), **JS/JSON checks**, and **GitHub Actions
+    CI** (`.github/workflows/ci.yml`). See [docs/TESTING.md](../../docs/TESTING.md). _Screenshot
+    PNG assets for the directory listing are still pending (owner task)._
 15. ⬜ **Real Contributors / Plugin URI** before wp.org submission (placeholder today).
 
 ## Recommended sequence

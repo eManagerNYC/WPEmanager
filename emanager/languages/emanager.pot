@@ -1,0 +1,664 @@
+# Copyright (C) 2026 eManager
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: eManager — Construction Management Dashboard 3.19.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/emanager\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-15T11:20:10+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: emanager\n"
+
+#. Plugin Name of the plugin
+#: emanager.php
+msgid "eManager — Construction Management Dashboard"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: emanager.php
+msgid "https://github.com/emanager-app/emanager"
+msgstr ""
+
+#. Description of the plugin
+#: emanager.php
+msgid "A general-contracting portal for mega projects: a lightweight, modular WordPress dashboard with a role-gated change-order workflow (PCO → NOC → Directive → Proposal → COR → eTicket) and config-driven CRUD modules stored in native WordPress database tables. Modules are installable via ZIP."
+msgstr ""
+
+#. Author of the plugin
+#: emanager.php
+#: includes/class-em-admin.php:81
+#: includes/class-em-admin.php:82
+msgid "eManager"
+msgstr ""
+
+#: admin/views/companies.php:27
+#: includes/class-em-admin.php:91
+msgid "Companies"
+msgstr ""
+
+#: admin/views/companies.php:31
+msgid "Operation failed — please try again."
+msgstr ""
+
+#: admin/views/companies.php:33
+msgid "Done."
+msgstr ""
+
+#: admin/views/companies.php:39
+msgid "Edit company"
+msgstr ""
+
+#: admin/views/companies.php:39
+#: admin/views/companies.php:72
+msgid "Add company"
+msgstr ""
+
+#: admin/views/companies.php:46
+#: admin/views/companies.php:81
+msgid "Name"
+msgstr ""
+
+#: admin/views/companies.php:50
+#: admin/views/companies.php:82
+msgid "Type"
+msgstr ""
+
+#: admin/views/companies.php:60
+msgid "Phone"
+msgstr ""
+
+#: admin/views/companies.php:64
+#: admin/views/companies.php:83
+#: admin/views/users.php:44
+msgid "Email"
+msgstr ""
+
+#: admin/views/companies.php:68
+msgid "Address"
+msgstr ""
+
+#: admin/views/companies.php:72
+msgid "Update company"
+msgstr ""
+
+#: admin/views/companies.php:77
+msgid "All companies"
+msgstr ""
+
+#: admin/views/companies.php:89
+msgid "No companies yet — add one on the left."
+msgstr ""
+
+#: admin/views/companies.php:97
+msgid "Edit"
+msgstr ""
+
+#: admin/views/companies.php:98
+msgid "Delete this company?"
+msgstr ""
+
+#: admin/views/companies.php:100
+msgid "Delete"
+msgstr ""
+
+#: admin/views/modules.php:16
+msgid "eManager Modules"
+msgstr ""
+
+#: admin/views/modules.php:20
+msgid "Module installed and its database table created automatically."
+msgstr ""
+
+#: admin/views/modules.php:22
+msgid "Install failed."
+msgstr ""
+
+#: admin/views/modules.php:26
+msgid "Install module from ZIP"
+msgstr ""
+
+#: admin/views/modules.php:28
+msgid "A module ZIP contains one folder with a module.json manifest (see docs/MODULE-DEVELOPMENT.md). PHP files are not allowed in module packages."
+msgstr ""
+
+#: admin/views/modules.php:34
+msgid "Install module"
+msgstr ""
+
+#: admin/views/modules.php:39
+msgid "Installed modules"
+msgstr ""
+
+#: admin/views/modules.php:43
+msgid "Module"
+msgstr ""
+
+#: admin/views/modules.php:44
+msgid "Section"
+msgstr ""
+
+#: admin/views/modules.php:45
+msgid "Database table"
+msgstr ""
+
+#: admin/views/modules.php:46
+msgid "Statuses"
+msgstr ""
+
+#: admin/views/modules.php:47
+msgid "Source"
+msgstr ""
+
+#: admin/views/modules.php:59
+msgid "Custom (uploads)"
+msgstr ""
+
+#: admin/views/modules.php:59
+msgid "Built-in"
+msgstr ""
+
+#: admin/views/settings.php:23
+msgid "eManager Settings"
+msgstr ""
+
+#: admin/views/settings.php:27
+msgid "Database tables rebuilt."
+msgstr ""
+
+#: admin/views/settings.php:30
+msgid "Database"
+msgstr ""
+
+#. translators: %d: number of module tables
+#: admin/views/settings.php:35
+#, php-format
+msgid "eManager stores all data in custom tables in this WordPress database (one table per module, plus shared tables for companies, comments and the activity log). %d module tables are defined. Tables are created on activation and when a module is installed; use Rebuild tables after upgrades or manual changes."
+msgstr ""
+
+#: admin/views/settings.php:42
+msgid "Rebuild tables"
+msgstr ""
+
+#: admin/views/settings.php:49
+msgid "Notifications"
+msgstr ""
+
+#: admin/views/settings.php:52
+msgid "Email notifications"
+msgstr ""
+
+#: admin/views/settings.php:56
+msgid "Email the record owner and the next responsible party when a record advances through its workflow."
+msgstr ""
+
+#: admin/views/settings.php:58
+msgid "Individual users can opt out under eManager → Users."
+msgstr ""
+
+#: admin/views/settings.php:68
+msgid "Section access by party role"
+msgstr ""
+
+#: admin/views/settings.php:69
+msgid "Tick \"Restrict\" to limit a party role to only the sections checked below. Leave \"Restrict\" unticked and the role sees every section. Administrators always see everything."
+msgstr ""
+
+#: admin/views/settings.php:74
+#: admin/views/users.php:46
+msgid "Party role"
+msgstr ""
+
+#: admin/views/settings.php:75
+msgid "Restrict"
+msgstr ""
+
+#: admin/views/settings.php:102
+msgid "Project information"
+msgstr ""
+
+#: admin/views/settings.php:105
+msgid "Project name"
+msgstr ""
+
+#: admin/views/settings.php:109
+msgid "Project ID (slug)"
+msgstr ""
+
+#: admin/views/settings.php:113
+msgid "Project number"
+msgstr ""
+
+#: admin/views/settings.php:117
+msgid "Site address"
+msgstr ""
+
+#: admin/views/settings.php:121
+msgid "Site coordinates (for weather)"
+msgstr ""
+
+#: admin/views/settings.php:123
+msgid "Latitude"
+msgstr ""
+
+#: admin/views/settings.php:124
+msgid "Longitude"
+msgstr ""
+
+#: admin/views/settings.php:125
+msgid "Used by Daily Reports to auto-fill site weather."
+msgstr ""
+
+#: admin/views/settings.php:129
+msgid "Schedule"
+msgstr ""
+
+#: admin/views/settings.php:137
+#: includes/class-em-roles.php:143
+msgid "Owner"
+msgstr ""
+
+#: admin/views/settings.php:141
+msgid "Architect / Engineer"
+msgstr ""
+
+#: admin/views/settings.php:149
+msgid "Open dashboard ↗"
+msgstr ""
+
+#: admin/views/users.php:13
+msgid "Administrator (create / read / update / delete)"
+msgstr ""
+
+#: admin/views/users.php:14
+msgid "Editor (create / read / update)"
+msgstr ""
+
+#: admin/views/users.php:15
+msgid "Contributor (create / read)"
+msgstr ""
+
+#: admin/views/users.php:16
+msgid "Viewer (read)"
+msgstr ""
+
+#: admin/views/users.php:17
+msgid "Restricted (no access)"
+msgstr ""
+
+#: admin/views/users.php:29
+msgid "eManager Users"
+msgstr ""
+
+#: admin/views/users.php:32
+msgid "User updated."
+msgstr ""
+
+#: admin/views/users.php:36
+msgid "Assign each user a eManager role and a company. WordPress administrators always have full access."
+msgstr ""
+
+#: admin/views/users.php:37
+msgid "Add new user"
+msgstr ""
+
+#: admin/views/users.php:43
+msgid "User"
+msgstr ""
+
+#: admin/views/users.php:45
+msgid "eManager role"
+msgstr ""
+
+#: admin/views/users.php:47
+msgid "Company"
+msgstr ""
+
+#: admin/views/users.php:48
+msgid "Emails"
+msgstr ""
+
+#: admin/views/users.php:69
+msgid "WP Admin"
+msgstr ""
+
+#: admin/views/users.php:75
+msgid "Full access"
+msgstr ""
+
+#: admin/views/users.php:78
+#: admin/views/users.php:87
+#: admin/views/users.php:95
+msgid "— none —"
+msgstr ""
+
+#: admin/views/users.php:106
+msgid "On"
+msgstr ""
+
+#: admin/views/users.php:113
+msgid "Save"
+msgstr ""
+
+#: includes/class-em-admin.php:89
+msgid "Settings"
+msgstr ""
+
+#: includes/class-em-admin.php:90
+msgid "Users"
+msgstr ""
+
+#: includes/class-em-admin.php:92
+msgid "Modules"
+msgstr ""
+
+#: includes/class-em-admin.php:207
+#: includes/class-em-admin.php:234
+#: includes/class-em-admin.php:254
+#: includes/class-em-admin.php:373
+#: includes/class-em-installer.php:114
+msgid "Not allowed."
+msgstr ""
+
+#: includes/class-em-admin.php:289
+msgid "eManager Company"
+msgstr ""
+
+#: includes/class-em-api.php:306
+msgid "Unknown module."
+msgstr ""
+
+#: includes/class-em-api.php:309
+msgid "Your role does not have access to this section."
+msgstr ""
+
+#: includes/class-em-api.php:608
+msgid "You may only delete your own records."
+msgstr ""
+
+#: includes/class-em-api.php:642
+msgid "This module has no workflow."
+msgstr ""
+
+#: includes/class-em-api.php:657
+msgid "That status change is not allowed from the current state."
+msgstr ""
+
+#: includes/class-em-api.php:662
+msgid "Your role may not perform this step."
+msgstr ""
+
+#. translators: %s: comma-separated field labels
+#: includes/class-em-api.php:671
+#, php-format
+msgid "Complete these fields before this step: %s"
+msgstr ""
+
+#: includes/class-em-api.php:686
+msgid "A valid direction is required for this step."
+msgstr ""
+
+#: includes/class-em-api.php:758
+msgid "This record cannot be converted to that type."
+msgstr ""
+
+#: includes/class-em-api.php:763
+msgid "Unknown target module."
+msgstr ""
+
+#. translators: %s: target module name
+#: includes/class-em-api.php:802
+#, php-format
+msgid "Converted to %s"
+msgstr ""
+
+#. translators: %s: source module name
+#: includes/class-em-api.php:803
+#, php-format
+msgid "Created from %s"
+msgstr ""
+
+#: includes/class-em-api.php:940
+msgid "Comment cannot be empty."
+msgstr ""
+
+#: includes/class-em-api.php:1025
+msgid "None"
+msgstr ""
+
+#: includes/class-em-api.php:1081
+msgid "Original budget"
+msgstr ""
+
+#: includes/class-em-api.php:1086
+msgid "Approved changes"
+msgstr ""
+
+#: includes/class-em-api.php:1091
+msgid "Revised budget"
+msgstr ""
+
+#: includes/class-em-api.php:1096
+msgid "Committed cost"
+msgstr ""
+
+#: includes/class-em-api.php:1101
+msgid "Actual cost to date"
+msgstr ""
+
+#: includes/class-em-api.php:1106
+msgid "Forecast at completion"
+msgstr ""
+
+#: includes/class-em-api.php:1111
+msgid "Projected over / (under)"
+msgstr ""
+
+#: includes/class-em-api.php:1116
+msgid "Pending changes (ROM)"
+msgstr ""
+
+#: includes/class-em-api.php:1121
+msgid "Billed to owner"
+msgstr ""
+
+#: includes/class-em-api.php:1221
+msgid "A module and view name are required."
+msgstr ""
+
+#: includes/class-em-api.php:1313
+msgid "No file was uploaded."
+msgstr ""
+
+#: includes/class-em-api.php:1327
+msgid "Upload failed."
+msgstr ""
+
+#: includes/class-em-api.php:1368
+msgid "Upload a ZIP file in the \"module\" field."
+msgstr ""
+
+#: includes/class-em-auth.php:94
+msgid "Your account does not have access to this dashboard. Contact a project administrator."
+msgstr ""
+
+#: includes/class-em-auth.php:95
+msgid "Access restricted"
+msgstr ""
+
+#: includes/class-em-auth.php:216
+msgid "Invalid email or password."
+msgstr ""
+
+#: includes/class-em-auth.php:217
+msgid "Enter a valid email and a password of at least 10 characters."
+msgstr ""
+
+#: includes/class-em-auth.php:218
+msgid "An account with this email already exists."
+msgstr ""
+
+#: includes/class-em-auth.php:219
+msgid "Registration failed. Please try again."
+msgstr ""
+
+#: includes/class-em-auth.php:220
+msgid "Registration is currently closed."
+msgstr ""
+
+#: includes/class-em-auth.php:237
+#: includes/class-em-auth.php:259
+msgid "You are already signed in."
+msgstr ""
+
+#: includes/class-em-auth.php:238
+msgid "Open dashboard"
+msgstr ""
+
+#: includes/class-em-db.php:189
+msgid "Record not found."
+msgstr ""
+
+#: includes/class-em-db.php:220
+msgid "Insert failed."
+msgstr ""
+
+#: includes/class-em-db.php:241
+msgid "Update failed."
+msgstr ""
+
+#: includes/class-em-db.php:260
+msgid "Delete failed."
+msgstr ""
+
+#: includes/class-em-installer.php:35
+msgid "You are not allowed to install modules."
+msgstr ""
+
+#: includes/class-em-installer.php:38
+msgid "No file uploaded."
+msgstr ""
+
+#: includes/class-em-installer.php:43
+msgid "Module packages must be ZIP files."
+msgstr ""
+
+#: includes/class-em-installer.php:66
+msgid "The ZIP does not contain a module.json manifest."
+msgstr ""
+
+#. translators: %s: file name
+#: includes/class-em-installer.php:82
+#, php-format
+msgid "Disallowed file type in package: %s"
+msgstr ""
+
+#: includes/class-em-installer.php:118
+msgid "Module not found."
+msgstr ""
+
+#: includes/class-em-installer.php:121
+msgid "Built-in modules cannot be uninstalled."
+msgstr ""
+
+#: includes/class-em-installer.php:156
+msgid "module.json is not valid JSON."
+msgstr ""
+
+#. translators: %s: manifest key
+#: includes/class-em-installer.php:161
+#, php-format
+msgid "module.json is missing required key: %s"
+msgstr ""
+
+#: includes/class-em-installer.php:165
+msgid "A module with this id already exists. Add a \"version\" to upgrade it."
+msgstr ""
+
+#. translators: 1: project name, 2: module name, 3: status
+#: includes/class-em-notify.php:66
+#, php-format
+msgid "[%1$s] %2$s: %3$s"
+msgstr ""
+
+#. translators: %s: module name
+#: includes/class-em-notify.php:71
+#, php-format
+msgid "A %s record was updated."
+msgstr ""
+
+#. translators: %s: record title
+#: includes/class-em-notify.php:74
+#, php-format
+msgid "Record: %s"
+msgstr ""
+
+#. translators: %s: status
+#: includes/class-em-notify.php:76
+#, php-format
+msgid "Status: %s"
+msgstr ""
+
+#. translators: %s: user display name
+#: includes/class-em-notify.php:78
+#, php-format
+msgid "Updated by: %s"
+msgstr ""
+
+#: includes/class-em-notify.php:82
+msgid "View:"
+msgstr ""
+
+#: includes/class-em-public.php:89
+msgid "Please sign in to access the dashboard."
+msgstr ""
+
+#: includes/class-em-public.php:109
+msgid "Loading eManager…"
+msgstr ""
+
+#: includes/class-em-roles.php:39
+msgid "eManager Administrator"
+msgstr ""
+
+#: includes/class-em-roles.php:51
+msgid "eManager Editor"
+msgstr ""
+
+#: includes/class-em-roles.php:61
+msgid "eManager Contributor"
+msgstr ""
+
+#: includes/class-em-roles.php:70
+msgid "eManager Viewer"
+msgstr ""
+
+#: includes/class-em-roles.php:78
+msgid "eManager Restricted"
+msgstr ""
+
+#: includes/class-em-roles.php:142
+msgid "General Contractor"
+msgstr ""
+
+#: includes/class-em-roles.php:144
+msgid "Owner's Representative"
+msgstr ""
+
+#: includes/class-em-roles.php:145
+msgid "Consultant / Architect / Engineer"
+msgstr ""
+
+#: includes/class-em-roles.php:146
+msgid "Subcontractor"
+msgstr ""
+
+#. translators: %s: list of party roles
+#: includes/class-em-workflow.php:101
+#, php-format
+msgid "Restricted to: %s"
+msgstr ""

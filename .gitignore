@@ -1,0 +1,12 @@
+# Dev tooling — never shipped in the plugin ZIP (built from emanager/ only)
+/vendor/
+/.phpunit.cache/
+/tools/phpcs/vendor/
+.phpunit.result.cache
+
+# Build artifacts
+/emanager-*.zip
+
+# Editor / OS
+.DS_Store
+Thumbs.db

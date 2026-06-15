@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phpunit:
+    name: PHP ${{ matrix.php }} · lint + unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.0', '8.1', '8.2', '8.3' ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer
+
+      - name: Lint all PHP files
+        run: |
+          find emanager -name '*.php' -not -path '*/vendor/*' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run unit tests
+        run: composer test
+
+  phpcs:
+    name: WordPress Coding Standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run PHPCS (WordPress standard)
+        run: composer lint
+
+  javascript:
+    name: JS syntax + module manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check JS syntax (generator + front-end bundles)
+        run: |
+          node --check tools/generate-modules.js
+          for f in emanager/public/js/*.js; do node --check "$f"; done
+
+      - name: Validate every module.json parses
+        run: |
+          node -e "
+            const fs = require('fs');
+            const cp = require('child_process');
+            const files = cp.execSync('find emanager/modules -name module.json')
+              .toString().trim().split('\n').filter(Boolean);
+            let bad = 0;
+            for (const f of files) {
+              try { JSON.parse(fs.readFileSync(f, 'utf8')); }
+              catch (e) { console.error('Invalid JSON:', f, '-', e.message); bad++; }
+            }
+            console.log(files.length + ' manifest(s) checked, ' + bad + ' invalid.');
+            process.exit(bad ? 1 : 0);
+          "

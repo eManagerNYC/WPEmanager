@@ -4,7 +4,7 @@ Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 3.18.0
+Stable tag: 3.19.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,12 @@ Data never leaves your server. The only optional outbound call is the Open-Meteo
 5. Reports module with project statistics
 
 == Changelog ==
+
+= 3.19.1 =
+* Maintenance: bundled translation template (languages/emanager.pot) so the plugin is ready for localization. Adds a developer test/CI toolchain (PHPUnit unit suite, WordPress Coding Standards, GitHub Actions) — no functional changes for site users.
+
+= 3.19.0 =
+* Saved views: save a list's current status filter, search and sort as a named view (per user, per module) and recall it from the new Views menu. Bulk actions: select rows with checkboxes (or select-all) and delete in bulk, with per-record ownership still enforced server-side.
 
 = 3.18.0 =
 * Per-section permissions: restrict each party role (Owner, Subcontractor, etc.) to specific sections from eManager → Settings. Hidden sections disappear from the dashboard and are blocked at the REST layer (403). Roles left unrestricted see everything; administrators always have full access.

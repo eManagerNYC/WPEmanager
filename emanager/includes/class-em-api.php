@@ -195,6 +195,23 @@ class EM_Api {
 
 		register_rest_route(
 			self::NS,
+			'/views',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( __CLASS__, 'get_views' ),
+					'permission_callback' => fn() => current_user_can( 'em_read' ),
+				),
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( __CLASS__, 'save_views' ),
+					'permission_callback' => fn() => current_user_can( 'em_read' ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NS,
 			'/reports/cost-summary',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -1174,6 +1191,63 @@ class EM_Api {
 			fn( $a, $b ) => strcmp( (string) $b['updated_at'], (string) $a['updated_at'] )
 		);
 		return rest_ensure_response( array_slice( $out, 0, 100 ) );
+	}
+
+	/**
+	 * The current user's saved list views, keyed by module id.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public static function get_views() {
+		$views = get_user_meta( get_current_user_id(), 'em_saved_views', true );
+		return rest_ensure_response( is_array( $views ) ? $views : (object) array() );
+	}
+
+	/**
+	 * Save or delete one of the current user's list views.
+	 *
+	 * Body: { op: "save"|"delete", module, name, params? }. Views are per user
+	 * and per module (filter/search/sort/order), capped at 20 per module.
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function save_views( WP_REST_Request $request ) {
+		$body   = (array) $request->get_json_params();
+		$op     = sanitize_key( $body['op'] ?? 'save' );
+		$module = sanitize_key( $body['module'] ?? '' );
+		$name   = trim( sanitize_text_field( $body['name'] ?? '' ) );
+		if ( '' === $module || '' === $name ) {
+			return new WP_Error( 'em_bad_view', __( 'A module and view name are required.', 'emanager' ), array( 'status' => 400 ) );
+		}
+
+		$uid   = get_current_user_id();
+		$views = get_user_meta( $uid, 'em_saved_views', true );
+		$views = is_array( $views ) ? $views : array();
+		$list  = isset( $views[ $module ] ) ? array_values( (array) $views[ $module ] ) : array();
+
+		// Drop any existing view with the same name (case-insensitive).
+		$list = array_values(
+			array_filter( $list, fn( $v ) => strcasecmp( $v['name'] ?? '', $name ) !== 0 )
+		);
+
+		if ( 'save' === $op ) {
+			$p      = (array) ( $body['params'] ?? array() );
+			$list[] = array(
+				'name'   => $name,
+				'params' => array(
+					'status' => sanitize_text_field( $p['status'] ?? '' ),
+					'search' => sanitize_text_field( $p['search'] ?? '' ),
+					'sort'   => sanitize_key( $p['sort'] ?? '' ),
+					'order'  => ( 'asc' === strtolower( $p['order'] ?? '' ) ) ? 'asc' : 'desc',
+				),
+			);
+			$list   = array_slice( $list, -20 ); // Cap per module.
+		}
+
+		$views[ $module ] = $list;
+		update_user_meta( $uid, 'em_saved_views', $views );
+		return rest_ensure_response( $list );
 	}
 
 	/**

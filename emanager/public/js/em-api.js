@@ -107,6 +107,14 @@ window.EM = window.EM || {};
 			return request( 'GET', '/my-court' );
 		},
 
+		views() {
+			return request( 'GET', '/views' );
+		},
+
+		saveView( payload ) {
+			return request( 'POST', '/views', payload );
+		},
+
 		async upload( file ) {
 			const form = new FormData();
 			form.append( 'file', file );
