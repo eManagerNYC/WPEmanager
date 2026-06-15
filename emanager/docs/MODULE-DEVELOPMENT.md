@@ -59,7 +59,15 @@ packages — **PHP is rejected** by the installer for security.
 |---|---|
 | `name` | Column name in the module table (snake_case). |
 | `label` | Form/list label. |
-| `type` | `text` · `textarea` · `richtext` · `number` · `currency` · `date` · `datetime` · `checkbox` · `select` · `email` · `url` · `json` · `signature` |
+| `type` | `text` · `textarea` · `richtext` · `number` · `currency` · `date` · `datetime` · `checkbox` · `select` · `combo` · `email` · `url` · `file` · `json` · `signature` |
+
+> A `combo` field is a text input with autocomplete suggestions from a `source`
+> (`"companies"`, `"users"`, or another module id), while still allowing free text —
+> e.g. `{ "name": "subcontractor", "type": "combo", "source": "companies" }`.
+
+> `url` and `file` fields show an **Upload** button that stores the file in the WordPress
+> Media Library and fills in the URL (users can still paste an external link). They render as
+> a link — or an image thumbnail — in the record view.
 | `required` | `true` adds HTML5 + Bootstrap validation. |
 | `list` | `true` shows the column in the list table (first 6 used; all columns stay sortable). |
 | `options` | For `select`: array of strings. |

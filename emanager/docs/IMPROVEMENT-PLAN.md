@@ -25,18 +25,18 @@ Bring every section to the depth of the change-order chain and the Engineering b
    Enforce in `EM_Api::transition_record()`; surface required fields in the workflow UI.
 2. ✅ **Notifications** — implement `wp_mail` on `em_record_transitioned` / assignment, with
    per-user opt-in and a digest option. (Hook exists; no sender yet — biggest feature gap.)
-3. ⬜ **Ball-in-court as first-class** — derive the responsible party from the workflow +
+3. ✅ **Ball-in-court / "In my court" queue** — derive the responsible party from the workflow +
    party roles; add a global "In my court" cross-module queue on the dashboard home.
 4. ⬜ **Due dates / SLA** — per-transition response-due tracking; global overdue feed.
-5. ⬜ **In-app workflow map** — render the state diagram on the record view (not just buttons).
+5. ✅ **In-app workflow map** — render the state diagram on the record view (not just buttons).
 
 ## C. Module / data improvements
 
 6. ✅ **Related Records panel** — surfaces `linked_module`/`linked_id` on the record view
    (parent + spawned children) as clickable links so the chain is navigable.
-7. ⬜ **Real attachments** — Media Library / upload integration to replace paste-a-URL fields.
-8. ⬜ **Auto-numbering** — per-module/project sequential numbers (RFI-001…) instead of manual.
-9. ⬜ **First-class lookups** — make `subcontractor`, `assigned_to`, `vendor` etc. lookups to
+7. ✅ **Real attachments** — Media Library / upload integration to replace paste-a-URL fields.
+8. ✅ **Auto-numbering** — per-module/project sequential numbers (RFI-001…) instead of manual.
+9. ✅ **First-class lookups** — make `subcontractor`, `assigned_to`, `vendor` etc. lookups to
    Companies/Users instead of free text, for consistent filtering and rollups.
 10. ⬜ **Saved views & bulk actions** on list pages.
 

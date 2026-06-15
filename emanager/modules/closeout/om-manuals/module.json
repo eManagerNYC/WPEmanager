@@ -29,7 +29,8 @@
 		{
 			"name": "subcontractor",
 			"label": "Responsible subcontractor",
-			"type": "text",
+			"type": "combo",
+			"source": "companies",
 			"list": true
 		},
 		{

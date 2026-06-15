@@ -24,6 +24,7 @@
 				workflowState: container.querySelector( '[data-em="workflow-state"]' ),
 				workflowActions: container.querySelector( '[data-em="workflow-actions"]' ),
 				workflowLinks: container.querySelector( '[data-em="workflow-links"]' ),
+				workflowMap: container.querySelector( '[data-em="workflow-map"]' ),
 				activityCard: container.querySelector( '[data-em="activity-card"]' ),
 				activity: container.querySelector( '[data-em="activity"]' ),
 				linksCard: container.querySelector( '[data-em="links-card"]' ),
@@ -160,6 +161,18 @@
 			refs.workflow.classList.remove( 'd-none' );
 			if ( refs.workflowState ) {
 				refs.workflowState.innerHTML = 'Current: ' + EM.tpl.statusBadge( record.status );
+			}
+
+			// Workflow map: the state path with the current step highlighted.
+			if ( refs.workflowMap ) {
+				const states = ( module.workflow && module.workflow.states )
+					? Object.keys( module.workflow.states ) : [];
+				const curIdx = states.indexOf( record.status );
+				refs.workflowMap.innerHTML = states.map( ( s, i ) => {
+					const tone = i < curIdx ? 'done' : ( i === curIdx ? 'current' : 'todo' );
+					const sep = i < states.length - 1 ? '<span class="em-wf-sep" aria-hidden="true">→</span>' : '';
+					return `<span class="em-wf-step em-wf-${ tone }">${ EM.tpl.esc( s ) }</span>${ sep }`;
+				} ).join( '' );
 			}
 
 			const transitions = record._transitions || [];

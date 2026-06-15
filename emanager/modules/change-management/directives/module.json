@@ -17,8 +17,9 @@
 			"name": "directive_no",
 			"label": "Directive number",
 			"type": "text",
-			"required": true,
-			"list": true
+			"list": true,
+			"auto": "DIR-",
+			"help": "Leave blank to auto-number."
 		},
 		{
 			"name": "directive_type",
@@ -35,9 +36,10 @@
 		{
 			"name": "subcontractor",
 			"label": "Subcontractor",
-			"type": "text",
-			"required": true,
-			"list": true
+			"type": "combo",
+			"source": "companies",
+			"list": true,
+			"required": true
 		},
 		{
 			"name": "pco_number",

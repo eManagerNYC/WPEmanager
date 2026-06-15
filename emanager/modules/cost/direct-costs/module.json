@@ -27,9 +27,10 @@
 		{
 			"name": "vendor",
 			"label": "Vendor / employee",
-			"type": "text",
-			"required": true,
-			"list": true
+			"type": "combo",
+			"source": "companies",
+			"list": true,
+			"required": true
 		},
 		{
 			"name": "reference_no",

@@ -18,8 +18,9 @@
 			"name": "number",
 			"label": "Submittal number",
 			"type": "text",
-			"required": true,
-			"list": true
+			"list": true,
+			"auto": "SUB-",
+			"help": "Leave blank to auto-number."
 		},
 		{
 			"name": "revision",
@@ -59,7 +60,8 @@
 		{
 			"name": "subcontractor",
 			"label": "Subcontractor",
-			"type": "text",
+			"type": "combo",
+			"source": "companies",
 			"list": true
 		},
 		{

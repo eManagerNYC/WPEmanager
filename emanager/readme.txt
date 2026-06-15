@@ -4,7 +4,7 @@ Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 3.12.0
+Stable tag: 3.17.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,21 @@ Data never leaves your server. The only optional outbound call is the Open-Meteo
 5. Reports module with project statistics
 
 == Changelog ==
+
+= 3.17.0 =
+* In-app workflow map: the record view now shows the full status path for the record's workflow (e.g. Draft → Open → Answered → Closed), with completed steps, the current step, and upcoming steps clearly marked — so anyone can see at a glance where a record sits and what's next.
+
+= 3.16.0 =
+* "In my court" queue on the dashboard home: one cross-module list of every record awaiting an action you can take (a workflow step your party role + capability allow), newest first and one click away. Gated exactly like the workflow — you only see what's genuinely yours to act on.
+
+= 3.15.0 =
+* First-class lookups: subcontractor/vendor fields now autocomplete from your Companies list, and assignee fields autocomplete from project users, while still allowing free text. New combo field type plus a /users REST endpoint. Cleaner, more consistent data and better filtering.
+
+= 3.14.0 =
+* Auto-numbering: leave a record's number blank and eManager assigns the next sequential value per module and project (RFI-001, CO-001, NCR-001, …) across RFIs, Submittals, PCOs, Change Orders, NOCs, Directives, Proposals, CORs, eTickets, T&M Tickets, DCRs, Inspections, NCRs and Incidents. An explicitly entered number is always respected.
+
+= 3.13.0 =
+* Attachments: file fields now upload straight into the WordPress Media Library — an Upload button on every document/photo/file link field (you can still paste an external URL). Strict file-type allowlist (images, PDF, Office docs, CSV, ZIP, DWG, IFC; executables blocked). Uploaded files render as links or image thumbnails in the record view.
 
 = 3.12.0 =
 * Email notifications: when a record advances through its workflow, eManager emails the record owner and whoever now holds the ball-in-court (the party roles able to act on the new status). Opt-out per user (eManager → Users) and a global on/off toggle (eManager → Settings). Filterable recipients and message body for developers.

@@ -23,9 +23,10 @@
 		{
 			"name": "subcontractor",
 			"label": "Subcontractor",
-			"type": "text",
-			"required": true,
-			"list": true
+			"type": "combo",
+			"source": "companies",
+			"list": true,
+			"required": true
 		},
 		{
 			"name": "commitment_no",

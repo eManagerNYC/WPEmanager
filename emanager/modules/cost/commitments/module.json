@@ -40,9 +40,10 @@
 		{
 			"name": "vendor",
 			"label": "Vendor / subcontractor",
-			"type": "text",
-			"required": true,
-			"list": true
+			"type": "combo",
+			"source": "companies",
+			"list": true,
+			"required": true
 		},
 		{
 			"name": "csi_division",

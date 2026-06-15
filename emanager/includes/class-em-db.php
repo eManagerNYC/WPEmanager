@@ -87,15 +87,24 @@ class EM_DB {
 		$args  = array();
 
 		foreach ( (array) ( $params['filters'] ?? array() ) as $col => $val ) {
-			if ( '' === $val || null === $val ) {
+			if ( '' === $val || null === $val || array() === $val ) {
 				continue;
 			}
 			$col = self::safe_ident( $col );
 			if ( '' === $col ) {
 				continue;
 			}
-			$where[] = "`{$col}` = %s";
-			$args[]  = $val;
+			if ( is_array( $val ) ) {
+				// IN (...) — one placeholder per value.
+				$place   = implode( ', ', array_fill( 0, count( $val ), '%s' ) );
+				$where[] = "`{$col}` IN ( {$place} )";
+				foreach ( $val as $v ) {
+					$args[] = $v;
+				}
+			} else {
+				$where[] = "`{$col}` = %s";
+				$args[]  = $val;
+			}
 		}
 
 		if ( ! empty( $params['search'] ) && ! empty( $params['search_cols'] ) ) {

@@ -144,9 +144,30 @@
 				case 'email':
 					control = `<input class="form-control" type="email" id="${ fid }" name="${ field.name }" value="${ esc( val ) }" ${ required } />`;
 					break;
+				case 'combo': {
+					// Text input with autocomplete suggestions from a source
+					// (companies / users / another module), but free entry allowed.
+					const listId = 'dl-' + fid;
+					wrap.innerHTML = `<label class="form-label" for="${ fid }">${ esc( field.label ) }${ requiredMark }</label>
+						<input class="form-control" type="text" id="${ fid }" name="${ field.name }" value="${ esc( val ) }" list="${ listId }" autocomplete="off" ${ required } />
+						<datalist id="${ listId }"></datalist>
+						${ field.help ? `<div class="form-text">${ esc( field.help ) }</div>` : '' }`;
+					this.fillCombo( wrap.querySelector( '#' + CSS.escape( listId ) ), field.source );
+					return wrap;
+				}
 				case 'url':
-					control = `<input class="form-control" type="url" id="${ fid }" name="${ field.name }" value="${ esc( val ) }" ${ required } />`;
-					break;
+				case 'file':
+					// URL/file field with an optional "Upload" button (Media Library).
+					wrap.innerHTML = `<label class="form-label" for="${ fid }">${ esc( field.label ) }${ requiredMark }</label>
+						<div class="input-group">
+							<input class="form-control" type="url" id="${ fid }" name="${ field.name }" value="${ esc( val ) }" placeholder="https://… or upload →" ${ required } />
+							<button class="btn btn-outline-secondary" type="button" data-em-upload><i class="bi bi-upload" aria-hidden="true"></i> Upload</button>
+							<input type="file" hidden data-em-file />
+						</div>
+						${ field.help ? `<div class="form-text">${ esc( field.help ) }</div>` : '' }
+						<div class="form-text" data-em-upload-status></div>`;
+					this.initUpload( wrap );
+					return wrap;
 				default:
 					control = `<input class="form-control" type="text" id="${ fid }" name="${ field.name }" value="${ esc( val ) }" ${ required } />`;
 			}
@@ -156,6 +177,64 @@
 				${ field.help ? `<div class="form-text">${ esc( field.help ) }</div>` : '' }
 				<div class="invalid-feedback">Please provide a valid value.</div>`;
 			return wrap;
+		},
+
+		/**
+		 * Populate a <datalist> for a combo field from a source: "users",
+		 * "companies", or another module id. Failures are silent (free text still works).
+		 *
+		 * @param {Element} datalist The datalist element.
+		 * @param {string}  source   Source identifier.
+		 */
+		async fillCombo( datalist, source ) {
+			if ( ! datalist || ! source ) return;
+			try {
+				let values = [];
+				if ( 'users' === source ) {
+					values = ( await EM.api.users() ).map( ( u ) => u.name );
+				} else {
+					const res = await EM.api.list( source, { per_page: 200, sort: 'name', order: 'asc' } );
+					values = ( res.records || [] ).map( ( r ) => r.name || r.title || '' );
+				}
+				datalist.innerHTML = values
+					.filter( ( v, i, a ) => v && a.indexOf( v ) === i )
+					.map( ( v ) => `<option value="${ EM.tpl.esc( v ) }"></option>` )
+					.join( '' );
+			} catch ( e ) {
+				/* free text still works without suggestions */
+			}
+		},
+
+		/**
+		 * Wire the "Upload" button on a URL/file field: pick a file, send it to
+		 * the Media Library upload endpoint, and drop the returned URL into the
+		 * text input. The user can still paste an external URL instead.
+		 *
+		 * @param {Element} wrap The field wrapper.
+		 */
+		initUpload( wrap ) {
+			const urlInput = wrap.querySelector( 'input[type="url"]' );
+			const fileInput = wrap.querySelector( '[data-em-file]' );
+			const button = wrap.querySelector( '[data-em-upload]' );
+			const status = wrap.querySelector( '[data-em-upload-status]' );
+			if ( ! urlInput || ! fileInput || ! button ) return;
+
+			button.addEventListener( 'click', () => fileInput.click() );
+			fileInput.addEventListener( 'change', async () => {
+				const file = fileInput.files && fileInput.files[ 0 ];
+				if ( ! file ) return;
+				button.disabled = true;
+				status.textContent = 'Uploading…';
+				try {
+					const res = await EM.api.upload( file );
+					urlInput.value = res.url;
+					status.innerHTML = `<span class="text-success"><i class="bi bi-check-lg"></i> ${ EM.tpl.esc( res.filename ) }</span>`;
+				} catch ( error ) {
+					status.innerHTML = `<span class="text-danger">${ EM.tpl.esc( error.message ) }</span>`;
+				} finally {
+					button.disabled = false;
+				}
+			} );
 		},
 
 		/**

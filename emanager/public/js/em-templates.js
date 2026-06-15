@@ -62,6 +62,18 @@
 						return `<img src="${ value }" alt="Signature" class="em-signature-img border rounded bg-white" />`;
 					}
 					return '—';
+				case 'url':
+				case 'file': {
+					const safe = this.esc( value );
+					if ( /^https?:\/\//i.test( value ) ) {
+						if ( /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test( value ) ) {
+							return `<a href="${ safe }" target="_blank" rel="noopener"><img src="${ safe }" alt="" class="em-thumb border rounded" /></a>`;
+						}
+						const name = value.split( '/' ).pop().split( '?' )[ 0 ];
+						return `<a href="${ safe }" target="_blank" rel="noopener"><i class="bi bi-paperclip"></i> ${ this.esc( name ) || 'Open' }</a>`;
+					}
+					return safe;
+				}
 				default:
 					return this.esc( value );
 			}

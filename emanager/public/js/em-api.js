@@ -98,5 +98,29 @@ window.EM = window.EM || {};
 		costSummary() {
 			return request( 'GET', '/reports/cost-summary' );
 		},
+
+		users() {
+			return request( 'GET', '/users' );
+		},
+
+		myCourt() {
+			return request( 'GET', '/my-court' );
+		},
+
+		async upload( file ) {
+			const form = new FormData();
+			form.append( 'file', file );
+			const response = await fetch( config.apiRoot + '/upload', {
+				method: 'POST',
+				headers: { 'X-WP-Nonce': config.nonce },
+				credentials: 'same-origin',
+				body: form,
+			} );
+			const json = await response.json().catch( () => ( {} ) );
+			if ( ! response.ok ) {
+				throw new Error( json.message || 'Upload failed (' + response.status + ')' );
+			}
+			return json;
+		},
 	};
 } )( window.EM );

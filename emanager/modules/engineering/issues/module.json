@@ -65,7 +65,8 @@
 		{
 			"name": "assigned_to",
 			"label": "Assigned to",
-			"type": "text",
+			"type": "combo",
+			"source": "users",
 			"list": true
 		},
 		{

@@ -186,6 +186,7 @@ CREATE TABLE em_rfis (
   KEY `idx_discipline` (`discipline`),
   KEY `idx_priority` (`priority`),
   KEY `idx_ball_in_court` (`ball_in_court`),
+  KEY `idx_assigned_to` (`assigned_to`),
   KEY `idx_date_submitted` (`date_submitted`),
   KEY `idx_date_required` (`date_required`)
 );

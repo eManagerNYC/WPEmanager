@@ -165,6 +165,36 @@ class EM_Api {
 
 		register_rest_route(
 			self::NS,
+			'/users',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( __CLASS__, 'list_users' ),
+				'permission_callback' => fn() => current_user_can( 'em_read' ),
+			)
+		);
+
+		register_rest_route(
+			self::NS,
+			'/upload',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( __CLASS__, 'upload_file' ),
+				'permission_callback' => fn() => current_user_can( 'em_create' ),
+			)
+		);
+
+		register_rest_route(
+			self::NS,
+			'/my-court',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( __CLASS__, 'my_court' ),
+				'permission_callback' => fn() => current_user_can( 'em_read' ),
+			)
+		);
+
+		register_rest_route(
+			self::NS,
 			'/reports/cost-summary',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -426,6 +456,30 @@ class EM_Api {
 	}
 
 	/**
+	 * Generate the next sequential number for an auto-numbered field, scoped to
+	 * the module and project (e.g. "RFI-001"). The counter is kept in an option
+	 * and seeded from the existing row count so it never collides with imports.
+	 *
+	 * @param array  $module     Module definition.
+	 * @param array  $field      Field definition (its `auto` value is the prefix).
+	 * @param string $project_id Project id.
+	 * @return string
+	 */
+	private static function next_number( $module, $field, $project_id ) {
+		$prefix = is_string( $field['auto'] ) ? $field['auto'] : '';
+		$key    = 'em_seq_' . sanitize_key( $module['id'] ) . '_' . sanitize_key( $project_id );
+
+		$result = EM_DB::select( $module['table'], array( 'per_page' => 1 ) );
+		$count  = is_wp_error( $result ) ? 0 : (int) $result['total'];
+
+		$next = max( (int) get_option( $key, 0 ), $count ) + 1;
+		update_option( $key, $next, false );
+
+		$pad = $field['pad'] ?? 3;
+		return $prefix . str_pad( (string) $next, (int) $pad, '0', STR_PAD_LEFT );
+	}
+
+	/**
 	 * Create a record. Server stamps owner, company, project and initial status.
 	 *
 	 * @param WP_REST_Request $request Current request.
@@ -449,6 +503,13 @@ class EM_Api {
 
 		if ( empty( $data['status'] ) && ! empty( $module['statuses'] ) ) {
 			$data['status'] = $module['statuses'][0];
+		}
+
+		// Auto-number any field declaring `auto` that was left blank (RFI-001…).
+		foreach ( (array) ( $module['fields'] ?? array() ) as $field ) {
+			if ( ! empty( $field['auto'] ) && empty( $data[ $field['name'] ] ) ) {
+				$data[ $field['name'] ] = self::next_number( $module, $field, $data['project_id'] );
+			}
 		}
 
 		$record = EM_DB::insert( $module['table'], $data );
@@ -1033,6 +1094,172 @@ class EM_Api {
 						'value' => $owner_billed,
 					),
 				),
+			)
+		);
+	}
+
+	/**
+	 * "In my court" — records across every workflow module that are awaiting an
+	 * action the current user can take (a transition from the record's current
+	 * status that passes their party-role and capability gates).
+	 *
+	 * @return WP_REST_Response
+	 */
+	public static function my_court() {
+		$out = array();
+
+		foreach ( EM_Modules::instance()->all() as $module ) {
+			if ( ! empty( $module['virtual'] ) || ! EM_Workflow::has( $module ) ) {
+				continue;
+			}
+
+			// Statuses this user can act on — computed from the workflow, no DB.
+			$actionable = array();
+			$workflow   = EM_Workflow::get( $module );
+			foreach ( $workflow['states'] as $status => $state ) {
+				foreach ( ( $state['transitions'] ?? array() ) as $transition ) {
+					$cap = $transition['cap'] ?? EM_Workflow::DEFAULT_CAP;
+					if ( current_user_can( $cap ) && EM_Roles::user_has_party( $transition['party'] ?? array() ) ) {
+						$actionable[] = $status;
+						break;
+					}
+				}
+			}
+			if ( empty( $actionable ) ) {
+				continue;
+			}
+
+			$res = EM_DB::select(
+				$module['table'],
+				array(
+					'filters'  => array( 'status' => array_values( array_unique( $actionable ) ) ),
+					'sort'     => 'updated_at',
+					'order'    => 'desc',
+					'per_page' => 25,
+				)
+			);
+			if ( is_wp_error( $res ) ) {
+				continue;
+			}
+			foreach ( $res['data'] as $row ) {
+				$out[] = array(
+					'module'      => $module['id'],
+					'section'     => $module['section'],
+					'module_name' => $module['name'],
+					'id'          => $row['id'],
+					'title'       => self::record_title( $module, $row ),
+					'status'      => $row['status'] ?? '',
+					'updated_at'  => $row['updated_at'] ?? $row['created_at'] ?? '',
+				);
+			}
+		}
+
+		// Most-recently-touched first; cap the overall list.
+		usort(
+			$out,
+			fn( $a, $b ) => strcmp( (string) $b['updated_at'], (string) $a['updated_at'] )
+		);
+		return rest_ensure_response( array_slice( $out, 0, 100 ) );
+	}
+
+	/**
+	 * Project users (anyone who can read eManager) for assignee autocompletes.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public static function list_users() {
+		$users = get_users(
+			array(
+				'number'  => 500,
+				'orderby' => 'display_name',
+			)
+		);
+		$out   = array();
+		foreach ( $users as $user ) {
+			if ( user_can( $user, 'em_read' ) ) {
+				$out[] = array(
+					'id'   => $user->ID,
+					'name' => $user->display_name,
+				);
+			}
+		}
+		return rest_ensure_response( $out );
+	}
+
+	// ------------------------------------------------------------------
+	// Attachments — upload to the WordPress Media Library.
+	// ------------------------------------------------------------------
+
+	/**
+	 * Allowed upload extensions for attachments (construction documents,
+	 * drawings, photos and models). PHP and other executables are excluded.
+	 */
+	const UPLOAD_MIMES = array(
+		'jpg|jpeg|jpe' => 'image/jpeg',
+		'png'          => 'image/png',
+		'gif'          => 'image/gif',
+		'webp'         => 'image/webp',
+		'svg'          => 'image/svg+xml',
+		'pdf'          => 'application/pdf',
+		'doc'          => 'application/msword',
+		'docx'         => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		'xls'          => 'application/vnd.ms-excel',
+		'xlsx'         => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		'csv'          => 'text/csv',
+		'txt'          => 'text/plain',
+		'zip'          => 'application/zip',
+		'dwg'          => 'image/vnd.dwg',
+		'ifc'          => 'application/octet-stream',
+	);
+
+	/**
+	 * Handle a file upload (multipart field "file") into the Media Library and
+	 * return its public URL. Validated against a strict extension allowlist.
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public static function upload_file( WP_REST_Request $request ) {
+		$files = $request->get_file_params();
+		if ( empty( $files['file'] ) || ! isset( $files['file']['tmp_name'] ) ) {
+			return new WP_Error( 'em_no_file', __( 'No file was uploaded.', 'emanager' ), array( 'status' => 400 ) );
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$overrides = array(
+			'test_form' => false,
+			'mimes'     => self::UPLOAD_MIMES,
+		);
+		$moved     = wp_handle_upload( $files['file'], $overrides );
+
+		if ( ! $moved || isset( $moved['error'] ) ) {
+			$message = is_array( $moved ) && isset( $moved['error'] ) ? $moved['error'] : __( 'Upload failed.', 'emanager' );
+			return new WP_Error( 'em_upload_failed', $message, array( 'status' => 400 ) );
+		}
+
+		$attachment_id = wp_insert_attachment(
+			array(
+				'post_mime_type' => $moved['type'],
+				'post_title'     => sanitize_file_name( $files['file']['name'] ),
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			),
+			$moved['file']
+		);
+		if ( is_wp_error( $attachment_id ) ) {
+			return $attachment_id;
+		}
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $moved['file'] ) );
+
+		return rest_ensure_response(
+			array(
+				'id'       => $attachment_id,
+				'url'      => $moved['url'],
+				'type'     => $moved['type'],
+				'filename' => wp_basename( $moved['file'] ),
 			)
 		);
 	}

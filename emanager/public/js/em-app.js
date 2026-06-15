@@ -231,6 +231,47 @@
 			}
 		},
 
+		/**
+		 * "In my court" — records across all modules awaiting an action this user
+		 * can take, fetched from /my-court. Each is a clickable shortcut.
+		 *
+		 * @param {Element} container Target element.
+		 */
+		async renderCourt( container ) {
+			container.innerHTML = `<div class="card mb-3">
+				<div class="card-header bg-body d-flex align-items-center gap-2">
+					<i class="bi bi-inbox" aria-hidden="true"></i><strong>In my court</strong>
+					<span class="badge text-bg-secondary" data-em="court-count"></span>
+				</div>
+				<div class="card-body" data-em="court-body"><span class="spinner-border spinner-border-sm"></span></div>
+			</div>`;
+			const body = container.querySelector( '[data-em="court-body"]' );
+			const count = container.querySelector( '[data-em="court-count"]' );
+
+			let items = [];
+			try {
+				items = await EM.api.myCourt();
+			} catch ( e ) {
+				container.innerHTML = '';
+				return;
+			}
+
+			if ( count ) count.textContent = items.length;
+			if ( ! items.length ) {
+				body.innerHTML = '<p class="text-secondary mb-0"><i class="bi bi-check2-circle text-success me-1"></i>Nothing is waiting on you right now.</p>';
+				return;
+			}
+
+			body.classList.add( 'p-0' );
+			body.innerHTML = '<div class="list-group list-group-flush">' + items.map( ( it ) => `
+				<a class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+					href="#/${ it.section }/${ it.module }/view/${ it.id }">
+					<span class="badge text-bg-light">${ EM.tpl.esc( it.module_name ) }</span>
+					<span class="flex-grow-1 text-truncate">${ EM.tpl.esc( it.title ) }</span>
+					${ EM.tpl.statusBadge( it.status ) }
+				</a>` ).join( '' ) + '</div>';
+		},
+
 		/** Home: project banner + a card per section. */
 		/**
 		 * Patent: "deploys information to tailored dashboards for the Owner, GC,
@@ -300,6 +341,13 @@
 
 			const host = this.main.querySelector( '[data-em="home-sections"]' );
 			if ( ! host ) return;
+
+			// "In my court" queue above the section cards.
+			const court = document.createElement( 'div' );
+			court.className = 'col-12';
+			host.before( court );
+			this.renderCourt( court );
+
 			host.innerHTML = this.registry.map( ( section ) => `
 				<div class="col-sm-6 col-lg-4 col-xxl-3">
 					<div class="card h-100">

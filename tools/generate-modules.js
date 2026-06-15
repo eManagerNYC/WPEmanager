@@ -32,6 +32,10 @@ const LOOKUP_LOCATION = { lookup: { module: 'locations', value: 'name', label: '
 const LOOKUP_COSTCODE = { lookup: { module: 'cost-codes', value: 'code', label: 'title' } };
 const LOOKUP_CSI = { lookup: { module: 'csi-divisions', value: 'number', label: 'title' } };
 
+// Combo (autocomplete + free entry) sourced from companies / users / a module.
+const company = ( name, label, extra = {} ) => f( name, label, 'combo', { source: 'companies', list: true, ...extra } );
+const assignee = ( name, label, extra = {} ) => f( name, label, 'combo', { source: 'users', list: true, ...extra } );
+
 // Reusable Resources workflows: active/inactive toggle, and rate versioning.
 const WF_ACTIVE = wf( {
 	'Active': [ { to: 'Inactive', label: 'Deactivate', party: [ 'gc' ] } ],
@@ -129,13 +133,13 @@ const MODULES = [
 			{ spawn: 'change-events', label: 'Raise change event', map: { title: 'subject', description: 'question' } },
 		],
 		fields: [
-			f( 'number', 'RFI number', 'text', { required: true, list: true } ),
+			f( 'number', 'RFI number', 'text', { list: true, auto: 'RFI-', help: 'Leave blank to auto-number.' } ),
 			f( 'subject', 'Subject', 'text', { required: true, list: true } ),
 			f( 'discipline', 'Discipline', 'select', { options: [ 'Architectural', 'Structural', 'Civil', 'Mechanical', 'Electrical', 'Plumbing', 'Fire Protection', 'Other' ], list: true } ),
 			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Normal', 'High', 'Critical' ], list: true } ),
 			f( 'question', 'Question', 'textarea', { required: true } ),
 			f( 'ball_in_court', 'Ball in court', 'text', { list: true, help: 'Party currently responsible for the next action.' } ),
-			f( 'assigned_to', 'Assigned reviewer (Consultant)', 'text' ),
+			assignee( 'assigned_to', 'Assigned reviewer (Consultant)' ),
 			f( 'date_submitted', 'Date submitted', 'date', { list: true } ),
 			f( 'date_required', 'Response required by', 'date', { list: true } ),
 			f( 'drawing_ref', 'Drawing / spec reference', 'text' ),
@@ -175,12 +179,12 @@ const MODULES = [
 			'Closed': [],
 		} ),
 		fields: [
-			f( 'number', 'Submittal number', 'text', { required: true, list: true } ),
+			f( 'number', 'Submittal number', 'text', { list: true, auto: 'SUB-', help: 'Leave blank to auto-number.' } ),
 			f( 'revision', 'Revision', 'text', { list: true } ),
 			f( 'submittal_type', 'Type', 'select', { options: [ 'Shop Drawing', 'Product Data', 'Sample', 'Mock-up', 'Certificate', 'Test Report', 'O&M Data', 'Closeout' ], list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { list: true } ),
+			company( 'subcontractor', 'Subcontractor' ),
 			f( 'ball_in_court', 'Ball in court', 'text', { list: true } ),
 			f( 'reviewer', 'A/E reviewer', 'text' ),
 			f( 'lead_time_days', 'Lead time (days)', 'number' ),
@@ -528,7 +532,7 @@ const MODULES = [
 		statuses: [ 'Draft', 'Issued', 'Out for Signature', 'Executed', 'Closed' ],
 		fields: [
 			f( 'subcontract_no', 'Subcontract number', 'text', { required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'csi_division', 'CSI division', 'select', LOOKUP_CSI ),
 			f( 'scope_title', 'Scope', 'text', { list: true } ),
 			f( 'value', 'Contract value', 'currency', { list: true } ),
@@ -633,7 +637,7 @@ const MODULES = [
 		} ),
 		fields: [
 			f( 'cost_type', 'Type', 'select', { options: [ 'Invoice', 'Certified Payroll', 'Expense' ], required: true, list: true } ),
-			f( 'vendor', 'Vendor / employee', 'text', { required: true, list: true } ),
+			company( 'vendor', 'Vendor / employee', { required: true } ),
 			f( 'reference_no', 'Invoice / reference number', 'text', { list: true } ),
 			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'cost_date', 'Date', 'date', { list: true } ),
@@ -659,7 +663,7 @@ const MODULES = [
 			{ spawn: 'change-orders', label: 'Convert to Change Order', map: { title: 'title', amount: 'rom_estimate', description: 'description' } },
 		],
 		fields: [
-			f( 'pco_no', 'PCO number', 'text', { required: true, list: true } ),
+			f( 'pco_no', 'PCO number', 'text', { list: true, auto: 'PCO-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'reason', 'Reason', 'select', { options: [ 'Owner Request', 'Design Change', 'Field Condition', 'Code Requirement', 'Allowance', 'Other' ], list: true } ),
 			f( 'rom_estimate', 'ROM estimate', 'currency', { list: true } ),
@@ -681,7 +685,7 @@ const MODULES = [
 			'Executed': [],
 		} ),
 		fields: [
-			f( 'co_no', 'CO number', 'text', { required: true, list: true } ),
+			f( 'co_no', 'CO number', 'text', { list: true, auto: 'CO-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'co_type', 'Type', 'select', { options: [ 'Owner CO', 'Subcontract CO' ], list: true } ),
 			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
@@ -725,7 +729,7 @@ const MODULES = [
 			'Invoiced': [],
 		} ),
 		fields: [
-			f( 'ticket_no', 'Ticket number', 'text', { required: true, list: true } ),
+			f( 'ticket_no', 'Ticket number', 'text', { list: true, auto: 'TKT-', help: 'Leave blank to auto-number.' } ),
 			f( 'work_date', 'Work date', 'date', { required: true, list: true } ),
 			f( 'company', 'Company', 'text', { required: true, list: true } ),
 			f( 'description', 'Work description', 'textarea', { required: true } ),
@@ -808,7 +812,7 @@ const MODULES = [
 			{ spawn: 'nocs', label: 'Issue NOC', map: { title: 'title', description: 'description', rom_estimate: 'rom_estimate', drawing_ref: 'drawing_ref' } },
 		],
 		fields: [
-			f( 'pcor_no', 'PCOR number', 'text', { required: true, list: true } ),
+			f( 'pcor_no', 'PCOR number', 'text', { list: true, auto: 'PCOR-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'origin', 'Originated by', 'select', { options: [ 'Field Staff (PCO Request)', 'Owner (Work Request)' ], list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
@@ -835,7 +839,7 @@ const MODULES = [
 			{ spawn: 'directives', label: 'Issue PCO Directive', map: { title: 'title', scope: 'description', pco_number: 'pco_number', rom_estimate: 'rom_estimate' } },
 		],
 		fields: [
-			f( 'noc_no', 'NOC number', 'text', { required: true, list: true } ),
+			f( 'noc_no', 'NOC number', 'text', { list: true, auto: 'NOC-', help: 'Leave blank to auto-number.' } ),
 			f( 'pco_number', 'PCO number', 'text', { list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
@@ -899,9 +903,9 @@ const MODULES = [
 			{ spawn: 'etickets', label: 'Generate eTicket (Proceed & Pricing)', map: { subcontractor: 'subcontractor', work_description: 'scope', directive_no: 'directive_no' } },
 		],
 		fields: [
-			f( 'directive_no', 'Directive number', 'text', { required: true, list: true } ),
+			f( 'directive_no', 'Directive number', 'text', { list: true, auto: 'DIR-', help: 'Leave blank to auto-number.' } ),
 			f( 'directive_type', 'Type', 'select', { options: [ 'SSID (Scope)', 'PCOD (PCO)', 'Work Directive' ], required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'pco_number', 'PCO number', 'text', { list: true } ),
 			f( 'scope', 'Scope of work', 'textarea', { required: true } ),
 			f( 'rom_estimate', 'ROM estimate', 'currency' ),
@@ -927,9 +931,9 @@ const MODULES = [
 			{ spawn: 'cors', label: 'Generate COR / AL letter', map: { title: 'title', amount: 'amount', scope: 'scope' } },
 		],
 		fields: [
-			f( 'proposal_no', 'Proposal number', 'text', { required: true, list: true } ),
+			f( 'proposal_no', 'Proposal number', 'text', { list: true, auto: 'PROP-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'directive_no', 'Directive reference', 'text', { list: true } ),
 			f( 'scope', 'Scope', 'textarea' ),
 			f( 'amount', 'Proposed amount', 'currency', { required: true, list: true } ),
@@ -956,7 +960,7 @@ const MODULES = [
 			'Executed': [],
 		} ),
 		fields: [
-			f( 'cor_no', 'COR / AL number', 'text', { required: true, list: true } ),
+			f( 'cor_no', 'COR / AL number', 'text', { list: true, auto: 'COR-', help: 'Leave blank to auto-number.' } ),
 			f( 'letter_type', 'Letter type', 'select', { options: [ 'COR (Change Order Request)', 'AL (Approval Letter)' ], required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'amount', 'Amount', 'currency', { required: true, list: true } ),
@@ -984,9 +988,9 @@ const MODULES = [
 			'Void': [],
 		} ),
 		fields: [
-			f( 'ticket_no', 'Ticket number', 'text', { required: true, list: true } ),
+			f( 'ticket_no', 'Ticket number', 'text', { list: true, auto: 'TKT-', help: 'Leave blank to auto-number.' } ),
 			f( 'work_date', 'Work date', 'date', { required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'directive_no', 'Directive reference', 'text', { list: true } ),
 			f( 'responsible_person', 'Responsible person', 'text' ),
 			f( 'work_description', 'Work performed', 'textarea', { required: true } ),
@@ -1013,9 +1017,9 @@ const MODULES = [
 			'Approved': [],
 		} ),
 		fields: [
-			f( 'dcr_no', 'DCR number', 'text', { required: true, list: true } ),
+			f( 'dcr_no', 'DCR number', 'text', { list: true, auto: 'DCR-', help: 'Leave blank to auto-number.' } ),
 			f( 'report_date', 'Report date', 'date', { required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'work_performed', 'Work performed', 'textarea', { required: true } ),
 			f( 'manpower', 'Workers on site', 'number', { list: true } ),
 			f( 'equipment_used', 'Equipment used', 'textarea' ),
@@ -1041,7 +1045,7 @@ const MODULES = [
 		fields: [
 			f( 'title', 'Manual title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
-			f( 'subcontractor', 'Responsible subcontractor', 'text', { list: true } ),
+			company( 'subcontractor', 'Responsible subcontractor' ),
 			f( 'received_date', 'Received', 'date', { list: true } ),
 			f( 'file_url', 'Document link', 'url' ),
 			f( 'notes', 'Notes', 'textarea' ),
@@ -1145,7 +1149,7 @@ const MODULES = [
 			f( 'rate_basis', 'Rate basis', 'select', { options: [ 'Hourly', 'Daily', 'Weekly', 'Monthly' ], required: true, list: true } ),
 			f( 'rate', 'Rate', 'currency', { required: true, list: true } ),
 			f( 'operated', 'Operated (with operator)', 'checkbox' ),
-			f( 'vendor', 'Vendor', 'text', { list: true } ),
+			company( 'vendor', 'Vendor' ),
 			f( 'effective_date', 'Effective', 'date' ),
 		],
 	},
@@ -1319,7 +1323,7 @@ const MODULES = [
 			f( 'issue_type', 'Type', 'select', { options: [ 'Design', 'Field', 'Quality', 'Safety', 'Coordination', 'Other' ], list: true } ),
 			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Medium', 'High', 'Critical' ], list: true } ),
 			f( 'location', 'Location', 'select', LOOKUP_LOCATION ),
-			f( 'assigned_to', 'Assigned to', 'text', { list: true } ),
+			assignee( 'assigned_to', 'Assigned to' ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
 			f( 'description', 'Description', 'textarea', { required: true } ),
 			f( 'resolution', 'Resolution', 'textarea' ),
@@ -1338,7 +1342,7 @@ const MODULES = [
 		} ),
 		fields: [
 			f( 'title', 'Action', 'text', { required: true, list: true } ),
-			f( 'assigned_to', 'Assigned to', 'text', { list: true } ),
+			assignee( 'assigned_to', 'Assigned to' ),
 			f( 'priority', 'Priority', 'select', { options: [ 'Low', 'Medium', 'High' ], list: true } ),
 			f( 'category', 'Category', 'select', { options: [ 'Design', 'Procurement', 'Field', 'Cost', 'Safety', 'Closeout', 'Other' ], list: true } ),
 			f( 'due_date', 'Due', 'date', { list: true } ),
@@ -1406,7 +1410,7 @@ const MODULES = [
 			{ spawn: 'non-conformance', label: 'Raise NCR', map: { title: 'title', description: 'findings', location: 'location' } },
 		],
 		fields: [
-			f( 'inspection_no', 'Inspection #', 'text', { required: true, list: true } ),
+			f( 'inspection_no', 'Inspection #', 'text', { list: true, auto: 'INS-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'inspection_type', 'Type', 'select', { options: [ 'Quality', 'Owner', 'AHJ / Code', 'Commissioning', 'Pre-pour', 'MEP Rough-in', 'Final', 'Other' ], list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
@@ -1439,7 +1443,7 @@ const MODULES = [
 			{ spawn: 'action-items', label: 'Assign corrective action', map: { title: 'title', description: 'corrective_action' } },
 		],
 		fields: [
-			f( 'ncr_no', 'NCR #', 'text', { required: true, list: true } ),
+			f( 'ncr_no', 'NCR #', 'text', { list: true, auto: 'NCR-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'spec_section', 'Spec section', 'text', { list: true } ),
 			f( 'location', 'Location', 'select', { ...LOOKUP_LOCATION, list: true } ),
@@ -1517,7 +1521,7 @@ const MODULES = [
 			{ spawn: 'action-items', label: 'Assign corrective action', map: { title: 'title', description: 'corrective_action' } },
 		],
 		fields: [
-			f( 'incident_no', 'Incident #', 'text', { required: true, list: true } ),
+			f( 'incident_no', 'Incident #', 'text', { list: true, auto: 'INC-', help: 'Leave blank to auto-number.' } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'incident_type', 'Type', 'select', { options: [ 'Near Miss', 'First Aid', 'Recordable Injury', 'Lost Time', 'Illness', 'Property Damage', 'Environmental' ], list: true } ),
 			f( 'severity', 'Severity', 'select', { options: [ 'Low', 'Medium', 'High', 'Critical' ], list: true } ),
@@ -1693,7 +1697,7 @@ const MODULES = [
 			f( 'commitment_no', 'Commitment #', 'text', { required: true, list: true } ),
 			f( 'title', 'Title', 'text', { required: true, list: true } ),
 			f( 'commitment_type', 'Type', 'select', { options: [ 'Subcontract', 'Purchase Order' ], required: true, list: true } ),
-			f( 'vendor', 'Vendor / subcontractor', 'text', { required: true, list: true } ),
+			company( 'vendor', 'Vendor / subcontractor', { required: true } ),
 			f( 'csi_division', 'CSI division', 'select', LOOKUP_CSI ),
 			f( 'cost_code', 'Cost code (budget line)', 'select', { ...LOOKUP_COSTCODE, list: true } ),
 			f( 'value', 'Commitment value', 'currency', { list: true } ),
@@ -1763,7 +1767,7 @@ const MODULES = [
 		} ),
 		fields: [
 			f( 'invoice_no', 'Invoice #', 'text', { required: true, list: true } ),
-			f( 'subcontractor', 'Subcontractor', 'text', { required: true, list: true } ),
+			company( 'subcontractor', 'Subcontractor', { required: true } ),
 			f( 'commitment_no', 'Commitment #', 'text', { list: true } ),
 			f( 'period_to', 'Period to', 'date', { list: true } ),
 			f( 'amount', 'Invoice amount', 'currency', { list: true } ),

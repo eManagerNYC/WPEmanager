@@ -45,7 +45,8 @@
 		{
 			"name": "vendor",
 			"label": "Vendor",
-			"type": "text",
+			"type": "combo",
+			"source": "companies",
 			"list": true
 		},
 		{
