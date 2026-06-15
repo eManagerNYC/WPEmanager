@@ -127,6 +127,43 @@ class EM_Admin {
 				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
 			)
 		);
+		register_setting(
+			'em_settings',
+			'em_section_access',
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_section_access' ),
+			)
+		);
+	}
+
+	/**
+	 * Sanitize the section-access matrix: party role => [ allowed section ids ].
+	 * Only stores entries for roles explicitly marked "restricted"; unrestricted
+	 * roles are omitted so they keep full access.
+	 *
+	 * @param mixed $value Raw posted value.
+	 * @return array
+	 */
+	public function sanitize_section_access( $value ) {
+		$value    = (array) $value;
+		$sections = array_keys( EM_Modules::instance()->sections_index() );
+		$out      = array();
+		foreach ( EM_Roles::PARTY_ROLES as $role ) {
+			// A role is only restricted when its "restrict" box is ticked.
+			if ( empty( $value['restrict'][ $role ] ) ) {
+				continue;
+			}
+			$allowed = array();
+			foreach ( (array) ( $value['sections'][ $role ] ?? array() ) as $section ) {
+				$section = sanitize_key( $section );
+				if ( in_array( $section, $sections, true ) ) {
+					$allowed[] = $section;
+				}
+			}
+			$out[ $role ] = $allowed;
+		}
+		return $out;
 	}
 
 	/**

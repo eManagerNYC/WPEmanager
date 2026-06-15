@@ -60,6 +60,45 @@ foreach ( EM_Modules::instance()->all() as $em_m ) {
 			</tr>
 		</table>
 
+		<?php
+		$em_parties  = EM_Roles::party_role_labels();
+		$em_sections = EM_Modules::instance()->sections_index();
+		$em_access   = get_option( 'em_section_access', array() );
+		?>
+		<h2 class="title"><?php esc_html_e( 'Section access by party role', 'emanager' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Tick "Restrict" to limit a party role to only the sections checked below. Leave "Restrict" unticked and the role sees every section. Administrators always see everything.', 'emanager' ); ?></p>
+		<div class="em-access-matrix" style="overflow:auto;">
+			<table class="widefat striped" style="width:auto;">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Party role', 'emanager' ); ?></th>
+						<th><?php esc_html_e( 'Restrict', 'emanager' ); ?></th>
+						<?php foreach ( $em_sections as $em_sec ) : ?>
+							<th class="em-access-col"><?php echo esc_html( $em_sec['name'] ); ?></th>
+						<?php endforeach; ?>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ( $em_parties as $em_role => $em_label ) : ?>
+					<?php
+					$em_restricted = isset( $em_access[ $em_role ] );
+					$em_allowed    = $em_restricted ? (array) $em_access[ $em_role ] : array();
+					?>
+					<tr>
+						<td><strong><?php echo esc_html( $em_label ); ?></strong></td>
+						<td><input type="checkbox" name="em_section_access[restrict][<?php echo esc_attr( $em_role ); ?>]" value="1" <?php checked( $em_restricted ); ?> /></td>
+						<?php foreach ( $em_sections as $em_sec ) : ?>
+							<td class="em-access-col">
+								<input type="checkbox" name="em_section_access[sections][<?php echo esc_attr( $em_role ); ?>][]" value="<?php echo esc_attr( $em_sec['id'] ); ?>"
+									<?php checked( ! $em_restricted || in_array( $em_sec['id'], $em_allowed, true ) ); ?> />
+							</td>
+						<?php endforeach; ?>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+
 		<h2 class="title"><?php esc_html_e( 'Project information', 'emanager' ); ?></h2>
 		<table class="form-table" role="presentation">
 			<tr>

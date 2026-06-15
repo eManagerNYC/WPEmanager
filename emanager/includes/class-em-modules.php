@@ -140,6 +140,15 @@ class EM_Modules {
 	}
 
 	/**
+	 * Sections keyed by id (id => { id, name, icon, order }).
+	 *
+	 * @return array<string,array>
+	 */
+	public function sections_index() {
+		return $this->sections;
+	}
+
+	/**
 	 * Scan a base directory for section/module folders.
 	 *
 	 * @param string $base_dir Absolute directory to scan.

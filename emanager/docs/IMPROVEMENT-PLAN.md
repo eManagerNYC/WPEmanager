@@ -42,7 +42,7 @@ Bring every section to the depth of the change-order chain and the Engineering b
 
 ## D. Platform / quality
 
-11. ⬜ **Per-module / per-section permissions** (currently capabilities are global).
+11. ✅ **Per-section permissions (by party role)** (currently capabilities are global).
 12. ⬜ **Global search** across modules; **project activity feed** (activity is per-record today).
 13. ⬜ **Performance** — lazy-load module definitions on navigation instead of shipping all
     100+ in the boot payload; cache `reports/stats` (one query per module today).

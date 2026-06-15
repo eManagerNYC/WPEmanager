@@ -4,7 +4,7 @@ Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 3.17.0
+Stable tag: 3.18.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,9 @@ Data never leaves your server. The only optional outbound call is the Open-Meteo
 5. Reports module with project statistics
 
 == Changelog ==
+
+= 3.18.0 =
+* Per-section permissions: restrict each party role (Owner, Subcontractor, etc.) to specific sections from eManager → Settings. Hidden sections disappear from the dashboard and are blocked at the REST layer (403). Roles left unrestricted see everything; administrators always have full access.
 
 = 3.17.0 =
 * In-app workflow map: the record view now shows the full status path for the record's workflow (e.g. Draft → Open → Answered → Closed), with completed steps, the current step, and upcoming steps clearly marked — so anyone can see at a glance where a record sits and what's next.

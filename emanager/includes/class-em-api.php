@@ -237,9 +237,17 @@ class EM_Api {
 		$user    = wp_get_current_user();
 		$company = get_user_meta( $user->ID, 'em_company_id', true );
 
+		// Only expose sections this user's party role may access.
+		$registry = array_values(
+			array_filter(
+				EM_Modules::instance()->registry(),
+				fn( $section ) => EM_Roles::can_access_section( $section['id'] )
+			)
+		);
+
 		return rest_ensure_response(
 			array(
-				'registry'   => EM_Modules::instance()->registry(),
+				'registry'   => $registry,
 				'user'       => array(
 					'id'         => $user->ID,
 					'name'       => $user->display_name,
@@ -279,6 +287,9 @@ class EM_Api {
 		$module = EM_Modules::instance()->get( sanitize_key( $request['module'] ) );
 		if ( ! $module ) {
 			return new WP_Error( 'em_unknown_module', __( 'Unknown module.', 'emanager' ), array( 'status' => 404 ) );
+		}
+		if ( ! EM_Roles::can_access_section( $module['section'] ) ) {
+			return new WP_Error( 'em_section_forbidden', __( 'Your role does not have access to this section.', 'emanager' ), array( 'status' => 403 ) );
 		}
 		return $module;
 	}
@@ -1110,6 +1121,9 @@ class EM_Api {
 
 		foreach ( EM_Modules::instance()->all() as $module ) {
 			if ( ! empty( $module['virtual'] ) || ! EM_Workflow::has( $module ) ) {
+				continue;
+			}
+			if ( ! EM_Roles::can_access_section( $module['section'] ) ) {
 				continue;
 			}
 

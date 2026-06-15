@@ -183,4 +183,29 @@ class EM_Roles {
 		}
 		return in_array( self::party_role(), (array) $roles, true );
 	}
+
+	/**
+	 * Can the current user access a given section?
+	 *
+	 * Access is controlled by the `em_section_access` option, a map of
+	 * party role => allowed section ids. A party role with NO entry is
+	 * unrestricted (backwards-compatible default); managers always pass.
+	 *
+	 * @param string $section Section id.
+	 * @return bool
+	 */
+	public static function can_access_section( $section ) {
+		if ( current_user_can( 'em_manage' ) ) {
+			return true;
+		}
+		$party = self::party_role();
+		if ( '' === $party ) {
+			return true; // Unassigned party: don't lock anyone out by default.
+		}
+		$map = get_option( 'em_section_access', array() );
+		if ( ! isset( $map[ $party ] ) ) {
+			return true; // This role is unrestricted.
+		}
+		return in_array( $section, (array) $map[ $party ], true );
+	}
 }
