@@ -1,5 +1,5 @@
 === eManager — Construction Management Dashboard ===
-Contributors: emanager
+Contributors: blackrebel
 Tags: construction, project management, dashboard, change orders, workflow
 Requires at least: 6.4
 Tested up to: 7.0

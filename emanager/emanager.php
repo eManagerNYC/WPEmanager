@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name:       eManager — Construction Management Dashboard
- * Plugin URI:        https://github.com/emanager-app/emanager
+ * Plugin URI:        https://www.wprealwise.com
  * Description:       A general-contracting portal for mega projects: a lightweight, modular WordPress dashboard with a role-gated change-order workflow (PCO → NOC → Directive → Proposal → COR → eTicket) and config-driven CRUD modules stored in native WordPress database tables. Modules are installable via ZIP.
  * Version:           3.19.1
  * Requires at least: 6.4
  * Requires PHP:      8.0
- * Author:            eManager
+ * Author:            blackrebel
+ * Author URI:        https://www.wprealwise.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       emanager

@@ -134,6 +134,17 @@ DCR: Subcontractor ─▶ GC reviews/approves
 - **Role-gated workflow engine** — server-enforced status transitions, direction handling
   (Proceed & Pricing / Pricing Only / Do Not Proceed), one-click record linking, and a full
   **activity audit trail** per record
+- **Workflow collaboration tools** built on top of the engine:
+  - **In-app workflow map** on every record (the full status path, with done / current / next steps)
+  - **"In my court" queue** — a cross-module home list of every record awaiting an action you can take
+  - **Related Records panel** — navigate the spawned-from (parent) / spawned (children) chain
+  - **Transition data-gating** — a step can require fields be filled before it fires (server-enforced)
+  - **Email notifications** on transitions to the record owner and the new ball-in-court party (`wp_mail`, opt-out per user, global toggle)
+  - **Per-section permissions** — restrict each party role to specific sections (hidden in UI + blocked at REST)
+  - **Auto-numbering** — leave a record number blank to get the next sequential value per module & project
+  - **First-class lookups** — company/vendor and assignee fields autocomplete from Companies / project users
+  - **Attachments** — file fields upload straight into the WordPress Media Library (strict type allowlist; executables blocked)
+  - **Saved views & bulk actions** — save a list's filter/search/sort as a named view; select rows and delete in bulk (ownership still enforced)
 - **Two role dimensions** — five CRUD capability roles *and* five project **party roles**
   (GC, Owner, Owner's Rep, Consultant, Subcontractor) that drive the workflow logic gates
   and tailored dashboards
@@ -220,7 +231,7 @@ never stalls.
 
 ## Sections & modules
 
-90+ modules across 14 sections covering the full project lifecycle:
+100+ modules (102 today) across 14 sections covering the full project lifecycle:
 
 | Section | Modules |
 |---|---|
@@ -318,16 +329,24 @@ folder with a `module.json` declaring fields and statuses; zip it; upload under
 Namespace `em/v1` (cookie + `X-WP-Nonce` auth):
 
 ```
-GET    /boot                                  registry, user, caps, project
+GET    /boot                                  registry (section-filtered), user, caps, project, flags
 GET    /modules/{module}/records              ?sort=&order=&page=&per_page=&search=&status=&filters[col]=
-POST   /modules/{module}/records              create
-GET    /modules/{module}/records/{id}         read
+POST   /modules/{module}/records              create (auto-numbers, seeds activity)
+GET    /modules/{module}/records/{id}         read (includes _links: parent/children)
 PUT    /modules/{module}/records/{id}         update
 DELETE /modules/{module}/records/{id}         delete (ownership enforced)
 GET    /modules/{module}/records/{id}/comments
 POST   /modules/{module}/records/{id}/comments
+GET    /modules/{module}/records/{id}/activity   workflow/audit timeline
+POST   /modules/{module}/records/{id}/transition status change (party + cap gated, requires-checked)
+POST   /modules/{module}/records/{id}/spawn      create a linked record from a relation
+GET    /my-court                              records awaiting an action you can take
+GET    /views   ·  POST /views               saved list views (per user, per module)
+POST   /upload                                file → Media Library (type allowlist, no PHP)
+GET    /users                                 project users (assignee lookups)
 GET    /weather?lat=&lon=                     Open-Meteo proxy (cached 1 h)
 GET    /reports/stats                         counts per module & status
+GET    /reports/cost-summary                  budget vs. committed vs. actual vs. forecast roll-up
 POST   /modules/install                       ZIP install (admins)
 DELETE /modules/{module}                      uninstall custom module (admins)
 ```

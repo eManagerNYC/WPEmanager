@@ -48,8 +48,9 @@ Bring every section to the depth of the change-order chain and the Engineering b
     100+ in the boot payload; cache `reports/stats` (one query per module today).
 14. ✅ **i18n `.pot`** (`emanager/languages/emanager.pot`), **PHPUnit unit suite** (workflow,
     DB helpers, roles, all 102 module.json manifests), **JS/JSON checks**, and **GitHub Actions
-    CI** (`.github/workflows/ci.yml`). See [docs/TESTING.md](../../docs/TESTING.md). _Screenshot
-    PNG assets for the directory listing are still pending (owner task)._
+    CI** (`.github/workflows/ci.yml`). See `docs/TESTING.md` at the repository root (dev tooling
+    is not shipped in the plugin ZIP). _Screenshot PNG assets for the directory listing are still
+    pending (owner task)._
 15. ⬜ **Real Contributors / Plugin URI** before wp.org submission (placeholder today).
 
 ## Recommended sequence
